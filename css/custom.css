@@ -1,0 +1,358 @@
+/* 
+    Document   : custom
+    Created on : 17.01.2012, 15:10:44
+    Author     : vitalyd
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+
+.postdiv > .user {
+	font-weight: bold;
+}
+
+.postdiv > .childs {
+	font-weight: bold;
+	font-size: 24px;
+	height: 80px;
+	width: 80px;
+	float: right;
+	text-align: center;
+	opacity: .4;
+	-webkit-transition:opacity .5s ease-in-out .2s;
+
+}
+
+.postdiv:hover > .childs {
+	opacity: 1;
+}
+
+.postdiv:hover > .childs:hover {
+	color: blue;
+	cursor: pointer;
+}
+
+
+div.parent {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	float: left;
+}
+
+.icon {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+div.parent .icon {
+	background: transparent url(img/parent24.png) no-repeat -5px -5px;
+}
+
+.frame > .postdiv .parent > * {
+	display: none;
+}
+
+.frame.expanded > .postdiv:first-child .parent > * {
+	display: block;
+}
+
+
+.user span {
+	color: #888;
+/*	font-weight: bold;*/
+}
+
+.frame {
+/*	border-bottom: 1px solid #eeeeee;*/
+	margin-bottom: 20px;
+}
+.frame.expanded > .postdiv:first-child {
+	background-color: #def;
+}
+.frame > .postdiv {
+	padding: 10px 0;
+}
+.frame > .postdiv:first-child {
+	background-color: #eee;
+}
+
+.postdiv .text{
+	cursor: pointer;
+}
+
+ul.tags {
+	list-style-type: none;
+}
+
+ul.tags li {
+	display: inline-block;
+}
+
+.postdiv.float {
+	position: fixed;
+	top: 0px;
+	z-index: 9000;
+}
+.postdiv  {
+	width: 580px;
+}
+
+.postdiv.float.row {
+	margin-left: -20px;
+}
+.content .frame.span10 {
+	min-height: 0px;
+}
+
+.widget {
+/*	background-color: #fff;*/
+/*	border: 1px solid #eee;*/
+/*	padding: 6px;	*/
+	margin-bottom: 6px;
+}
+
+
+.mypills {
+	margin: 0 0 0px;
+	display: none;
+}
+.mypills a {
+/*	margin: 5px 0;*/
+	padding: 0 6px;
+	line-height: 22px;
+}
+
+input.xlarge.typebox {
+	width: 210px;
+	cursor: pointer;
+	color: #0069D6;
+-webkit-rtl-ordering: logical;
+-webkit-user-select: text;
+	margin-bottom: 6px;
+}
+
+input.typebox::-webkit-input-placeholder { 
+	color:#696969; 
+/*	font-weight : bold;*/
+	font-size: 16px;
+}
+input.typebox.pactive::-webkit-input-placeholder { 
+	color:#BBB; 
+	font-size: 13px;
+	font-weight : normal;
+}
+
+.widget ul.items, .widget ul.items_searched {
+	margin: 0 auto;
+}
+.widget ul.items_searched {
+	margin-bottom: 10px;
+}
+#searchView ul.items li, .widget ul.items li, 
+#searchView ul.items_searched li, .widget ul.items_searched li {
+	display: inline-block;
+	cursor: pointer;
+/*	border:1px solid #ffffff;*/
+
+}
+.widget ul.items li.selected {
+/*	border: 1px solid red;*/
+/*	border-radius: 4px;*/
+/*	-webkit-border-radius: 4px;*/
+}
+
+.widget ul.items li img {
+	width: 44px;
+	height: 44px;
+}
+.widget ul.items li.selected img {
+	/* 
+	border-left: 3px solid #0069D6;
+	border-top: 3px solid #0069D6;
+	border-right: 3px solid #0047b4;
+	border-bottom: 3px solid #0047b4;
+	*/
+	width: 42px;
+	height: 42px;
+	border: 3px solid white;
+	outline: 1px solid black;
+}
+.widget ul.items li.selected span {
+	background-color: #0069D6;
+}
+.nocontent > * {
+	display: none;
+}
+
+#copyright {
+	text-align: center;
+}
+
+#innerRS {
+	position: fixed;
+	min-height: initial;
+}
+#innerRS {
+	width: inherit;
+	margin-left: 0px;
+/*	border: 2px solid #ffF;*/
+}
+#innerRS.fragment {
+/*	border: 2px solid #deF;*/
+	background-color: #eee;
+}
+#innerRS .row {
+	margin-left: 0px;
+}
+
+#innerRS .actions {
+	padding-left: 100px;
+}
+
+#sidebar .actions {
+	padding-right: 20px;
+}
+.items_searched.searchstring .icon-container {
+	margin-top: -2px;
+}
+.items_searched.searchstring .todelete {
+	opacity: .5;
+	-webkit-transition:opacity .5s ease-in-out .2s;
+}
+
+.items_searched.searchstring .todelete:hover {
+	opacity: 1;
+}
+
+.icon-container {
+	display: inline-block;
+	vertical-align: text-top;
+	cursor: pointer;
+}
+
+.icon-container .ui-icon-close, .icon-container:hover .ui-icon-circle-close {
+	display: block;
+}
+
+.icon-container:hover .ui-icon-close, .icon-container .ui-icon-circle-close {
+	display: none;
+}
+
+.tmpr {
+	outline: 1px solid red;
+}
+
+.avatar img{
+	margin:0 auto;
+	width: 48px;
+	height: 48px;
+}
+
+#searchView ul {
+	display: inline-block;
+}
+
+.widget .label.notice {
+	margin-right: 6px;
+}
+
+.shadowed {
+	display: none;
+	opacity: .3;
+	-webkit-transition:opacity .3s ease-in-out .1s;
+}
+
+.shadowed:hover {
+	opacity: 1;
+}
+
+.expanded.shadowed {
+	opacity: 1;
+}
+
+.sign-twitter {
+	background: transparent url(img/twitter_signin.png) no-repeat;
+	background-position: 0 0;
+	width: 150px;
+	height: 22px;
+	-webkit-transition: none;
+}
+.sign-twitter:hover {
+	background-position: 0 -24px;
+}
+.sign-twitter:active {
+	background-position: 0 -48px;
+}
+.avatar.little {
+	width:32px;
+	height:32px;
+	margin: -10px 0;
+}
+.date {
+	font-size: 90%;
+	margin-left: 1em;
+	font-style: italic;
+	opacity: .6;
+		
+}
+.subinfio .tags {
+	margin-top: .4em;
+}
+#container > .content, #container > .content > .page-header {
+	width: inherit;
+}
+#container > .content > .page-header {
+	position: fixed;
+	z-index:10000; 
+	background-color: #fff;
+	padding: 20px 20px 10px;
+	margin: -20px -20px 20px;
+}
+#searchView {
+	margin-left: 260px;
+}
+
+#container > .content > .page-header {
+border-bottom: none;
+-webkit-box-shadow: none;
+-moz-box-shadow: none;	
+}
+
+.widget label {
+	font-weight: bold;
+	text-align: left;
+	width: 210px;
+	color: 	#0069D6;
+	float: none;
+}
+
+.widget label.primary {
+	font-size: 18px;
+}
+
+.widget label.secondary {
+	font-size: 16px;
+	text-transform: lowercase;
+	padding: 0;
+	margin: 10px 0;
+}
+
+label.looking {
+	display: none;
+	background-color: #0069D6;
+	color: #fff;
+	display: inline;
+}
+#searchView ul.items {
+	margin: 0px;
+}
+
+.hidden {
+	display: none;
+}

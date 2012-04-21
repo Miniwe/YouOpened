@@ -1,0 +1,19 @@
+
+	<form class="postform" style="padding: 0 20px;">
+		<fieldset>
+<!--			<label for="postMessage" style="padding-top:0px;">
+				<img class="avatar" src="<%= siteUser.avatarUrl %>" alt="<%= siteUser.id %>" title="<%= siteUser.name %>" />
+			</label>-->
+				
+			<div class="input" style=" margin-left:80px;">
+				<textarea class="xxlarge" id="postMessage" name="postMessage" rows="3" style="width: 450px; height: 2em;">@<%= user.id %> </textarea>
+				<span class="help-block">
+					Reply to active root post
+				</span>
+			</div>
+			<div class="pull-right">
+				<input type="submit" class="btn primary" value="Reply">
+<!--				&nbsp;<button type="reset" class="btn">Cancel</button>-->
+			</div>
+		</fieldset>
+	</form>

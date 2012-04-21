@@ -1,0 +1,150 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!-- Consider adding an manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Use the .htaccess and remove these lines to avoid edge case issues.
+			 More info: h5bp.com/b/378 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+		<title>YouOpened 20.04.2012</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Mobile viewport optimized: j.mp/bplateviewport -->
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+
+		<!-- CSS: implied media=all -->
+		<!-- CSS concatenated and minified via ant build script-->
+		<link rel="stylesheet" href="css/style.css" />
+
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="css/bootstrap/bootstrap.css" rel="stylesheet" />
+		<link href="css/jquery-ui/jquery-ui.css" rel="stylesheet" />
+		<link href="css/bootstrap/style.css" rel="stylesheet" />
+		<link href="css/custom.css" rel="stylesheet" />
+
+		<!-- end CSS-->
+
+		<!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
+
+		<!-- All JavaScript at the bottom, except for Modernizr / Respond.
+			 Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+			 For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+		<script src="js/libs/modernizr.custom.62381.js"></script>
+	</head>
+
+	<body id="application">
+
+
+
+		<div class="topbar">
+			<div class="fill">
+				<div class="container">
+					<a class="brand" href="/">You Opened</a>
+					<ul id="tab-header" class="nav">
+						<!-- <li class="active"><a href="#">Home</a></li> -->
+						<!-- <li><a href="#about">About</a></li> -->
+						<!-- <li><a href="#contact">Contact</a></li> -->
+						
+					</ul>	
+					<ul class="nav secondary-nav">
+						<li id="userarea" class="dropdown">
+							authorization ...
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div id="container" class="container">
+
+			<div class="content">
+				<div class="page-header">
+<!--					<h1 contenteditable="true">You Opened<small> &#160;you are welcome</small></h1>-->
+<!--					<div id="searchView"></div>-->
+				<div class="row">
+					<div class="span4">
+						<div id="sidebar" class="span4">
+							<!--
+								<h3>Rigth Side</h3>
+								<button id="testBtn" class="btn info">Test</button>
+								<span class="ui-icon ui-icon-circle-triangle-w">Prev</span>
+							-->
+
+						</div>
+
+					</div>
+					<div class="span9" id="searchView">
+					</div>
+				</div>
+				</div>
+				<div class="row">
+					<div  class="span4">
+						&#0160;
+					</div>
+					<div  id="tab-content" class="span9">
+						<div class="span9 alert-message block-message warning">
+							<p>
+								Default page content
+							</p>
+						</div>			  
+					</div>
+				</div>
+				<div id="mainBottom" style="height: 512px;">&#0160;</div>
+			</div>
+		</div>
+
+		<footer style="height:1000px;">
+			<p id="copyright">&copy; YouOpened 2012</p>
+		</footer>
+
+	</div> 
+
+
+	<!-- JavaScript at the bottom for fast page loading -->
+
+	<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
+	<!--  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>-->
+	<!--  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>-->
+
+
+	<!-- scripts concatenated and minified via ant build script-->
+	<script src="js/plugins.js"></script>
+	<script src="js/script.js"></script>
+	<!-- end scripts-->
+
+	<script id="tpls-app_notfound" type="text/template">
+		<div class="tpl_notfound">
+			Template <%= templateName %> not found
+		</div>
+	</script>		
+
+
+	<!-- Change UA-XXXXX-X to be your site's ID -->
+	<script>/*
+	  window._gaq = [['_setAccount','UAXXXXXXXX1'],['_trackPageview'],['_trackPageLoadTime']];
+	  Modernizr.load({
+		load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+	  });
+*/</script>
+
+
+	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+		 chromium.org/developers/how-tos/chrome-frame-getting-started -->
+	<!--[if lt IE 7 ]>
+	  <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+	  <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+	<![endif]-->
+
+</body>
+</html>
