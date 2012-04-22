@@ -81,7 +81,7 @@ var Post = Backbone.Model.extend({
 		
 		posts.updateParams(params);
 		posts.getData ( function () {
-				posts.compileSubData();
+				// posts.compileSubData();
 				posts.parent.refresh();
 			}, 
 			{}

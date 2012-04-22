@@ -68,11 +68,8 @@ var FrameView = Backbone.View.extend({
 			newCount: newCount
 		})).appendTo(rootPostEl);
 		$(this.el).find(".new-twits").click(function(){
-//			console.log('frame view load new posts');
 			FrameView.posts.loadNewPosts(newCount);
-//			console.log('frame view remove alert link');
 			FrameView.removeAlertLink();
-//			console.log('AFTER !! frame view remove alert link');
 			return false;
 		})
 	},
@@ -92,39 +89,22 @@ var FrameView = Backbone.View.extend({
 		$(this.el).empty();
 	},
 	refreshSidebar : function () {
-//		console.log('render side bar', this);
 		this.sidebar.render(RenderMode.NEW, this.posts);
 	},
 	loadMorePosts : function ( ) {
 		this.posts.nextChildPage();
 		return false;
 	},
-	loadPosts : function ( postId) {
-		
-		var that = this.model,
-			requestParams = {
-				procedure: "getInfoFr",
-				postID : postId,
-				withChilds : this.get("state")
-			};
-
-		this.get("posts").updateParams(requestParams);
-		this.get("posts").getData(function () {
-			that.get("posts").setToAll({"parent" : that});
-			that.makeActive();
-		}, {});
-	},
 	openFrame: function( ) {
 		this.render();
 		$(this.el).addClass("expanded");
-		this.scrollToView( 'animated' );
+		this.scrollToView( );
 	},
 	closeFrame: function( ) {
 		this.render();
-		var parentFrame = this.model;
-		$(parentFrame.get("view").el).removeClass("expanded");
-		$(parentFrame.get("view").el).css({"padding-top":"0"});
-		parentFrame.get("view").render();
+		$(this.el).removeClass("expanded");
+		//this.scrollToView( );
+		// $(this.el).css({"padding-top":"0"});
 	},
 	update : function () {
 		if (!this.model.isExpanded()) {

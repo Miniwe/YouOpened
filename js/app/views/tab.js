@@ -53,7 +53,7 @@ var TabView = Backbone.View.extend({
 		})).appendTo($("#searchView"));
 		
 		$("#searchView").find(".new-twits").click(function(){
-			TabView.posts.loadNewFragments(newCount);
+			TabView.posts.loadNewPosts(newCount);
 			TabView.removeAlertLink();
 			return false;
 		})

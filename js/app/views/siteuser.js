@@ -20,10 +20,9 @@ var SiteUserView = Backbone.View.extend({
 		if (this.model.isAuthorized()) {
 			template = this.templateAuth;
 		}
+		
 		var html = template.getTemplate() (this.model.toJSON());
-		
 		$(this.el).html(html);
-		
 		this.attachEvents();
 		return this;
 	},

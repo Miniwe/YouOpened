@@ -76,10 +76,10 @@ var Frame = Backbone.Model.extend({
 		}
 	},
 	setUpdateOn : function ( ) {
-		this.get("posts").setUpdateCountFlag(true);
+		this.get("posts").setAutoUpdateNewCount(true);
 	},
 	setUpdateOff : function ( ) {
-		this.get("posts").setUpdateCountFlag(false);
+		this.get("posts").setAutoUpdateNewCount(false);
 	},
 	updateRootData : function ( post ) {
 		this.get("posts").rootPost().updateData(post);
@@ -95,7 +95,7 @@ var Frame = Backbone.Model.extend({
 		newPosts.updateFilterParams( post.collection.filterParams );
 
 
-		newPosts.compileSubData();
+		// newPosts.compileSubData();
 		
 		this.set({
 			'posts': newPosts

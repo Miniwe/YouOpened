@@ -24,12 +24,11 @@ var Tab = Backbone.Model.extend({
 		});
 		this.get("posts").parent = this; // @todo Must Be Removed
 		
-		this.get("posts").bind("updatedFragmentsCount", function () {
+		this.get("posts").bind("updatedCount", function () {
 			tab.updateNewFragmentCountEvent(arguments[0]);
 		});
 		this.get("posts").bind("updated", function () {
-			tab.update(AddMode.UPDATE);
-			tab.get("view").update(RenderMode.UPDATE);
+			tab.updateNewFragmentCountEvent(arguments[0]);
 		});
 		this.get("posts").bind("filtered", function () { 
 			tab.get("view").updateByFilter();
@@ -74,11 +73,11 @@ var Tab = Backbone.Model.extend({
 				this.get("view").update(RenderMode.NEW);
 			}
 			
-			this.get("posts").setUpdateFragmentsCountFlag(true);
+			this.get("posts").setAutoUpdateNewCount(true);
 			this.get('view').sidebar.startFilter();
 		}
 		else {
-			this.get("posts").setUpdateFragmentsCountFlag(false);
+			this.get("posts").setAutoUpdateNewCount(false);
 			
 		}
 		this.setFramesAutoUpdate(this.get("state"));

@@ -1,5 +1,5 @@
 /* 
- * @fileOverview Правый блок
+ * @fileOverview Блок выбора параметров	
  */
 
 var SidebarView = Backbone.View.extend({
@@ -33,7 +33,7 @@ var SidebarView = Backbone.View.extend({
 	render : function (renderMode, posts) {
 		if (posts != undefined) {
 //			console.log('frame posts', posts);
-			posts.compileSubData();
+			// posts.compileSubData();
 			this.initPosts(posts);
 		}
 		else {
@@ -62,24 +62,27 @@ var SidebarView = Backbone.View.extend({
 	},
 	eventsAttach: function  ( ) {
 	},
+	emptyRequest: function  (searchParams) {
+		var testStr = searchParams.searchString + searchParams.tagID + searchParams.userID;
+		return (testStr == '');
+	},
 	startSearch: function  ( ) {
 		var searchParams = this.prepareSearchRequest(this.selected);
-		var testStr = searchParams.searchString + searchParams.tagID + searchParams.userID;
-		if (testStr == '') {
+		if (this.emptyRequest(searchParams)) {
 			return false;
-		}
+		} 
 		
 		var tabName = this.prepareTabName(this.selected);
-		this.model.get("app").addTab({
+		this.model.get("app").addTab( {
 			name: tabName,
 			searchParams: searchParams
-		});
+		} );
 		
 //		this.resetSelected();
 	},
 	startFilter: function  ( ) {
 		var posts = this.posts;
-		if (this.model.get('posts') != posts) {
+		if ( this.model.get('posts') != posts ) {
 			posts = this.model.get('posts');
 		}
 		var searchParams = this.prepareSearchRequest(this.selected);

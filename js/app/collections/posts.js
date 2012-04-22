@@ -1,14 +1,55 @@
 /* 
  * Posts
- * Получение данных по params 
- * Обновлние условий params 
- * Получение количества новых записей по params 
- * Обновление posts по params для новых записей
- * Получение допонительных posts по params = next page
- * Фильтрация данных по filterParams + postIds = применение новых значений 
- * Применение параметров фильтра после обновления массива postID
- * Запуск триггера на обновление отображения
- * - Возможно - но не факт что надо оставить один массив posts и с ним работат но это порождает различные варианты поведения
+ * 
+ * 
+Таб 
+	Получение количества новых постов (фрагментов) по таймеру
+		Отображение кнопки новые посты для таба для количества новых > 0
+			Кнопка исчезает при нажатии или если новых < 0
+	Обновление (добавление) к существующим постам (и фреймам) новых
+		в результате клика на кнопке Новые посты
+		в результате клика на кнопке More post (ранее написанные фрагменты)
+			кнопка исчезает при нажатии
+	Получение списка постов при нажатии на фильтр для таба 
+		То есть получаем для фрагмент таба
+	При открытии фрагмента учитывается существующий фильтр
+	При выборе параметров sidebar и запуске search создается новый таб с соответсвующими условиями
+	При смене таба загружается состояние учитывающие предыдущий поиск и наложенный фильтр
+Фрагмент
+	Получение количества новых постов (по родительскому ID ) по таймеру
+		Отображение кнопки новые посты для фрагмента для количества новых > 0
+			Кнопка исчезает при нажатии или если новых < 0
+	Обновление (добавление) к существующим постам новых
+		в результате клика на кнопке Новые посты
+		в результате клика на кнопке More post (ранее написанные посты)
+			кнопка исчезает при нажатии
+	Получение списка постов при нажатии на фильтр для таба и фрагмента
+		То есть получаем для фрагмента и вызываем получение для таба
+	При выборе параметров sidebar и запуске search создается новый таб с соответсвующими условиями
+	При смене таба загружается состояние если активный фрагмент то загружается его контент учитывая предыдущий поиск и наложенный фильтр
+		
+==================
+Таб вид
+	кнопка новые посты
+	кнопка еще посты
+	установка/запуск  условий
+		поиска
+		фильтра
+	открытие фрагмента
+Фрагмент вид
+	кнопка новые посты
+	кнопка еще посты
+	установка/запуск  условий
+		поиска
+		фильтра
+	закрытие фрагмента
+	смена рутового поста фрагмента
+Posts
+	таймер на обнолвение списка постов
+	trigger об обновлении
+	trigger на фольтр ()?
+	
+
  */
 // this.loadMode = "update";
 
@@ -18,8 +59,7 @@ var Posts = Backbone.Collection.extend({
 	pageSize: 10,
 	childPageSize: 4,
 	autoUpdate: false,
-	autoUpdateCount: false,
-	autoUpdateFragmensCountFlag: false,
+	autoUpdateNewCount: false,
 	initialize : function () {
 		this.page = 1;
 		this.childPage = 1;
@@ -43,7 +83,9 @@ var Posts = Backbone.Collection.extend({
 	},
 	setFilter : function ( params ) {
 		this.filterParams = params; 
-		this.applyFilter();
+		this.getData(function(){
+			
+		});
 	},
 	updateParams : function (params) {
 //		console.log('add params', params);
@@ -54,23 +96,21 @@ var Posts = Backbone.Collection.extend({
 		_.extend(this.filterParams, params);
 	},
 	getData : function ( success, fetchParams ) {
+		this.loadData(success, this.params, fetchParams);
+	},
+	loadData : function (success, params, fetchParams ) {
 		var fetchOptions = {
-			data: this.params,
+			data: params,
 			dataType: 'jsonp',
 			jsonp: 'jsonp_callback',
 			success : success
 		};
 		_.extend( fetchOptions, fetchParams);
+		
 		delete(fetchOptions.data.users);
 		delete(fetchOptions.data.tags);
+		
 		this.fetch(fetchOptions);
-	},
-	setUpdateFlag : function ( flag ) {
-		var old = this.autoUpdate;
-		this.autoUpdate = flag;
-		if (this.autoUpdate && (old != this.autoUpdate)) {
-			this.autoUpdatePosts();
-		}
 	},
 	applyFilter : function ( ) {
 		if (this.filterParams) {
@@ -94,119 +134,53 @@ var Posts = Backbone.Collection.extend({
 		}
 		
 	},
-	autoUpdatePosts : function ( ) {
-//		console.log('this posts params', this.params);
-		if (this.autoUpdate) {
-//			console.log('--> update one more');
-			var posts = this;
-			var newPosts = new Posts();
-			
-			newPosts.params = posts.params;
-			newPosts.getData(function (){
-				posts.updateCollection(newPosts);
-				posts.trigger("updated");
-				posts.applyFilter();
-			}, {});
-				
-			setTimeout(function() {
-				posts.autoUpdatePosts( );
-			}, 6000);
-			
-		}
-        		
-	},
-	setUpdateCountFlag : function ( flag ) {
-		var old = this.autoUpdateCount;
-		this.autoUpdateCount = flag;
-		if (this.autoUpdateCount && (old != this.autoUpdateCount)) {
-			this.autoUpdatePostsCount();
+	setAutoUpdateNewCount : function ( flag ) {
+		var old = this.autoUpdateNewCount;
+		this.autoUpdateNewCount = flag;
+		if (this.autoUpdateNewCount && (old != this.autoUpdateNewCount)) {
+			this.autoUpdateNewCountPosts();
 		}
 	},
-	autoUpdatePostsCount : function ( ) {
-//		console.log('auto update fragment'); 
-		if (this.autoUpdateCount) {
+	autoUpdateNewCountPosts : function ( ) {
+		if (this.autoUpdateNewCount) {
 			var posts = this;
-			var rootPost = this.rootPost();
-//			console.log('rootPost', rootPost);
-			var data = {
-				postID : rootPost.get('id'),
-				fromTime : rootPost.get('fragment').get("updateTime"),
-				withChilds: 0
-			};
-			var oldValue = rootPost.get("childsCount");
+			
+			var params = this.prepareParams({
+				fromTime : this.getMaxTimeFragmentsUpdate(),
+			});
+			
 			var ajaxOpts = {
 				type      : 'get',
 				url       : AppConfig.SERVER + 'Search.json',
 				success   : function (data, textStatus, jqXHR) {
-					if (posts.autoUpdateCount) {
-						posts.trigger('updatedCount', data.Posts[0].ChildCount - oldValue);
+					if (posts.autoUpdateNewCountPosts) {
+						posts.trigger('updatedCount', data.Count);
 					}
 				},
 				complete : function () {
 					setTimeout(function () {
-						posts.autoUpdatePostsCount();
+						posts.autoUpdateNewCountPosts();
 					}, 6000);
 				},
 				dataType  : 'jsonp',
 				jsonp     : 'jsonp_callback',
-				data      : data,
+				data      : params,
 				error     : function () {	
-					console.log('error in posts:updateNewCount');
+					console.log('error in posts:autoUpdateNewCountPosts');
 					return true;
 				},
 				timeout   : 30000
 			}; 
-			$.ajax( ajaxOpts );	
+			$.ajax( ajaxOpts );
 		}
         		
 	},
 	getMaxTimeFragmentsUpdate : function ( ) {
 		var fragments = this.pluck('fragment');	
-		var lastFragment  = _.max(fragments, function(fragment){ return fragment.get("updateTime"); });
+		var lastFragment  = _.max(fragments, function(fragment){
+			 return fragment.get("updateTime"); 
+		 });
 		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):0;	
-	},
-	setUpdateFragmentsCountFlag : function ( flag ) {
-		var old = this.autoUpdateFragmensCountFlag;
-		this.autoUpdateFragmensCountFlag = flag;
-		if (this.autoUpdateFragmensCountFlag && (old != this.autoUpdateFragmensCountFlag)) {
-			this.autoUpdateFragmentsCount();
-		}
-	},
-	autoUpdateFragmentsCount : function ( ) {
-		if (this.autoUpdateFragmensCountFlag) {
-			var posts = this;
-			var data = {
-				procedure : "getNewResultCount",
-				fromTime : this.getMaxTimeFragmentsUpdate(),
-				withChilds: 0
-			};
-			_.extend(data, this.params);
-			var ajaxOpts = {
-				type      : 'get',
-				url       : AppConfig.SERVER + 'Search.json',
-				success   : function (data, textStatus, jqXHR) {
-//					console.log('success', data);
-					if (data.Count > 0) {
-						posts.trigger('updatedFragmentsCount', data.Count);
-					}
-				},
-				complete : function () {
-					setTimeout(function () {
-						posts.autoUpdateFragmentsCount();
-					}, 6000);
-				},
-				dataType  : 'jsonp',
-				jsonp     : 'jsonp_callback',
-				data      : data,
-				error     : function () {	
-					console.log('error in fragments post count:updateNewFragmentsCount');
-					return true;
-				},
-				timeout   : 30000
-			}; 
-			$.ajax( ajaxOpts );	
-		}
-        		
 	},
 	updateCollection : function (newPosts) {
 		var newFlag = false;
@@ -227,44 +201,36 @@ var Posts = Backbone.Collection.extend({
 	getOffset : function (page,  size) {
 		return (page - 1) * size;
 	},
-	loadNewPosts : function ( count ) {
-//		console.log('load new posts 1');
-		var posts = this;
-		var newPosts = new Posts();
-		var params = {
-			postID: this.rootPost().get("id"),
-			childCount :  count,
-			withChilds: 1,
-			childSortType: "time"
-		};
-		newPosts.updateParams (params);
-		newPosts.getData(function (){
-//			console.log('load new posts 3', newPosts);
-			posts.updateCollection(newPosts);
-//			console.log('load new posts 4', posts);
-			posts.trigger("updated");
-			console.log('applieng filter for fragment');
-			posts.applyFilter();
-		}, {}
-		);
+	prepareParams : function ( subparams ) {
+		var params = {};
+		_.extend(params, this.params);
+		if (this.filterParams) {
+			_.extend(params, this.filterParams);
+		}
+		_.extend(params, subparams);
+		return params;
 	},
-	loadNewFragments : function ( count ) {
+	loadNewPosts : function ( count ) {
 		var posts = this;
 		var newPosts = new Posts();
-		var params = {
-			count :  count,
-			withChilds: 0,
-			sortType: "time"
-		};
-//		console.log('load new posts 2');
-		newPosts.updateParams (params);
-		newPosts.getData(function (){
+		var subparams = {};
+		
+		if (this.params.postID != undefined) {
+			_.extend(subparams, {
+				childCount : count
+			});
+		} else {
+			_.extend(subparams, {
+				count : count
+			});
+		}
+		var params = this.prepareParams(subparams);
+		
+		newPosts.loadData(function () {
 			posts.updateCollection(newPosts);
-//			console.log('load new posts 4', posts);
 			posts.trigger("updated");
 			posts.applyFilter();
-		}, {}
-		);
+		}, params);
 	},
 	nextChildPage : function ( ) {
 		var posts = this;
@@ -322,38 +288,7 @@ var Posts = Backbone.Collection.extend({
 	getSearchParams : function () {
 		return this.normalizeParams(_.clone(this.params)); // @todo clone BAD not working
 	},
-	compileSubData : function () {
-		// @todo remove from anywere and add to end of parse
-		this.users = new Users();
-		this.tags = new Tags();
-		this.fragments = new Fragments();
-
-		_.each(this.models, function (model){
-			if (!this.users.find("id", model.get("user").get("id"))) {
-				this.users.add(model.get("user"));
-			}
-			else {
-					// @todo maybe update 
-			}
-			_.each(model.get("tags"), function (tag){
-				if (!this.find("id", tag.get("id"))) {
-					this.add( tag );
-				}
-				else {
-					// @todo maybe update 
-				}
-			}, this.tags);
-			
-			this.fragments.add({
-				postId : model.get("id"),
-				updateTime : model.get("createTime"),
-				weight : 0,
-				tags : model.get("tags"),
-				users : model.get("user")
-			});
-		}, this);
-	},
-	makeRequestparams : function ( ) {
+		makeRequestparams : function ( ) {
 		var params = this.params;
 		if ( !_.isEmpty(params)) {
 			return "?" + _.map(params, function(value, key) {
@@ -385,22 +320,21 @@ var Posts = Backbone.Collection.extend({
 	},
 	parse : function ( response ) {
 		var Posts = response.Posts;
-		if (this.loadMode == 'update') {
-			Posts = this.removeDoubles(response.Posts);
-		}
 		
 		this.users = new Users();
 		this.tags = new Tags();
 		this.fragments = new Fragments();
+		
 		this.users.parse(response.Users);
 		this.tags.parse(response.Tags);
 		this.fragments.parse(response.Fragments);
 		
 		var parsedPosts = _(Posts).map(this.normalize, this);
+		
 		return parsedPosts;
 	},
 	updated : function ( ) {
-		console.log('it updateD');
+		console.log('it updated');
 	},
 	removeDoubles : function ( Posts ) {
 		var noDoublesPosts = [];
@@ -418,22 +352,7 @@ var Posts = Backbone.Collection.extend({
 	rootPost : function ( ) {
 		return this.at(0);
 	},
-	rootPost : function ( ) {
-		return this.at(0);
-	},
 	getIds: function () {
 		return this.pluck("id").join(",");
-	},
-	getNewCount : function ( ) {
-		var posts = this;
-        
-        this.updateNewCount();
-		
-        if (this.autoUpdate) {
-			setTimeout(function() {
-				posts.getNewCount();
-			}, 6000);
-		}
-        		
 	}
 });
