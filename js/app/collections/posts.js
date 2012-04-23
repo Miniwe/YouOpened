@@ -211,12 +211,37 @@ var Posts = Backbone.Collection.extend({
 		return (page - 1) * size;
 	},
 	prepareParams : function ( subparams ) {
-		var params = {};
+		var params = {
+			userID : '',
+			tagID : ''
+		};
+		var old_userID = '';
+		var old_tagID = '';
+		
 		_.extend(params, this.params);
+		 
 		if (this.filterParams) {
+			
+			// if (params.userID != undefined) {
+				// old_userID = params.userID;		
+			// }
+			// if (params.tagID != undefined) {
+				// old_tagID = params.tagID;		
+			// }
 			_.extend(params, this.filterParams);
+			
+			// if (params.userID != undefined) {
+				// params.userID += "," + old_userID;		
+			// }
+			// if (params.tagID != undefined) {
+				// params.tagID += "," + old_tagID;		
+			// }
+		 
 		}
 		_.extend(params, subparams);
+		// params.userID += (subparams.userID != undefined && subparams.userID != '') ? ',' + subparams.userID : ''; 
+		// params.tagID += (subparams.tagID != undefined && subparams.tagID != '') ? ',' + subparams.tagID : '';
+		 
 		return params;
 	},
 	loadNewPosts : function ( count ) {
