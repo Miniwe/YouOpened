@@ -23,7 +23,8 @@
 	Получение списка постов при нажатии на фильтр для таба и фрагмента
 		То есть получаем для фрагмента и вызываем получение для таба
 	При выборе параметров sidebar и запуске search создается новый таб с соответсвующими условиями
-	При смене таба загружается состояние если активный фрагмент то загружается его контент учитывая предыдущий поиск и наложенный фильтр
+	При смене таба загружается состояние если активный фрагмент то загружается его контент учитывая предыдущий поиск и 
+	наложенный фильтр
 		
 ==================
 Таб вид
@@ -117,6 +118,8 @@ var Posts = Backbone.Collection.extend({
 		this.fetch(fetchOptions);
 	},
 	applyFilter : function ( ) {
+		console.log('apply dont need pocible - commented');
+		return false;
 		if (this.filterParams) {
 //			this.filterParams.postID = this.pluck('id').join(',');
 			console.log('call to apply filter');
@@ -188,7 +191,7 @@ var Posts = Backbone.Collection.extend({
 		 });
 		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):0;	
 	},
-	updateCollection : function (newPosts) {
+	updateCollection : function (newPosts) { // depricated
 		var newFlag = false;
 		_.each(newPosts.models, function( model ){
 			var existing = this.get(model.get("id"));
@@ -239,23 +242,22 @@ var Posts = Backbone.Collection.extend({
 		}, params);
 	},
 	nextChildPage : function ( ) {
+ 		var posts = this;
+		console.log('call next child page');
+		
 		var posts = this;
 		var newPosts = new Posts();
+		
 		this.childPage += 1;
-		newPosts.childPage = this.childPage;
-		var params = {
+		var params = this.prepareParams({
 			childOffset: newPosts.getOffset( newPosts.childPage, newPosts.childPageSize ),
-			postID: this.rootPost().get("id"),
-			childCount :  newPosts.childPageSize,
-			withChilds: 1,
-			childSortType: "time"
-		};
-		newPosts.updateParams (params);
-		newPosts.getData(function (){
+			withChilds: 1
+		});
+		
+		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);
-			posts.trigger("updated");
-		}, {}
-		);
+			posts.trigger('updated');
+		}, params, {});
 	},
 	updateWithNew : function ( newPosts ) {
 		var updateFlag = false;
