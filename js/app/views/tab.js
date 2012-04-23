@@ -67,7 +67,7 @@ var TabView = Backbone.View.extend({
 		this.sidebar.render();
 	},
 	update : function (renderMode) {
-		console.log('in render', this.model.get("state"), renderMode);
+		// console.log('in render', this.model.get("state"), renderMode);
 		if (!this.model.isActive()) {
 			return false;
 		}
@@ -85,7 +85,7 @@ var TabView = Backbone.View.extend({
 		this.clearTab();
 		$(container).appendTo("#tab-content");
 		
-		console.log('in render FRAMES', this.model.get("frames").models);
+		// console.log('in render FRAMES', this.model.get("frames").models);
 		_.each(this.model.get("frames").models, function (frame) {
 			var view;
 			view = frame.render().el;

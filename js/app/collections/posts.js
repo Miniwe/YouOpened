@@ -77,7 +77,7 @@ var Posts = Backbone.Collection.extend({
 		return  AppConfig.SERVER + 'Search.json';
 	},
 	setFilter : function ( params ) {
-		console.log('call set filter');
+		// console.log('call set filter');
 		
 		var posts = this;
 		
@@ -86,7 +86,7 @@ var Posts = Backbone.Collection.extend({
 		var params = this.prepareParams({});
 		
 		this.loadData(function(){
-			console.log('call update after filter', posts);
+			// console.log('call update after filter', posts);
 			posts.trigger('updated');
 		}, params, {
 			
@@ -210,40 +210,49 @@ var Posts = Backbone.Collection.extend({
 	getOffset : function (page,  size) {
 		return (page - 1) * size;
 	},
-	prepareParams : function ( subparams ) {
-		var params = {
-			userID : '',
-			tagID : ''
+	extendParams : function (obj, exten) {
+		var base = {
+			userID : obj.userID || '',
+			tagID : obj.tagID || ''
 		};
-		var old_userID = '';
-		var old_tagID = '';
+		obj = _.extend(obj, exten);
 		
-		_.extend(params, this.params);
+		var key = "userID";
+		if (exten[key] != undefined) {
+			obj[key] = base[key].split(','); 
+			_.each(exten[key].split(','), function(v){
+				obj[key].push(v); 
+			});
+			obj[key] = _.uniq(obj[key]).join(',');
+		}
+		
+		key = "tagID";
+		if (exten[key] != undefined) {
+			obj[key] = base[key].split(','); 
+			_.each(exten[key].split(','), function(v){
+				obj[key].push(v); 
+			});
+			obj[key] = _.uniq(obj[key]).join(',');
+		}
+		// if (extended.tagID != undefined) {
+			// obj.tagID = _.uniq(base_tagID.split(',').push( exten.tagID.split(',') )).join(','); 
+		// }
+		return obj;
+	},
+	prepareParams : function ( subparams ) {
+		var params = {};
+		
+		params = this.extendParams(params, this.params);
 		 
 		if (this.filterParams) {
-			
-			// if (params.userID != undefined) {
-				// old_userID = params.userID;		
-			// }
-			// if (params.tagID != undefined) {
-				// old_tagID = params.tagID;		
-			// }
-			_.extend(params, this.filterParams);
-			
-			// if (params.userID != undefined) {
-				// params.userID += "," + old_userID;		
-			// }
-			// if (params.tagID != undefined) {
-				// params.tagID += "," + old_tagID;		
-			// }
-		 
+			params = this.extendParams(params, this.filterParams);
 		}
-		_.extend(params, subparams);
-		// params.userID += (subparams.userID != undefined && subparams.userID != '') ? ',' + subparams.userID : ''; 
-		// params.tagID += (subparams.tagID != undefined && subparams.tagID != '') ? ',' + subparams.tagID : '';
+		params = this.extendParams(params, subparams);
 		 
 		return params;
 	},
+		// params.userID += (subparams.userID != undefined && subparams.userID != '') ? ',' + subparams.userID : ''; 
+		// params.tagID += (subparams.tagID != undefined && subparams.tagID != '') ? ',' + subparams.tagID : '';
 	loadNewPosts : function ( count ) {
 		var posts = this;
 		var newPosts = new Posts();
