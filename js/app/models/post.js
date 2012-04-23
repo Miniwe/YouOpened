@@ -64,7 +64,6 @@ var Post = Backbone.Model.extend({
 	},
 	loadRelatives : function ( postId ) {
 
-		this.collection.loadMode = "replace";
 		this.collection.page = 1;
 		this.collection.childPage = 1;
 		this.collection.params.offset = 0;

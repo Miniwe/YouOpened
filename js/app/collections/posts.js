@@ -1,7 +1,5 @@
 /* 
- * Posts
- * 
- * 
+== Posts
 Таб 
 	Получение количества новых постов (фрагментов) по таймеру
 		Отображение кнопки новые посты для таба для количества новых > 0
@@ -10,7 +8,6 @@
 		в результате клика на кнопке Новые посты
 		в результате клика на кнопке More post (ранее написанные фрагменты)
 			кнопка исчезает при нажатии
-	Получение списка постов при нажатии на фильтр для таба 
 		То есть получаем для фрагмент таба
 	При открытии фрагмента учитывается существующий фильтр
 	При выборе параметров sidebar и запуске search создается новый таб с соответсвующими условиями
@@ -48,14 +45,11 @@ Posts
 	таймер на обнолвение списка постов
 	trigger об обновлении
 	trigger на фольтр ()?
-	
 
  */
-// this.loadMode = "update";
 
 var Posts = Backbone.Collection.extend({
 	model: Post,
-	loadMode: "replace",
 	pageSize: 10,
 	childPageSize: 4,
 	autoUpdate: false,
@@ -82,8 +76,18 @@ var Posts = Backbone.Collection.extend({
 		return  AppConfig.SERVER + 'Search.json';
 	},
 	setFilter : function ( params ) {
+		console.log('call set filter');
+		
+		var posts = this;
+		
 		this.filterParams = params; 
-		this.getData(function(){
+		
+		var params = this.prepareParams({});
+		
+		this.loadData(function(){
+			console.log('call update after filter', posts);
+			posts.trigger('updated');
+		}, params, {
 			
 		});
 	},
@@ -115,7 +119,8 @@ var Posts = Backbone.Collection.extend({
 	applyFilter : function ( ) {
 		if (this.filterParams) {
 //			this.filterParams.postID = this.pluck('id').join(',');
-			
+			console.log('call to apply filter');
+			return false;
 			var posts = this;
 			var newPosts = new Posts();
 			
@@ -146,6 +151,7 @@ var Posts = Backbone.Collection.extend({
 			var posts = this;
 			
 			var params = this.prepareParams({
+				procedure: "getNewResultCount",
 				fromTime : this.getMaxTimeFragmentsUpdate(),
 			});
 			
@@ -229,7 +235,7 @@ var Posts = Backbone.Collection.extend({
 		newPosts.loadData(function () {
 			posts.updateCollection(newPosts);
 			posts.trigger("updated");
-			posts.applyFilter();
+			// posts.applyFilter();
 		}, params);
 	},
 	nextChildPage : function ( ) {

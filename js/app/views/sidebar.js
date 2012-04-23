@@ -87,6 +87,7 @@ var SidebarView = Backbone.View.extend({
 		}
 		var searchParams = this.prepareSearchRequest(this.selected);
 		searchParams = this.prepareFilterParams(searchParams);
+		console.log('call start filter from side bar');
 		posts.setFilter(searchParams);
 	},
 	prepareTabName : function ( params ) {
@@ -116,7 +117,7 @@ var SidebarView = Backbone.View.extend({
 		}
 //		if (!_.isEmpty(prepared))
 		{
-			prepared.postID = this.posts.pluck('id').join(',')
+			// prepared.postID = this.posts.pluck('id').join(',');
 		}
 		return !_.isEmpty(prepared) ? prepared : false ;
 	},

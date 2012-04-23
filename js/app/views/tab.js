@@ -5,7 +5,6 @@
 var TabView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'tab',
-	frames: [],
 	templateAlert: new Template({
 		fileName: 'posts/alert'
 	}),
@@ -53,7 +52,7 @@ var TabView = Backbone.View.extend({
 		})).appendTo($("#searchView"));
 		
 		$("#searchView").find(".new-twits").click(function(){
-			TabView.posts.loadNewPosts(newCount);
+			TabView.model.get("posts").loadNewPosts(newCount);
 			TabView.removeAlertLink();
 			return false;
 		})
@@ -68,12 +67,15 @@ var TabView = Backbone.View.extend({
 		this.sidebar.render();
 	},
 	update : function (renderMode) {
-//		console.log('in render', this.model.get("state"), renderMode);
+		console.log('in render', this.model.get("state"), renderMode);
 		if (!this.model.isActive()) {
 			return false;
 		}
 		this.renderPageHeader();
-		this.sidebar.render(renderMode);
+		if (!this.model.get("posts").filterParams) {
+			this.sidebar.render(renderMode);
+			
+		}
 		
 		var container = $(this.el);
 		
@@ -83,7 +85,8 @@ var TabView = Backbone.View.extend({
 		this.clearTab();
 		$(container).appendTo("#tab-content");
 		
-		_.each(this.frames.models, function (frame) {
+		console.log('in render FRAMES', this.model.get("frames").models);
+		_.each(this.model.get("frames").models, function (frame) {
 			var view;
 			view = frame.render().el;
 			$(view).prependTo(container);
@@ -98,7 +101,7 @@ var TabView = Backbone.View.extend({
 		});
 	},
 	updateByFilter : function () {
-		_.each(this.posts.filteredList, function(post){
+		_.each(this.model.get("posts").filteredList, function(post){
 			// get frame by post
 			var frame = this.frames.getFrameByPost(post.id);
 			if (!frame) {
