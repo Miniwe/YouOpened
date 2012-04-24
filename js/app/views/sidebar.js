@@ -15,12 +15,13 @@ var SidebarView = Backbone.View.extend({
 	},
 	initPosts: function (posts) {
 		this.posts = posts;
+		this.searchString = "";
 		this.users = posts.users;
 		this.tags = posts.tags;
 	},
 	resetSelected: function  ( ) { 
 		this.selected = {
-			searchString : [],
+			searchString : '',
 			users: new Users(),
 			tags : new Tags()
 		};
@@ -46,8 +47,7 @@ var SidebarView = Backbone.View.extend({
 			$(this.el).html(html);
 			this.resetView(); 
 		}
-		
-		this.renderString('');
+		this.renderString(this.selected.searchString); // 
 		
 		this.renderUsers(this.users.last(20), ".items.avatars");
 		this.renderUsers(this.selected.users.models, ".items_searched.avatars");
@@ -145,7 +145,7 @@ var SidebarView = Backbone.View.extend({
 		var rs = this;
 
 		$("#searchbox")
-//			.val(selected)las
+			.val(str)
 			.unbind()
 			.change(function (){
 				rs.addToRequest( $(this).val() );
