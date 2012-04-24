@@ -95,12 +95,12 @@ var SearchView = Backbone.View.extend({
 	eventsAttach: function  ( ) {
 		var rs = this.model.get("view").sidebar;
 		$(".btn.new-search").unbind().click(function(){
-			console.log('btn click');
+//			console.log('btn click');
 			rs.startSearch();
 			return false;
 		});
 		$("#searchForm").unbind().submit(function(){
-			console.log('sf submit');
+//			console.log('sf submit');
 			$(".btn.new-search").click();
 			return false;
 		});

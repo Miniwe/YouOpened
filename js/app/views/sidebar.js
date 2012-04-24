@@ -159,7 +159,6 @@ var SidebarView = Backbone.View.extend({
 		});
 	},
 	renderUsers: function  ( users,  cont ) {
-//		console.log('render users', cont, users);
 
 		var contEl = $(this.el).find(cont);
 		contEl.empty();
@@ -173,8 +172,7 @@ var SidebarView = Backbone.View.extend({
 		if ( ".items_searched.avatars" == cont ) {
 			this.showLooking('.avatars', this.selected.users);
 		}
-
-//		this.typeboxEvents(cont.parents(".widget"), 'users');
+		this.typeboxEvents($(cont).parents(".widget"), 'users');
 	},
 	renderUser : function ( item, cont) {
 		var rs = this;
@@ -204,7 +202,7 @@ var SidebarView = Backbone.View.extend({
 		
 		this.showLooking('.tags', this.selected.tags);
 
-//		this.typeboxEvents(cont.parents(".widget"), 'users');
+		this.typeboxEvents($(cont).parents(".widget"), 'tags');
 	},
 	renderTag : function ( item, cont) {
 		var rs = this;
@@ -268,11 +266,37 @@ var SidebarView = Backbone.View.extend({
 			widget.find("ul.items_searched").addClass("hidden");
 		}
 	},
+	filterList : function ( str, list ) {
+		var res = list.filter(function (item, index){
+			return (item.get("name").indexOf(str) > -1);
+		});
+		return res;
+	},
+	renderFiltered : function ( widget, list ) {
+		var cont = widget.find("ul.items");
+		cont.empty();
+		var count = 0;
+		_.each(list, function( item ){
+			if (count < 20) {
+				this.renderItem( item ).appendTo(cont);
+			}
+			count++;
+		}, this);
+	},
+	renderItem : function (  item ) {
+		if (item instanceof Tag) {
+			return this.renderTag( item );
+		} 
+		else if (item instanceof User){
+			return this.renderUser( item );
+		}
+	},	
 	typeboxEvents : function ( widget, type ) {
-		console.log('call type box event DISABLED @TODO');
-		return false;
+		// console.log('call type box event DISABLED @TODO');
+		// return false;
 		var rs = this;
-		widget.find(".typebox")
+		var widgetEl = widget.find(".typebox");
+		widgetEl.unbind('focus').unbind('blur').unbind('keyup')
 		.focus(function () {
 			var oldValue = $(this).attr("placeholder");
 			$(this).attr("placeholder", $(this).attr("title"))
@@ -284,20 +308,28 @@ var SidebarView = Backbone.View.extend({
 			$(this).attr("placeholder", $(this).attr("title"))
 					.attr("title", oldValue)	
 					.removeClass("pactive")
+			widgetEl.keyup();
 		})
 		.keyup(function (){
+//			console.log('keyup');
 			var str = $(this).val(),
 				base = [];
 				
-			base = rs.posts[type];
-				
+			base = rs[type];
+			
+//			console.log('str', str, widget, base);				
 			if (str == '') {
-				rs.renderFiltered(widget, base.last(20));
+				console.log('render empty');
+				rs.renderFiltered(widget, base.models);
 				return false;
 			}
 			else {
 			   rs.renderFiltered(widget, rs.filterList(str, base));
 			}
+		})
+		.change(function(){
+			console.log('change');
+			widgetEl.keyup();
 		});
 	}
 	
