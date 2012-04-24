@@ -79,7 +79,8 @@ var TabView = Backbone.View.extend({
 		
 		var container = $(this.el);
 		
-		if (renderMode == RenderMode.NEW) {
+		// if (renderMode == RenderMode.NEW)
+		{
 			this.searchView.render(renderMode);
 		}
 		this.clearTab();

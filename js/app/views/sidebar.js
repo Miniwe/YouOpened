@@ -39,6 +39,7 @@ var SidebarView = Backbone.View.extend({
 		else {
 			this.initPosts(this.model.get('posts'));
 		}
+		
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
 			var html = this.template.getTemplate() ({});

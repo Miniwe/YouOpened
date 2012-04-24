@@ -78,12 +78,12 @@ var Application = Backbone.Model.extend({
 		return activeFrame ? activeFrame : activeTab;
 	},
 	startApplication : function () {
-//		this.addTab({
-//			name: "Popular",
-//			searchParams: {
-//				searchString : '[Massively]'
-//			}
-//		});
+		this.addTab({
+			name: "Popular",
+			searchParams: {
+				searchString : '[Massively]'
+			}
+		});
 //		this.addTab({
 //			name: "Long Request line",
 //			searchParams: {
