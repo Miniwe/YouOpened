@@ -72,7 +72,8 @@ var TabView = Backbone.View.extend({
 			return false;
 		}
 		this.renderPageHeader();
-		if (!this.model.get("posts").filterParams) {
+		// if (!this.model.get("posts").filterParams)
+		{
 			this.sidebar.render(renderMode);
 			
 		}

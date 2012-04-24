@@ -47,7 +47,7 @@ var SidebarView = Backbone.View.extend({
 			$(this.el).html(html);
 			this.resetView(); 
 		}
-		this.renderString(this.selected.searchString); // 
+		this.renderString(this.searchString); // 
 		
 		this.renderUsers(this.users.last(20), ".items.avatars");
 		this.renderUsers(this.selected.users.models, ".items_searched.avatars");
@@ -78,6 +78,8 @@ var SidebarView = Backbone.View.extend({
 			name: tabName,
 			searchParams: searchParams
 		} );
+		
+		this.selected.searchString = "";
 		
 //		this.resetSelected();
 	},
