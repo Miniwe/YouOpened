@@ -28,7 +28,7 @@ var Tab = Backbone.Model.extend({
 			tab.updateNewFragmentCountEvent(arguments[0]);
 		});
 		this.get("posts").bind("updated", function () {
-			console.log('tab mast be updated');
+			// console.log('tab mast be updated');
 			tab.update(AddMode.REPLACE);
 			tab.get("view").update(RenderMode.NEW);
 		});
@@ -50,7 +50,7 @@ var Tab = Backbone.Model.extend({
 			// clear tab frames data
 			this.set({"frames": new Frames()});
 		}
-		console.log('update tab with frames', this.get('frames'), this.get("posts").models);
+		// console.log('update tab with frames', this.get('frames'), this.get("posts").models);
 		_.each( this.get("posts").models, function (model) {
 			var frame = this.get("frames").getFrameByPost(model.id);
 			if ( frame ) {
@@ -60,7 +60,7 @@ var Tab = Backbone.Model.extend({
 				frame = this.addFrame(model);
 			}
 		}, this);
-		console.log('update tab data');
+		// console.log('update tab data');
 	},
 	makeActive : function () {
 		this.collection.setState(this.cid, TabState.ACTIVE);
