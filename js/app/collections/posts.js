@@ -185,11 +185,17 @@ var Posts = Backbone.Collection.extend({
         		
 	},
 	getMaxTimeFragmentsUpdate : function ( ) {
-		var fragments = this.pluck('fragment');	
-		var lastFragment  = _.max(fragments, function(fragment){
-			 return fragment.get("updateTime"); 
+		var fragments = this.pluck('fragment');
+		console.log('a this', this);
+		var lastFragment  = _.max(fragments, function(fragment) {
+			if (fragment instanceof Fragment) {
+				return fragment.get("updateTime");
+			}
+			else {
+				return 0;
+			}	
 		 });
-		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):0;	
+		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):this.rootPost().attr('createTimestamp');	
 	},
 	updateCollection : function (newPosts) { // depricated
 		var newFlag = false;
