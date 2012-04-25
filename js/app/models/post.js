@@ -71,20 +71,45 @@ var Post = Backbone.Model.extend({
 		
 		var posts = this.collection;
 		var state = posts.parent.get("state");
-		var params = {
+		var subparams = {
 			"postID": postId,
 			"withChilds" : state
 		};
 		
-		params = this.applyParentFilter(params);
+		// params = this.applyParentFilter(params);
+		var params = posts.prepareParams(subparams);
+		params.searchString = "";
+		params.userID = "";
+		params.tagID = "";
+
+		console.log('loadRelatives', postId, params);
+		posts.loadData ( function () {
+			posts.parent.refresh();
+		}, params,  {} );
+/*
+		var posts = this;
+		var newPosts = new Posts();
+		var subparams = {};
 		
-		posts.updateParams(params);
-		posts.getData ( function () {
-				// posts.compileSubData();
-				posts.parent.refresh();
-			}, 
-			{}
-		);
+		if (this.params.postID != undefined) {
+			_.extend(subparams, {
+				childCount : count
+			});
+		} else {
+			_.extend(subparams, {
+				count : count
+			});
+		}
+		var params = this.prepareParams(subparams);
+		
+		newPosts.loadData(function () {
+			posts.updateCollection(newPosts);
+			posts.trigger("updated");
+			// posts.applyFilter();
+		}, params);
+			
+		
+		*/
 			
 	},
 	applyParentFilter : function ( params ) {

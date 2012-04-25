@@ -283,7 +283,6 @@ var Posts = Backbone.Collection.extend({
 	},
 	nextChildPage : function ( ) {
  		var posts = this;
-		console.log('call next child page');
 		
 		var posts = this;
 		var newPosts = new Posts();
