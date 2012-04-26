@@ -186,7 +186,7 @@ var Posts = Backbone.Collection.extend({
 	},
 	getMaxTimeFragmentsUpdate : function ( ) {
 		var fragments = this.pluck('fragment');
-		console.log('a this', this);
+		//console.log('a this', this);
 		var lastFragment  = _.max(fragments, function(fragment) {
 			if (fragment instanceof Fragment) {
 				return fragment.get("updateTime");

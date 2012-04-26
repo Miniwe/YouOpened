@@ -82,7 +82,7 @@ var Post = Backbone.Model.extend({
 		params.userID = "";
 		params.tagID = "";
 
-		console.log('loadRelatives', postId, params);
+		//console.log('loadRelatives', postId, params);
 		posts.loadData ( function () {
 			posts.parent.refresh();
 		}, params,  {} );
