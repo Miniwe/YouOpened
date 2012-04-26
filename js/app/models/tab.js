@@ -37,11 +37,13 @@ var Tab = Backbone.Model.extend({
 		});
 	},
 	getData : function () {
-		(new TRequest()).doPath();
 		
 		var tab = this;
 		this.get("posts").updateParams(this.get("searchParams"));
 //		console.log('this.get("posts")', this.get("posts").params);
+		
+		(new TRequest()).doPath(this.get("posts").params);
+		
 		this.get("posts").getData(function () {
 			tab.update(AddMode.REPLACE);
 			tab.makeActive();
