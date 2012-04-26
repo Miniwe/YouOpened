@@ -71,6 +71,8 @@
 				
                 'js/app/views/tabheader.js',
                 'js/app/views/tab.js',
+
+                'js/app/models/t-request.js',
 				
                 'js/app/views/application.js'
             ],
