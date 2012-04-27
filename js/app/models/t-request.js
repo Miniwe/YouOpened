@@ -57,17 +57,60 @@ var TRequest = Backbone.Model.extend({
 		
     },
     prepareRequest : function (request) {
+    	console.log('new request', request)
+    	
     	var prepared = {
     		callback : "?",
     		rpp: 100,
     		q: []
     	};
     	if (request.searchString != undefined && request.searchString != "") {
-    		prepared.q.push(request.searchString)
+    		prepared.q.push('"'+request.searchString+'"')
+    	}
+    	if (request.userID != undefined && request.userID != "") {
+    		var users = request.userID.split(',');
+    		for (var i=users.length; i--;) {
+    			users[i] = "from:"+users[i]+" OR to:"+users[i]
+    		}
+    		prepared.q.push(users.join(' OR '));
+    	}
+    	if (request.tagID != undefined && request.tagID != "") {
+    		var tags = request.tagID.split(',');
+    		prepared.q.push(tags.join(' OR '));
     	}
     	prepared.q = prepared.q.join(" ");
-    	
+    	console.log('prepared request', prepared);
     	this.set({"request": prepared});
+    	
+    	return this;
+    },
+    prepareFilter: function (request) {
+    	console.log('new filter', request)
+    	
+    	var prepared = {
+    		callback : "?",
+    		rpp: 100,
+    		q: []
+    	};
+    	if (request.searchString != undefined && request.searchString != "") {
+    		prepared.q.push('"'+request.searchString+'"')
+    	}
+    	if (request.userID != undefined && request.userID != "") {
+    		var users = request.userID.split(',');
+    		for (var i=users.length; i--;) {
+    			users[i] = "from:"+users[i]+" OR to:"+users[i]
+    		}
+    		prepared.q.push(users.join(' OR '));
+    	}
+    	if (request.tagID != undefined && request.tagID != "") {
+    		var tags = request.tagID.split(',');
+    		prepared.q.push(tags.join(' OR '));
+    	}
+    	prepared.q = prepared.q.join(" ");
+    	console.log('prepared request', prepared);
+    	this.set({"request": prepared});
+    	
+    	return this;
     },
     getUniq : function ( ) {
   		var d = $.Deferred();
@@ -111,11 +154,12 @@ var TRequest = Backbone.Model.extend({
     	console.log('all data', this.toJSON());
     	return true;
     },
-    doPath : function ( params ) {
+    doPath : function ( ) {
     	var tRequest = this;
 		// create object for our server
 		// prepare request
-		this.prepareRequest(params);
+		// this.prepareRequest(params);
+		// return false;
 		// get first json
 		this.getBaseData()
 			.done( function() {
@@ -140,7 +184,3 @@ var TRequest = Backbone.Model.extend({
     	
     }
 });
-
-function myfunc(){
-	console.log('aaaa');
-} 

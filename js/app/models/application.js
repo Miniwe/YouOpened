@@ -96,12 +96,14 @@ var Application = Backbone.Model.extend({
 				searchString : 'woman'
 			}
 		});
-//		this.addTab({
-//			name: "look_4,XandFalcon2012",
-//			searchParams: {
-//				userID : 'look_4,XandFalcon2012'
-//			}
-//		});
+		this.addTab({
+			name: "to Twitter",
+			searchParams: {
+				userID : 'ldnnavy,StephanieRosee2',
+				tagID : 'guess',
+				searchString : 'happy'
+			}
+		});
 	}
    
 });
