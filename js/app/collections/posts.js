@@ -85,6 +85,8 @@ var Posts = Backbone.Collection.extend({
 		
 		var params = this.prepareParams({});
 		
+		(new TRequest()).prepareRequest(this.params).prepareFilter(this.filterParams).doPath();
+		
 		this.loadData(function(){
 			// console.log('call update after filter', posts);
 			posts.trigger('updated');
@@ -186,7 +188,6 @@ var Posts = Backbone.Collection.extend({
 	},
 	getMaxTimeFragmentsUpdate : function ( ) {
 		var fragments = this.pluck('fragment');
-		//console.log('a this', this);
 		var lastFragment  = _.max(fragments, function(fragment) {
 			if (fragment instanceof Fragment) {
 				return fragment.get("updateTime");
@@ -195,7 +196,7 @@ var Posts = Backbone.Collection.extend({
 				return 0;
 			}	
 		 });
-		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):this.rootPost().attr('createTimestamp');	
+		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):this.rootPost().get('createTimestamp');	
 	},
 	updateCollection : function (newPosts) { // depricated
 		var newFlag = false;

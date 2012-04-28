@@ -107,19 +107,28 @@ var TRequest = Backbone.Model.extend({
     		prepared.q.push(tags.join(' OR '));
     	}
     	prepared.q = prepared.q.join(" ");
-    	console.log('prepared request', prepared);
-    	this.set({"request": prepared});
+    	console.log('filter request', prepared);
+    	
+    	this.addFilterToRequest(prepared);
     	
     	return this;
+    },
+    addFilterToRequest: function ( filter ) {
+    	var baseRequest = this.get("request");
+    	
+		baseRequest.q = "("+baseRequest.q+") AND ("+filter.q+")";
+    	this.set({"request": baseRequest});
+    	console.log('common request', this.get("request"));
     },
     getUniq : function ( ) {
   		var d = $.Deferred();
     	var baseData = this.get("baseData");
     	var users = this.get("users");
     	var cRes = {};
-    	
-		for (var i = baseData.results.length - 1; i--; ) {
+
+		for (var i = baseData.results.length; i--; ) {
 			cRes = baseData.results[i];
+			
 			if (cRes.to_user != undefined && cRes.to_user != "") {
 				if (!_.find(users.models, function (user){
 					return (user.to_user == cRes.to_user); 
@@ -151,16 +160,20 @@ var TRequest = Backbone.Model.extend({
 	  	return d.promise();
     },
     sendAllToServer : function ( ) {
-    	console.log('all data', this.toJSON());
+    	console.log('data to send', this.toJSON());
+    	$.ajax({
+		  type: 'post',
+		  url: "http://youopened.com/framework/TwitterClientStream.json",
+		  data: JSON.stringify(this.toJSON()),
+		  success: function() {
+		  	console.log('all sended', arguments);
+		  } ,
+		  dataType: "html"
+		});
     	return true;
     },
     doPath : function ( ) {
     	var tRequest = this;
-		// create object for our server
-		// prepare request
-		// this.prepareRequest(params);
-		// return false;
-		// get first json
 		this.getBaseData()
 			.done( function() {
 				tRequest.getUniq ();
