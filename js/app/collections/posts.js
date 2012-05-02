@@ -160,6 +160,7 @@ var Posts = Backbone.Collection.extend({
 				fromTime : this.getMaxTimeFragmentsUpdate(),
 			});
 			
+			this.updateFragmentsCount();
 			var ajaxOpts = {
 				type      : 'get',
 				url       : AppConfig.SERVER + 'Search.json',
@@ -186,6 +187,48 @@ var Posts = Backbone.Collection.extend({
 		}
         		
 	},
+	updateFragmentsCount : function ( ) {
+		var posts = this;
+		// get fragments root post ids
+		var ids = this.pluck('id');
+		// get request by fragments without childs
+		var params = this.prepareParams({
+			postID : ids.join(','),
+			withChilds: 0
+		});
+		params.tagID = '';
+		params.userID = '';
+		params.searchString = '';
+		
+		var ajaxOpts = {
+			type      : 'get',
+			url       : AppConfig.SERVER + 'Search.json',
+			success   : function (data, textStatus, jqXHR) {
+				posts.updatedFragmentsCountData(data);
+			},
+			dataType  : 'jsonp',
+			jsonp     : 'jsonp_callback',
+			data      : params,
+			error     : function () {	
+				console.log('error in posts:updateFragmentsCount');
+				return true;
+			},
+			timeout   : 30000
+		}; 
+		$.ajax( ajaxOpts );
+		
+		// update fragmnets count
+		// call trigger by count update
+	},
+	updatedFragmentsCountData : function ( data ) {
+		var posts = this;
+		_.each(data.Posts, function (postData){
+			var post = posts.get(postData.Post_ID);
+			if (post) {
+				post.set({"childsCount": postData.ChildCount });
+			}
+		});
+	},
 	getMaxTimeFragmentsUpdate : function ( ) {
 		var fragments = this.pluck('fragment');
 		var lastFragment  = _.max(fragments, function(fragment) {
@@ -196,6 +239,9 @@ var Posts = Backbone.Collection.extend({
 				return 0;
 			}	
 		 });
+		 if (this.rootPost() == undefined) {
+		 	return 0;
+		 }
 		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):this.rootPost().get('createTimestamp');	
 	},
 	updateCollection : function (newPosts) { // depricated
@@ -290,9 +336,12 @@ var Posts = Backbone.Collection.extend({
 		
 		this.childPage += 1;
 		var params = this.prepareParams({
-			childOffset: newPosts.getOffset( newPosts.childPage, newPosts.childPageSize ),
+			childOffset: newPosts.getOffset( this.childPage, newPosts.childPageSize ),
 			withChilds: 1
 		});
+		params.tagID = '';
+		params.userID = '';
+		params.searchString = '';
 		
 		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);

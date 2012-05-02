@@ -48,7 +48,24 @@ var Post = Backbone.Model.extend({
 //		log('update existing post', this, post);
 	},
 	updateChildsCount : function ( post ) {
-		this.get("view").update();
+		var El = false;
+		if (this.get("view")) {
+			this.get("view").update();
+		}
+		else {
+			if (El = this.getEl()) {
+				this.set({
+					'view': new PostView({
+						model: this,
+						el: El
+					})
+				});	
+				this.get('view').update();
+			}
+		}
+	},
+	getEl : function ( ) {
+		return $(".postdiv.row[data-id="+ this.get('id') +"]");
 	},
 	sendReply : function ( params ) {
 		var posts = this.collection;

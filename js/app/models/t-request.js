@@ -2,8 +2,6 @@
  * @fileOverview Общение с твиттером
  */
 
-console.log('twitter here');
-
 var TwitterUser = Backbone.Model.extend({
 	defaults : {
 		to_user : "",
@@ -57,7 +55,6 @@ var TRequest = Backbone.Model.extend({
 		
     },
     prepareRequest : function (request) {
-    	console.log('new request', request)
     	
     	var prepared = {
     		callback : "?",
@@ -79,13 +76,11 @@ var TRequest = Backbone.Model.extend({
     		prepared.q.push(tags.join(' OR '));
     	}
     	prepared.q = prepared.q.join(" ");
-    	console.log('prepared request', prepared);
     	this.set({"request": prepared});
     	
     	return this;
     },
     prepareFilter: function (request) {
-    	console.log('new filter', request)
     	
     	var prepared = {
     		callback : "?",
@@ -161,15 +156,15 @@ var TRequest = Backbone.Model.extend({
     },
     sendAllToServer : function ( ) {
     	console.log('data to send', this.toJSON());
-    	$.ajax({
-		  type: 'post',
-		  url: "http://youopened.com/framework/TwitterClientStream.json",
-		  data: JSON.stringify(this.toJSON()),
-		  success: function() {
-		  	console.log('all sended', arguments);
-		  } ,
-		  dataType: "html"
-		});
+    	// $.ajax({
+		  // type: 'post',
+		  // url: "http://youopened.com/framework/TwitterClientStream.json",
+		  // data: JSON.stringify(this.toJSON()),
+		  // success: function() {
+		  	// console.log('all sended', arguments);
+		  // } ,
+		  // dataType: "html"
+		// });
     	return true;
     },
     doPath : function ( ) {
