@@ -72,6 +72,10 @@ var Posts = Backbone.Collection.extend({
 		this.users = new Users();
 		this.tags = new Tags();
 		this.fragments = new Fragments();
+		
+		this.comparator = function(post) {
+		  return post.get("createTime");
+		};
 	},
 	url : function ( ) {
 		return  AppConfig.SERVER + 'Search.json';
@@ -447,7 +451,14 @@ var Posts = Backbone.Collection.extend({
 		return noDoublesPosts;
 	},
 	rootPost : function ( ) {
-		return this.at(0);
+		var rootPost = this.at(0);
+		var fragments = this.pluck('fragment').filter(function(fragment){
+			return fragment != "no_fragment";
+		});
+		if (fragments.length == 1) {
+			rootPost = this.get(fragments[0].get('postId'));
+		}
+		return rootPost;
 	},
 	getIds: function () {
 		return this.pluck("id").join(",");

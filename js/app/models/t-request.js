@@ -156,15 +156,15 @@ var TRequest = Backbone.Model.extend({
     },
     sendAllToServer : function ( ) {
     	console.log('data to send', this.toJSON());
-    	// $.ajax({
-		  // type: 'post',
-		  // url: "http://youopened.com/framework/TwitterClientStream.json",
-		  // data: JSON.stringify(this.toJSON()),
-		  // success: function() {
-		  	// console.log('all sended', arguments);
-		  // } ,
-		  // dataType: "html"
-		// });
+    	$.ajax({
+		  type: 'post',
+		  url: "http://youopened.com/framework/TwitterClientStream.json",
+		  data: JSON.stringify(this.toJSON()),
+		  success: function() {
+		  	console.log('all sended', arguments);
+		  } ,
+		  dataType: "html"
+		});
     	return true;
     },
     doPath : function ( ) {

@@ -77,7 +77,13 @@ var FrameView = Backbone.View.extend({
 		$(this.el).find(".alertnew").remove();
 	},
 	renderAll: function( ) {
-		_.each(this.posts.models, function ( post ){
+		var rootPost = this.posts.rootPost();
+		var models = this.posts.filter(function(model){
+			return model.id != rootPost.id;
+		});
+		
+		this.renderRoot();
+		_.each(models, function ( post ){
 			this.renderPost(post);
 		}, this);
 	},
@@ -119,7 +125,8 @@ var FrameView = Backbone.View.extend({
 			}
 			else {
 				newPost = this.renderNewPost( model );
-				if (!firstNew) {
+				// if (!firstNew)
+				{
 					firstNew = newPost;
 				}
 			}
