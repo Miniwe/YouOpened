@@ -23,8 +23,8 @@
 	Получение списка постов при нажатии на фильтр для таба и фрагмента
 		То есть получаем для фрагмента и вызываем получение для таба
 	При выборе параметров sidebar и запуске search создается новый таб с соответсвующими условиями
-	При смене таба загружается состояние если активный фрагмент то загружается его контент учитывая предыдущий поиск и 
-	наложенный фильтр
+	При смене таба загружается состояние если активный фрагмент то загружается его контент учитывая предыдущий поиск 
+	и наложенный фильтр
 		
 ==================
 Таб вид
@@ -165,6 +165,8 @@ var Posts = Backbone.Collection.extend({
 			});
 			
 			this.updateFragmentsCount();
+			this.getTwitterDataByFragments();
+			
 			var ajaxOpts = {
 				type      : 'get',
 				url       : AppConfig.SERVER + 'Search.json',
@@ -190,6 +192,47 @@ var Posts = Backbone.Collection.extend({
 			$.ajax( ajaxOpts );
 		}
         		
+	},
+	getTwitterDataByFragments : function ( ) {
+		var posts = this;
+		var fragments = this.pluck('fragment').filter(function(fragment){
+			return fragment != "no_fragment";
+		});
+		var maxPost = this.at(0).id;
+		var requests = [];
+		if (fragments.length == 1) {
+			console.log('fragments length')
+			maxPost = this.max(function(post){
+				return post.id;
+			});
+			
+			requests.push({
+				sinceId : maxPost.id,
+				toUser : maxPost.get('user').id
+			});
+		}
+		else if (fragments.length > 1) {
+			_.each(fragments, function (fragment){
+				var rootPost = posts.get(fragment.get('postId'));  
+				requests.push({
+					sinceId : rootPost.id,
+					toUser : rootPost.get('user').id
+				});
+			});	
+		}
+		else {
+			return false;
+		}
+		
+		for (var i=requests.length; i--; ) {
+			// console.log('requests[i]', requests[i]);
+			(new TRequest()).prepareRequest(requests[i]).doPath();
+		}
+		// по каждому фрагменту получить его рутовый пост
+		// maxRootid = rootPostId
+		// max id = max (maxRootid,  childs(root))
+		// get userid root
+		// сделать по каждому фрагменту цикл   
 	},
 	updateFragmentsCount : function ( ) {
 		var posts = this;
@@ -435,7 +478,7 @@ var Posts = Backbone.Collection.extend({
 		return parsedPosts;
 	},
 	updated : function ( ) {
-		console.log('it updated');
+		console.log('it updated in posts');
 	},
 	removeDoubles : function ( Posts ) {
 		var noDoublesPosts = [];

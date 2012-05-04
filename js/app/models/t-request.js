@@ -55,12 +55,21 @@ var TRequest = Backbone.Model.extend({
 		
     },
     prepareRequest : function (request) {
-    	
     	var prepared = {
     		callback : "?",
+    		lang : "en",
     		rpp: 100,
     		q: []
     	};
+    	if (request.sinceId != undefined && request.sinceId != "") {
+    		prepared.sinceId = request.sinceId; 
+    	}
+    	if (request.toUser != undefined && request.toUser != "") {
+    		prepared.q.push('to:' + request.toUser + '')
+    	}
+    	if (request.searchString != undefined && request.searchString != "") {
+    		prepared.q.push('"'+request.searchString+'"')
+    	}
     	if (request.searchString != undefined && request.searchString != "") {
     		prepared.q.push('"'+request.searchString+'"')
     	}
@@ -75,6 +84,7 @@ var TRequest = Backbone.Model.extend({
     		var tags = request.tagID.split(',');
     		prepared.q.push(tags.join(' OR '));
     	}
+    	
     	prepared.q = prepared.q.join(" ");
     	this.set({"request": prepared});
     	
@@ -143,19 +153,24 @@ var TRequest = Backbone.Model.extend({
     getBaseData : function ( ) {
   		var tRequest = this;
   		var d = $.Deferred();
-		
-		$.getJSON("http://search.twitter.com/search.json?callback=?",
-			tRequest.get("request"),
-			function(data){
-				tRequest.set({"baseData": data});				
+		if (tRequest.get("request").q == "") {
 				d.resolve(); ;
-			}
-		);
+		}
+		else {
+			$.getJSON("http://search.twitter.com/search.json?callback=?",
+				tRequest.get("request"),
+				function(data){
+					tRequest.set({"baseData": data});				
+					d.resolve(); ;
+				}
+			);
+		}		
 	  	
 	  	return d.promise();
     },
     sendAllToServer : function ( ) {
     	console.log('data to send', this.toJSON());
+    	// return true;
     	$.ajax({
 		  type: 'post',
 		  url: "http://youopened.com/framework/TwitterClientStream.json",
@@ -171,6 +186,10 @@ var TRequest = Backbone.Model.extend({
     	var tRequest = this;
 		this.getBaseData()
 			.done( function() {
+				if (tRequest.get("baseData").results == undefined 
+					|| tRequest.get("baseData").results.length == 0) {
+					return false;
+				}
 				tRequest.getUniq ();
 			})
 			.done( function() {

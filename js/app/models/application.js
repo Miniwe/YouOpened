@@ -78,25 +78,25 @@ var Application = Backbone.Model.extend({
 		return activeFrame ? activeFrame : activeTab;
 	},
 	startApplication : function () {
-		this.addTab({
-			name: "Admire",
-			searchParams: {
-				searchString : 'woman',
-				tagID: 'admire'
-			}
-		});
+		// this.addTab({
+			// name: "Admire",
+			// searchParams: {
+				// searchString : 'woman',
+				// tagID: 'admire'
+			// }
+		// });
 //		this.addTab({
 //			name: "Long Request line",
 //			searchParams: {
 //				userID : 'killinemkels,RihannasWiFE,megbracey,KMartian_Artist,TheVagician__,SheIsAnele,seobified,happimomo26'
 //			}
 //		});
-		this.addTab({
-			name: "woman",
-			searchParams: {
-				searchString : 'woman'
-			}
-		});
+		// this.addTab({
+			// name: "woman",
+			// searchParams: {
+				// searchString : 'woman'
+			// }
+		// });
 		this.addTab({
 			name: "to Twitter",
 			searchParams: {
