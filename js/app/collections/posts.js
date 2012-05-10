@@ -178,7 +178,7 @@ var Posts = Backbone.Collection.extend({
 				complete : function () {
 					setTimeout(function () {
 						posts.autoUpdateNewCountPosts();
-					}, 6000);
+					}, 90000);
 				},
 				dataType  : 'jsonp',
 				jsonp     : 'jsonp_callback',
@@ -226,7 +226,7 @@ var Posts = Backbone.Collection.extend({
 		
 		for (var i=requests.length; i--; ) {
 			// console.log('requests[i]', requests[i]);
-			(new TRequest()).prepareRequest(requests[i]).doPath();
+			(new TRequest()).prepareRequest(requests[i]).doUserPath();
 		}
 		// по каждому фрагменту получить его рутовый пост
 		// maxRootid = rootPostId

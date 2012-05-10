@@ -26,3 +26,13 @@ function formatDate ( indate )
 }
 
 
+function SERVER_HTTP_HOST(){  
+    var url = window.location.href;  
+    url = url.replace("http://", "");   
+      
+    var urlExplode = url.split("/");  
+    var serverName = urlExplode[0];  
+      
+    serverName = 'http://'+serverName;  
+    return serverName;  
+}  
