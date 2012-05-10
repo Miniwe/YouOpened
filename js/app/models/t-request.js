@@ -241,8 +241,7 @@ var TRequest = Backbone.Model.extend({
   },
   
   hasBaseResults : function () {
-    return (tRequest.get("baseData").results != undefined && tRequest.get("baseData").results.length > 0) {
-;
+    return (this.get("baseData").results != undefined && this.get("baseData").results.length > 0);
   },
   
   destroy: function () {

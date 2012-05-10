@@ -8,6 +8,12 @@ var TabView = Backbone.View.extend({
 	templateAlert: new Template({
 		fileName: 'posts/alert'
 	}),
+	templateMore: new Template({
+		fileName: 'app/more'
+	}),
+	events: {
+		"click .more-posts" : "loadMorePosts"
+	},
 	initialize: function () {
 		_(this).bindAll('closeTab');
 		
@@ -60,6 +66,12 @@ var TabView = Backbone.View.extend({
 	removeAlertLink: function() {
 		$("#searchView").find(".alertnew").remove();
 	},
+	renderMoreLink: function( ) {
+		$(this.el).find("a.more-posts").parent().remove();
+		if (this.model.isActive()) {
+			$(this.templateMore.getTemplate() ({})).appendTo(this.el);
+		}
+	},
 	renderPageHeader : function () {
 		this.tabHeader.refresh();
 	},
@@ -101,6 +113,12 @@ var TabView = Backbone.View.extend({
 			*/
 			
 		});
+		this.renderMoreLink();
+	},
+	loadMorePosts : function ( ) {
+		console.log('load more Fragments');
+		// this.posts.nextChildPage();
+		return false;
 	},
 	updateByFilter : function () {
 		_.each(this.model.get("posts").filteredList, function(post){
