@@ -355,22 +355,22 @@ var Posts = Backbone.Collection.extend({
 		// params.tagID += (subparams.tagID != undefined && subparams.tagID != '') ? ',' + subparams.tagID : '';
 	loadNewPosts : function ( count ) {
 		var posts = this;
-		var newPosts = new Posts();
+		//var newPosts = new Posts();
 		var subparams = {};
 		
 		if (this.params.postID != undefined) {
 			_.extend(subparams, {
-				childCount : count
+				childCount : 10//count
 			});
 		} else {
 			_.extend(subparams, {
-				count : count
+				count : 10//count
 			});
 		}
 		var params = this.prepareParams(subparams);
 		
-		newPosts.loadData(function () {
-			posts.updateCollection(newPosts);
+		posts.loadData(function () {
+			//posts.updateCollection(newPosts);
 			posts.trigger("updated");
 			// posts.applyFilter();
 		}, params);
@@ -378,12 +378,11 @@ var Posts = Backbone.Collection.extend({
 	nextChildPage : function ( ) {
  		var posts = this;
 		
-		var posts = this;
 		var newPosts = new Posts();
 		
 		this.childPage += 1;
 		var params = this.prepareParams({
-			childOffset: newPosts.getOffset( this.childPage, newPosts.childPageSize ),
+			childOffset: newPosts.getOffset( posts.childPage, newPosts.childPageSize ),
 			withChilds: 1
 		});
 		params.tagID = '';
@@ -392,6 +391,19 @@ var Posts = Backbone.Collection.extend({
 		
 		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);
+			posts.trigger('updated');
+		}, params, {});
+	},
+	nextFragmentsPage : function ( ) {
+		
+		var posts = this;
+		
+		this.page += 1;
+		var params = this.prepareParams({
+			offset: posts.getOffset( posts.page, posts.pageSize ),
+			withChilds: 0
+		});
+		posts.loadData(function(){
 			posts.trigger('updated');
 		}, params, {});
 	},

@@ -155,8 +155,9 @@ var TRequest = Backbone.Model.extend({
   getBaseData : function ( ) {
 	var tRequest = this;
 	var d = $.Deferred();
-	if (tRequest.get("request").q == "") {
-      d.resolve(); ;
+    
+    if (tRequest.get("request").q == "") {
+      d.resolve();
 	}
 	else {
       $.getJSON("http://search.twitter.com/search.json?callback=?",
@@ -220,8 +221,7 @@ var TRequest = Backbone.Model.extend({
 
     this.getBaseData()
       .done( function() {
-        if (tRequest.get("baseData").results == undefined
-            || tRequest.get("baseData").results.length == 0) {
+        if (!tRequest.hasBaseResults()) {
           return false;
         }
       })

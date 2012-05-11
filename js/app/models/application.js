@@ -1,3 +1,4 @@
+
 /*
  * @fileOverview Корневая модель приложения
  * 
@@ -79,11 +80,11 @@ var Application = Backbone.Model.extend({
 	},
 	startApplication : function () {
 		// this.addTab({
-			// name: "Admire",
-			// searchParams: {
-				// searchString : 'woman',
-				// tagID: 'admire'
-			// }
+		// name: "Admire",
+		// searchParams: {
+		// searchString : 'woman',
+		// tagID: 'admire'
+		// }
 		// });
 //		this.addTab({
 //			name: "Long Request line",
@@ -91,20 +92,20 @@ var Application = Backbone.Model.extend({
 //				userID : 'killinemkels,RihannasWiFE,megbracey,KMartian_Artist,TheVagician__,SheIsAnele,seobified,happimomo26'
 //			}
 //		});
-		// this.addTab({
-			// name: "woman",
-			// searchParams: {
-				// searchString : 'woman'
-			// }
-		// });
 		this.addTab({
-			name: "to Twitter",
+			name: "girls",
 			searchParams: {
-				userID : 'ldnnavy,StephanieRosee2',
-				tagID : 'guess',
-				searchString : 'happy'
+				searchString : 'girls'
 			}
-		});
+			});
+		//this.addTab({
+			//name: "to Twitter",
+			//searchParams: {
+			//	userID : 'ldnnavy,StephanieRosee2',
+			//	tagID : 'guess',
+				//searchString : 'happy'
+				//}
+		//});
 	}
    
 });

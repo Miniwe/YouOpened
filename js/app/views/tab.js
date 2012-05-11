@@ -67,10 +67,16 @@ var TabView = Backbone.View.extend({
 		$("#searchView").find(".alertnew").remove();
 	},
 	renderMoreLink: function( ) {
+		
+		var view = this;
+		
 		$(this.el).find("a.more-posts").parent().remove();
 		if (this.model.isActive()) {
 			$(this.templateMore.getTemplate() ({})).appendTo(this.el);
 		}
+		$(this.el).find("a.more-posts").click(function(){
+			view.loadMorePosts();
+		})
 	},
 	renderPageHeader : function () {
 		this.tabHeader.refresh();
@@ -117,8 +123,8 @@ var TabView = Backbone.View.extend({
 	},
 	loadMorePosts : function ( ) {
 		console.log('load more Fragments');
-		// this.posts.nextChildPage();
-		return false;
+		this.posts.nextFragmentsPage();
+		return true;
 	},
 	updateByFilter : function () {
 		_.each(this.model.get("posts").filteredList, function(post){
