@@ -192,18 +192,19 @@ var TRequest = Backbone.Model.extend({
   },
   
   doPath : function ( ) {
+    return false;
 	var tRequest = this;
-	this.getBaseData()
-      .done( function() {
+	this.getBaseData ()
+      .done( function () {
         if (!tRequest.hasBaseResults()) {
           return false;
         }
         tRequest.getUniq ();
       })
-      .done( function() {
+      .done( function () {
         tRequest.get("users").getSelfJsons();
       })
-      .done( function (){
+      .done( function () {
         tRequest.sendAllToServer();
       })
 	// .done( function() {
@@ -217,6 +218,7 @@ var TRequest = Backbone.Model.extend({
   },
   
   doUserPath : function ( ) {
+    return false;
 	var tRequest = this;
 
     this.getBaseData()
