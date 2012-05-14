@@ -124,7 +124,7 @@ var Posts = Backbone.Collection.extend({
 		this.fetch(fetchOptions);
 	},
 	applyFilter : function ( ) {
-		console.log('apply dont need pocible - commented');
+		console.log('apply dont need poSible - commented');
 		return false;
 		if (this.filterParams) {
 //			this.filterParams.postID = this.pluck('id').join(',');

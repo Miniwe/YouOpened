@@ -31,6 +31,30 @@ var SidebarView = Backbone.View.extend({
 		$(this.el).find("#searchbox").val("");
 		$(this.el).find(".items_searched.avatars, .items_searched.tags").html("");
 	},
+	prepareUid: function  ( ) {
+		console.log('this', this);
+		var uid = "";
+		uid += this.prepareQuery(this.posts.params);
+		console.log('uid',uid);
+		uid = Base64.encode(uid);
+		return uid;
+	},
+	prepareQuery: function ( params ) {
+		var query = '';
+		if (params.postID != undefined && params.postID.length > 0) {
+			query += 'postID=' + params.postID + "&";
+		}
+		if (params.tags != undefined && params.tags.length > 0) {
+			query += 'tagID=' + params.tags.pluck("id").join(',') + "&";
+		}
+		if (params.users != undefined && params.users.length > 0) {
+			query += 'userID=' + params.users.pluck("id").join(',') + "&";
+		}
+		if (params.searchString != undefined && params.searchString != '') {
+			query += 'searchString=' + params.searchString.toString();
+		}
+		return query;
+	},
 	render : function (renderMode, posts) {
 		if (posts != undefined) {
 //			console.log('frame posts', posts);
@@ -43,7 +67,9 @@ var SidebarView = Backbone.View.extend({
 		
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
-			var html = this.template.getTemplate() ({});
+			var html = this.template.getTemplate() ({
+				link : "#invite/"+this.prepareUid()
+			});
 			$(this.el).html(html);
 			this.resetView(); 
 		}

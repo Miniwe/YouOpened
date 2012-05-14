@@ -1,20 +1,21 @@
 /* 
  * @fileOverview Роутер приложения
  * 
- * @todo
- *	Узнать у Жени нужно ли ему точно параметл jsonp=jsonp_callback в запросе ?
- *	Исправить MIME type для результатов ajaxP запроса к серверу
  */
 
 var AppRouter = Backbone.Router.extend({
 	routes: {
-		"/invite/:uid": "invite",
-		"/testajax": "testajax",
+		"invite/:uid": "invite",
+		"testajax": "testajax",
 		"*actions": "defaultRoute" 
 	},
 	defaultRoute: function (actions) {
+//		console.log('default');
 	},
 	testajax: function( ){
+//		console.log('test ajax');
+		
+//		alert('ta 1');
 		var ajaxOpts = {
 			url       : AppConfig.SERVER + 'Search.json',
 			success   : function (data, textStatus, jqXHR) { 
@@ -33,7 +34,7 @@ var AppRouter = Backbone.Router.extend({
 		$.ajax( ajaxOpts );
 	},
 	invite: function( uid ){
-		console.log( 'invite to ', uid ); 
+		this.app.addInvite(uid)
 	}
 });
 

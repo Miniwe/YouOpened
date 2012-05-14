@@ -22,6 +22,8 @@
         },
         {
             load: [
+                'js/libs/base64.js',
+                
                 'js/libs/jquery.tinysort.min.js',
                 'js/libs/jquery.dateFormat-1.0.js',
                 'js/libs/jquery.form.js',
@@ -41,22 +43,22 @@
                 'js/app/models/tag.js',
                 'js/app/collections/tags.js',
                 
-				'js/app/models/user.js',
+                'js/app/models/user.js',
                 'js/app/collections/users.js',
 				
-				'js/app/models/fragment.js',
+                'js/app/models/fragment.js',
                 'js/app/collections/fragments.js',
 				
                 'js/app/models/post.js',
                 'js/app/collections/posts.js',
 				
-				'js/app/models/frame.js',
+                'js/app/models/frame.js',
                 'js/app/collections/frames.js',
 				
-				'js/app/models/tab.js',
+                'js/app/models/tab.js',
                 'js/app/collections/tabs.js',
                 
-				'js/app/models/template.js',
+                'js/app/models/template.js',
                 'js/app/collections/templates.js',
 				
                 'js/app/models/siteuser.js',

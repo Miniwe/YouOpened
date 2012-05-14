@@ -27,6 +27,7 @@ var Application = Backbone.Model.extend({
 		this.set({
 			app_router : new AppRouter
 		});
+		this.get('app_router').app = this;
 		Backbone.history.start();
 	},
 	setTemplates : function () {
@@ -67,8 +68,47 @@ var Application = Backbone.Model.extend({
 		this.get('tabs').add(newTab);
 		newTab.getData();
 	},
+	addInvite: function (uid) {
+		if (uid == "") {
+			return false;
+		}
+		this.addTab(this.parseUid(uid));
+	},
+	parseUid: function (uid) {
+		var parsed = Base64.decode(uid);
+		parsed = this.parseQuery(parsed);
+		
+		return {
+			name: this.prepareTabName(parsed),
+			searchParams: parsed
+		};
+	},
+	prepareTabName : function ( params ) {
+		var tabName = 'Invite: ';
+		if (params.tagID != undefined && params.tagID != "") {
+			tabName += params.tagID + " ";
+		}
+		if (params.userID != undefined && params.userID != "") {
+			tabName += params.userID + " ";
+		}
+		if (params.postID != undefined && params.postID != "") {
+			tabName += params.postID + " ";
+		}
+		if (params.searchString != undefined && params.searchString != '') {
+			tabName += params.searchString.toString();
+		}
+		return tabName;
+	},
 	getActiveTab : function () {
 		return this.get("tabs").getActive();
+	},
+	parseQuery: function (query) {
+		var queryString = {};
+		query.replace(
+				new RegExp("([^?=&]+)(=([^&]*))?", "g"),
+				function($0, $1, $2, $3) { queryString[$1] = $3; }
+		);
+		return queryString;
 	},
 	getActive : function () {
 		var activeTab = false;
@@ -92,6 +132,7 @@ var Application = Backbone.Model.extend({
 //				userID : 'killinemkels,RihannasWiFE,megbracey,KMartian_Artist,TheVagician__,SheIsAnele,seobified,happimomo26'
 //			}
 //		});
+
 		this.addTab({
 			name: "girls",
 			searchParams: {
@@ -105,6 +146,7 @@ var Application = Backbone.Model.extend({
 				sortType : 'massive'
 			}
 		});
+
 		//this.addTab({
 			//name: "to Twitter",
 			//searchParams: {
