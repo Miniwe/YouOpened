@@ -32,10 +32,10 @@ var SidebarView = Backbone.View.extend({
 		$(this.el).find(".items_searched.avatars, .items_searched.tags").html("");
 	},
 	prepareUid: function  ( ) {
-		console.log('this', this);
+//		console.log('this', this);
 		var uid = "";
 		uid += this.prepareQuery(this.posts.params);
-		console.log('uid',uid);
+//		console.log('uid',uid);
 		uid = Base64.encode(uid);
 		return uid;
 	},

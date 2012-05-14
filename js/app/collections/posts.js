@@ -201,7 +201,7 @@ var Posts = Backbone.Collection.extend({
 		var maxPost = this.at(0).id;
 		var requests = [];
 		if (fragments.length == 1) {
-			console.log('fragments length')
+//			console.log('fragments length')
 			maxPost = this.max(function(post){
 				return post.id;
 			});
