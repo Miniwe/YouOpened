@@ -6,14 +6,14 @@
 			</label>-->
 				
 			<div class="input" style=" margin-left:80px;">
-				<textarea class="xxlarge" id="postMessage" name="postMessage" rows="3" style="width: 450px; height: 2em;">@<%= user.id %> </textarea>
+				<textarea class="xxlarge" id="postMessage" name="postMessage" rows="3" style="width: 450px; height: 2em;"><%= (user.id)?"@"+user.id:"" %> </textarea>
 				<span class="help-block">
 					Reply to active root post
 				</span>
 			</div>
 			<div class="pull-right">
-				<input type="submit" class="btn primary" value="Reply">
-<!--				&nbsp;<button type="reset" class="btn">Cancel</button>-->
+				<button type="reset" class="btn cancel" style="display: none">Cancel</button>
+				&nbsp;<input type="submit" class="btn primary" value="Reply">
 			</div>
 		</fieldset>
 	</form>

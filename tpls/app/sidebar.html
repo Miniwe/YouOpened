@@ -1,11 +1,26 @@
 <div id="innerRS" class="span4">
 
-<div class="widget row">
-	<label class="primary"><a href="<%= link %>">Link to fragment</a></label>
-
-</div>
 
 	
+<div class="widget row">
+	<label class="primary"><a href="<%= link %>">Link to fragment</a></label>
+</div>
+	
+<div class="widget row">
+	<label class="secondary">Sort</label>
+	<select id="sortType">
+		<option value="time" <%= (sortType=='time')?'selected="selected"':"" %>>
+			by Time Desc
+		</option>
+		<option value="massive" <%= (sortType=='massive')?'selected="selected"':"" %>>
+			by Replies Count
+		</option>
+	</select>
+		
+		
+	</select>
+</div>
+
 <div class="widget row">
 	<form id="searchForm" action="#" style="display: inline;">
 		<input id="searchbox" name="searchString" class="xlarge typebox" type="search" value="" placeholder="SEARCH" title="Type fo search words"/>
@@ -30,5 +45,5 @@
 	<input id="tagbox" class="xlarge typebox" type="search" value="" placeholder="are here" title="Type fo find tags"/>
 	<ul class="items tags"></ul>
 </div>
-	
+
 </div>

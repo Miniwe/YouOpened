@@ -101,7 +101,7 @@ var TabView = Backbone.View.extend({
 		this.sidebar.render();
 	},
 	update : function (renderMode) {
-		// console.log('in render', this.model.get("state"), renderMode);
+		console.log('in render update', this.model);
 		if (!this.model.isActive()) {
 			return false;
 		}

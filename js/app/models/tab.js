@@ -16,6 +16,20 @@ var Tab = Backbone.Model.extend({
 		this.bind('change:state', this.changeActiveClass);
 		this.resetTabData();
 	},
+	startNewConversation : function (params) {
+		var posts = this.get('posts');
+		var replyPosts = new Posts();
+		replyPosts.updateParams(params);
+		replyPosts.getData( function () {
+			console.log('posts', posts);
+			if (posts.updateWithNew(replyPosts)) {
+				posts.parent.update();
+				posts.parent.get("view").update();
+			}
+		}, {
+			url : AppConfig.SERVER + 'PostMessage.json'
+		});
+	},
 	resetTabData : function () {
 		var tab = this;
 		this.set({

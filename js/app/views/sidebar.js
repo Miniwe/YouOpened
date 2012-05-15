@@ -15,6 +15,7 @@ var SidebarView = Backbone.View.extend({
 	},
 	initPosts: function (posts) {
 		this.posts = posts;
+		this.sortType = posts.params.sortType;
 		this.searchString = "";
 		this.users = posts.users;
 		this.tags = posts.tags;
@@ -68,7 +69,8 @@ var SidebarView = Backbone.View.extend({
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
 			var html = this.template.getTemplate() ({
-				link : "#invite/"+this.prepareUid()
+				link : "#invite/"+this.prepareUid(),
+				sortType : this.sortType
 			});
 			$(this.el).html(html);
 			this.resetView(); 
@@ -88,6 +90,13 @@ var SidebarView = Backbone.View.extend({
 		return this;
 	},
 	eventsAttach: function  ( ) {
+		var sidebar = this;
+		$(this.el).find("#sortType").change(function(){
+			console.log("change sidebar sort type", sidebar, $(this).val());
+			sidebar.posts.params.sortType = $(this).val();
+			console.log('sidebar.posts.params', sidebar.posts.params);
+			sidebar.posts.refresh();
+		})
 	},
 	emptyRequest: function  (searchParams) {
 		var testStr = searchParams.searchString + searchParams.tagID + searchParams.userID;

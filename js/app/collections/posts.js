@@ -80,6 +80,10 @@ var Posts = Backbone.Collection.extend({
 	url : function ( ) {
 		return  AppConfig.SERVER + 'Search.json';
 	},
+	refresh: function () {
+		console.log('will be updted');
+		this.loadNewPosts(10);
+	},
 	setFilter : function ( params ) {
 		// console.log('call set filter');
 		

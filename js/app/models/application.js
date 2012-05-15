@@ -61,6 +61,9 @@ var Application = Backbone.Model.extend({
 	applyAuthDecoration : function (user) {
 		Post.prototype.defaults.renderForm = true;
 		Post.prototype.defaults.siteUser = user;
+		
+		SearchView.prototype.renderFormFlag = true;
+		SearchView.prototype.siteUser = user;
 	},
 	addTab : function (params) {
 		params.app = this;
@@ -133,10 +136,16 @@ var Application = Backbone.Model.extend({
 //			}
 //		});
 
+		//this.addTab({
+		//	name: "girls",
+		//	searchParams: {
+		//		searchString : 'girls'
+		//	}
+		//});
 		this.addTab({
-			name: "girls",
+			name: "i am",
 			searchParams: {
-				searchString : 'girls'
+				userID : 'XandFalcon2012'
 			}
 		});
 		this.addTab({
