@@ -192,7 +192,6 @@ var TRequest = Backbone.Model.extend({
   },
   
   doPath : function ( ) {
-    return false;
 	var tRequest = this;
 	this.getBaseData ()
       .done( function () {
@@ -218,7 +217,6 @@ var TRequest = Backbone.Model.extend({
   },
   
   doUserPath : function ( ) {
-    return false;
 	var tRequest = this;
 
     this.getBaseData()

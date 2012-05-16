@@ -10,6 +10,9 @@ var FrameView = Backbone.View.extend({
 	templateMore: new Template({
 		fileName: 'app/more'
 	}),
+	templateMessage: new Template({
+		fileName: 'app/message'
+	}),
 	events: {
 		"click .more-posts" : "loadMorePosts"
 	},
@@ -82,10 +85,18 @@ var FrameView = Backbone.View.extend({
 			return model.id != rootPost.id;
 		});
 		
-		this.renderRoot();
-		_.each(models, function ( post ){
-			this.renderPost(post);
-		}, this);
+		if (models.length > 0) {
+			this.renderRoot();
+			_.each(models, function ( post ){
+				this.renderPost(post);
+			}, this);
+		}
+		else {
+			$(this.templateMessage.getTemplate() ({
+				message : "Posts not found"
+			})).appendTo(this.el);
+		}
+
 	},
 	renderRoot : function( ) {
 		var post = this.posts.rootPost();

@@ -11,6 +11,9 @@ var TabView = Backbone.View.extend({
 	templateMore: new Template({
 		fileName: 'app/more'
 	}),
+	templateMessage: new Template({
+		fileName: 'app/message'
+	}),
 	events: {
 		"click .more-posts" : "loadMorePosts"
 	},
@@ -121,22 +124,28 @@ var TabView = Backbone.View.extend({
 		this.clearTab();
 		$(container).appendTo("#tab-content");
 		
-		// console.log('in render FRAMES', this.model.get("frames").models);
-		_.each(this.model.get("frames").models, function (frame) {
-			var view;
-			view = frame.render().el;
-			$(view).prependTo(container);
-			/*
-			// @todo make new and update
-			if (frame.get('view') == undefined || frame.get('view').el == undefined) {
-			}
-			else {
-			}
-			*/
-			
-		});
-		this.removeAlertLink();		
-		this.renderMoreLink();
+		if (this.model.get("frames").length > 0) {
+			// console.log('in render FRAMES', this.model.get("frames").models);
+			_.each(this.model.get("frames").models, function (frame) {
+				var view;
+				view = frame.render().el;
+				$(view).prependTo(container);
+				/*
+				// @todo make new and update
+				if (frame.get('view') == undefined || frame.get('view').el == undefined) {
+				}
+				else {
+				}
+				*/
+			});
+			this.removeAlertLink();		
+			this.renderMoreLink();
+		}
+		else {
+			$(this.templateMessage.getTemplate() ({
+				message : "Fragments not found"
+			})).prependTo(container);
+		}
 	},
 	loadMorePosts : function ( ) {
 		console.log('load more Fragments');

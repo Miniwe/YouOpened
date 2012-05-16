@@ -163,14 +163,16 @@ var Posts = Backbone.Collection.extend({
 		if (this.autoUpdateNewCount) {
 			var posts = this;
 			
-			var params = this.prepareParams({
-				procedure: "getNewResultCount",
-				fromTime : this.getMaxTimeFragmentsUpdate(),
-			});
+			if (posts.length > 0) {
 			
-			this.updateFragmentsCount();
-			this.getTwitterDataByFragments();
-			
+				var params = this.prepareParams({
+					procedure: "getNewResultCount",
+					fromTime : this.getMaxTimeFragmentsUpdate(),
+				});
+				
+				this.updateFragmentsCount();
+				this.getTwitterDataByFragments();
+			}
 			var ajaxOpts = {
 				type      : 'get',
 				url       : AppConfig.SERVER + 'Search.json',
