@@ -46,8 +46,7 @@ Posts
 	таймер на обнолвение списка постов
 	trigger об обновлении
 	trigger на фольтр ()?
-
- */
+*/
 
 var Posts = Backbone.Collection.extend({
 	model: Post,
@@ -345,16 +344,43 @@ var Posts = Backbone.Collection.extend({
 		// }
 		return obj;
 	},
+	addFilterParams : function (obj, exten) {
+		/*var base = {
+			userID : exten.userID || '',
+			tagID : exten.tagID || ''
+		};
+		
+		_.each(['userID', 'tagID'], funciton(key){
+				if (exten[key] != undefined) {
+					obj[key] = base[key].split(','); 
+					_.each(exten[key].split(','), function(v){
+						obj[key].push(v); 
+					});
+					obj[key] = _.uniq(obj[key]).join(',');
+				}
+		});*/
+		
+		if (exten['userID'] != undefined) {
+				obj['filterUserID'] = exten['userID'];
+		}
+		if (exten['tagID'] != undefined) {
+				obj['filterTagID'] = exten['tagID'];
+		}
+		return obj;
+	},
 	prepareParams : function ( subparams ) {
 		var params = {};
 		
 		params = this.extendParams(params, this.params);
 		 
 		if (this.filterParams) {
-			params = this.extendParams(params, this.filterParams);
+			// params = this.extendParams(params, this.filterParams);
+			params = this.addFilterParams (params, this.filterParams);
 		}
 		params = this.extendParams(params, subparams);
-		 
+		
+		
+		//console.log('prepareParams', params);
 		return params;
 	},
 		// params.userID += (subparams.userID != undefined && subparams.userID != '') ? ',' + subparams.userID : ''; 

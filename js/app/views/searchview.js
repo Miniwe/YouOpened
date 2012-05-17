@@ -17,7 +17,6 @@ var SearchView = Backbone.View.extend({
 	},
 	render : function (renderMode) {
 
-		console.log('render');
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
 		}
@@ -35,7 +34,6 @@ var SearchView = Backbone.View.extend({
 		this.renderTags(this.searchParams.tags);
 
 		this.eventsAttach();
-		console.log('this', this);
 		$(".start-new").hide();
 		if (this.renderFormFlag != undefined)
 		{

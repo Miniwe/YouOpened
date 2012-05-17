@@ -87,6 +87,14 @@ var FrameView = Backbone.View.extend({
 		
 		if (models.length > 0) {
 			this.renderRoot();
+
+			if (models.length > 0) {
+				models = _.sortBy(models,function(model){
+					return - model.get("createTimestamp");
+				});
+			}
+			
+			
 			_.each(models, function ( post ){
 				this.renderPost(post);
 			}, this);

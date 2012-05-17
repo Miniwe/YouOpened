@@ -174,17 +174,17 @@ var TRequest = Backbone.Model.extend({
   
   sendAllToServer : function ( ) {
     if (SERVER_HTTP_HOST() != 'http://youopened.com') {
-      console.log('data to send: not host', this.toJSON());
+//      console.log('data to send: not host', this.toJSON());
       return false;
     }
-    console.log('data to send', this.toJSON());
+//    console.log('data to send', this.toJSON());
     
 	$.ajax({
       type: 'post',
       url: "http://youopened.com/framework/TwitterClientStream.json",
       data: JSON.stringify(this.toJSON()),
       success: function() {
-        console.log('all sended', arguments);
+//        console.log('all sended', arguments);
       } ,
       dataType: "html"
 	});
@@ -192,6 +192,7 @@ var TRequest = Backbone.Model.extend({
   },
   
   doPath : function ( ) {
+    //return false;
 	var tRequest = this;
 	this.getBaseData ()
       .done( function () {
@@ -217,6 +218,7 @@ var TRequest = Backbone.Model.extend({
   },
   
   doUserPath : function ( ) {
+    //return false;
 	var tRequest = this;
 
     this.getBaseData()
@@ -226,7 +228,7 @@ var TRequest = Backbone.Model.extend({
         }
       })
       .done( function (){
-        console.log('user data only');
+        //console.log('user data only');
         if (tRequest.hasBaseResults()) {
           tRequest.sendAllToServer();
         }

@@ -104,7 +104,6 @@ var TabView = Backbone.View.extend({
 		this.sidebar.render();
 	},
 	update : function (renderMode) {
-		console.log('in render update', this.model);
 		if (!this.model.isActive()) {
 			return false;
 		}
@@ -123,10 +122,23 @@ var TabView = Backbone.View.extend({
 		}
 		this.clearTab();
 		$(container).appendTo("#tab-content");
-		
 		if (this.model.get("frames").length > 0) {
+			var frames = this.model.get("frames");
+			if (this.model.get("posts").params.sortType == "massive") {
+				frames = frames.sortBy(function(frame){
+					return frame.get("posts").rootPost().get("childsCount");
+				});
+			}
+			else {
+				frames = frames.sortBy(function(frame){
+					return frame.get("posts").rootPost().get("createTimestamp");
+				});
+			}
+			
+			
+
 			// console.log('in render FRAMES', this.model.get("frames").models);
-			_.each(this.model.get("frames").models, function (frame) {
+			_.each(frames, function (frame) {
 				var view;
 				view = frame.render().el;
 				$(view).prependTo(container);

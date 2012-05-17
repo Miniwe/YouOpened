@@ -72,8 +72,22 @@ var SidebarView = Backbone.View.extend({
 				link : "#invite/"+this.prepareUid(),
 				sortType : this.sortType
 			});
+			
 			$(this.el).html(html);
-			this.resetView(); 
+			
+			this.resetView();
+			
+			$("#frlink").unbind().click(function (){
+				var link = SERVER_HTTP_HOST() +  $(this).attr("href");
+				if (window.clipboardData)  { // IE 
+						window.clipboardData.setData("Text", link);
+				}
+				else {
+			    window.prompt("To copy link to fragment press Ctrl+C и Enter", link);
+				}
+				return false;
+			});
+			
 		}
 		this.renderString(this.searchString); // 
 		
