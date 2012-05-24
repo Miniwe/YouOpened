@@ -50,7 +50,7 @@
                 'js/app/collections/fragments.js',
 				
                 'js/app/models/post.js',
-                'js/app/collections/posts.js',
+                'js/app/collections/posts.js?v=1',
 				
                 'js/app/models/frame.js',
                 'js/app/collections/frames.js',

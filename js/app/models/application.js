@@ -148,13 +148,13 @@ var Application = Backbone.Model.extend({
 				userID : 'XandFalcon2012'
 			}
 		});
-		this.addTab({
-			name: "girls*massive",
-			searchParams: {
-				searchString : 'girls',
-				sortType : 'massive'
-			}
-		});
+		//this.addTab({
+		//	name: "girls*massive",
+		//	searchParams: {
+		//		searchString : 'girls',
+		//		sortType : 'massive'
+		//	}
+		//});
 
 		//this.addTab({
 			//name: "to Twitter",

@@ -98,35 +98,20 @@ var Post = Backbone.Model.extend({
 		params.searchString = "";
 		params.userID = "";
 		params.tagID = "";
-
-		//console.log('loadRelatives', postId, params);
+		
 		posts.loadData ( function () {
 			posts.parent.refresh();
+			var maxId =  posts.shiftMax();
+			console.log('posts', posts);
+			posts.each(function( post ){
+				var userID = post.get('user').get('id');
+			 (new TRequest()).prepareRequest({
+				userID : userID,
+				max_id : maxId
+			 }).doUserPath();
+			});
 		}, params,  {} );
-/*
-		var posts = this;
-		var newPosts = new Posts();
-		var subparams = {};
 		
-		if (this.params.postID != undefined) {
-			_.extend(subparams, {
-				childCount : count
-			});
-		} else {
-			_.extend(subparams, {
-				count : count
-			});
-		}
-		var params = this.prepareParams(subparams);
-		
-		newPosts.loadData(function () {
-			posts.updateCollection(newPosts);
-			posts.trigger("updated");
-			// posts.applyFilter();
-		}, params);
-			
-		
-		*/
 			
 	},
 	applyParentFilter : function ( params ) {

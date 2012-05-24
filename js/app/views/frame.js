@@ -81,28 +81,29 @@ var FrameView = Backbone.View.extend({
 	},
 	renderAll: function( ) {
 		var rootPost = this.posts.rootPost();
+
+		if (!rootPost) {
+			$(this.templateMessage.getTemplate() ({
+				message : "Posts not found"
+			})).appendTo(this.el);
+		}
+		
+		this.renderRoot();
+		
 		var models = this.posts.filter(function(model){
 			return model.id != rootPost.id;
 		});
 		
 		if (models.length > 0) {
-			this.renderRoot();
 
-			if (models.length > 0) {
-				models = _.sortBy(models,function(model){
-					return - model.get("createTimestamp");
-				});
-			}
+			models = _.sortBy(models,function(model){
+				return - model.get("createTimestamp");
+			});
 			
 			
 			_.each(models, function ( post ){
 				this.renderPost(post);
 			}, this);
-		}
-		else {
-			$(this.templateMessage.getTemplate() ({
-				message : "Posts not found"
-			})).appendTo(this.el);
 		}
 
 	},
@@ -170,6 +171,11 @@ var FrameView = Backbone.View.extend({
 		}, this);
 	},
 	scrollToView : function () {
-	   this.posts.rootPost().get('view').scrollToView();
+		 if (rootPost = this.posts.rootPost().get('view')) {
+			rootPost.scrollToView();
+		 }
+		 else {
+			
+		 }
 	}
 });

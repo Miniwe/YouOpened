@@ -83,12 +83,12 @@ var Posts = Backbone.Collection.extend({
 		console.log('will be updted');
 		this.loadNewPosts(10);
 	},
-	setFilter : function ( params ) {
+	setFilter : function ( filterparams ) {
 		// console.log('call set filter');
 		
 		var posts = this;
 		
-		this.filterParams = params; 
+		this.filterParams = filterparams; 
 		
 		var params = this.prepareParams({});
 		
@@ -231,13 +231,9 @@ var Posts = Backbone.Collection.extend({
 		
 		for (var i=requests.length; i--; ) {
 			// console.log('requests[i]', requests[i]);
-			(new TRequest()).prepareRequest(requests[i]).doUserPath();
+			//(new TRequest()).prepareRequest(requests[i]).doUserPath();
 		}
-		// по каждому фрагменту получить его рутовый пост
-		// maxRootid = rootPostId
-		// max id = max (maxRootid,  childs(root))
-		// get userid root
-		// сделать по каждому фрагменту цикл   
+	
 	},
 	updateFragmentsCount : function ( ) {
 		var posts = this;
@@ -417,13 +413,32 @@ var Posts = Backbone.Collection.extend({
 			childOffset: newPosts.getOffset( posts.childPage, newPosts.childPageSize ),
 			withChilds: 1
 		});
-		params.tagID = '';
 		params.userID = '';
+		params.tagID = '';
 		params.searchString = '';
+		/*
+		var tParams = _.extend(_.clone(params), {
+				userID : posts.rootPost().get('user').get('id'),
+				max_id : posts.getMinId(),
+				postID : ''
+		});
 		
+		console.log('fragment params', tParams);
+		(new TRequest()).prepareRequest(tParams).prepareFilter(this.filterParams).doPath();
+		*/
 		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);
 			posts.trigger('updated');
+			
+			var maxId =  newPosts.shiftMax();
+			newPosts.each(function( post ){
+				var userID = post.get('user').get('id');
+			 (new TRequest()).prepareRequest({
+				userID : userID,
+				max_id : maxId
+			 }).doUserPath();
+			});
+			
 		}, params, {});
 	},
 	nextFragmentsPage : function ( ) {
@@ -435,6 +450,14 @@ var Posts = Backbone.Collection.extend({
 			offset: posts.getOffset( posts.page, posts.pageSize ),
 			withChilds: 0
 		});
+		
+		var tParams = _.extend(_.clone(params), {
+				max_id : posts.getMinId()
+		});
+		
+		console.log('tab params', tParams);
+		(new TRequest()).prepareRequest(tParams).prepareFilter(this.filterParams).doPath();
+		
 		posts.loadData(function(){
 			posts.trigger('updated');
 		}, params, {});
@@ -549,5 +572,30 @@ var Posts = Backbone.Collection.extend({
 	},
 	getIds: function () {
 		return this.pluck("id").join(",");
+	},
+	shiftMax: function () {
+		if (this.length < 0) {
+				return 0;
+		}
+		var max = this.max(function (model) {
+				return model.get("id");
+		});
+		
+		var model_id = max.get("id");
+		var increaseStr = parseInt(model_id.substring(0,4)) + 3;
+		var addStr = model_id.substring(4,String(model_id).length);
+		model_id = String(increaseStr) + String(addStr);
+		
+		console.log('max post id and increased', max.get('id'), model_id);
+		
+		return model_id;
+	},
+	getMinId: function () {
+    if (this.length < 0) {
+				return 0;
+		}
+		return this.min(function (model) {
+				return model.get("id");
+		}).get("id");
 	}
 });

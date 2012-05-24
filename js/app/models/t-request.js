@@ -10,10 +10,15 @@ defaults : {
 getJson : function() {
   var tUser = this;
   var d = $.Deferred();
-  $.getJSON("http://search.twitter.com/search.json?callback=?", {
-	  rpp : 100,
-	  q : "from:"+this.get("to_user")+" OR to:"+this.get("to_user")
-	}, function(data){
+  var data = {
+    rpp : 100
+  };
+  var userName = this.get("to_user");
+  if (userName !='') {
+    data.q = "from:"+userName+" OR to:"+ userName;
+  }
+  
+  $.getJSON("http://search.twitter.com/search.json?callback=?", data, function(data){
 	  tUser.set({"json": data});				
 	  d.resolve(); ;
 	}
@@ -46,12 +51,13 @@ var TwitterUsers = Backbone.Collection.extend({
 
 var TRequest = Backbone.Model.extend({
   defaults: {
-	request: {},
-	baseData : {},
-	users : new TwitterUsers 
   },
   initialize : function () {
-  
+    this.set({
+      request: {},
+      baseData : {},
+      users : new TwitterUsers 
+    });
   },
   prepareRequest : function (request) {
 	var prepared = {
@@ -60,6 +66,12 @@ var TRequest = Backbone.Model.extend({
 	  rpp: 100,
 	  q: []
 	};
+	if (request.min_id != undefined && request.min_id != "") {
+	  prepared.min_id = request.min_id; 
+	}
+	if (request.max_id != undefined && request.max_id != "") {
+	  prepared.max_id = request.max_id; 
+	}
 	if (request.sinceId != undefined && request.sinceId != "") {
 	  prepared.sinceId = request.sinceId; 
 	}
@@ -75,7 +87,9 @@ var TRequest = Backbone.Model.extend({
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
 	  for (var i=users.length; i--;) {
-		users[i] = "from:"+users[i]+" OR to:"+users[i]
+        if (users[i] != '') {
+          users[i] = "from:"+users[i]+" OR to:"+users[i]
+        }
 	  }
 	  prepared.q.push(users.join(' OR '));
 	}
@@ -96,13 +110,16 @@ var TRequest = Backbone.Model.extend({
 	  rpp: 100,
 	  q: []
 	};
+//    console.log('request', request);
 	if (request.searchString != undefined && request.searchString != "") {
 	  prepared.q.push('"'+request.searchString+'"')
 	}
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
 	  for (var i=users.length; i--;) {
-		users[i] = "from:"+users[i]+" OR to:"+users[i]
+        if (users[i] != '') {
+          users[i] = "from:"+users[i]+" OR to:"+users[i]
+        }
 	  }
 	  prepared.q.push(users.join(' OR '));
 	}
@@ -111,7 +128,7 @@ var TRequest = Backbone.Model.extend({
 	  prepared.q.push(tags.join(' OR '));
 	}
 	prepared.q = prepared.q.join(" ");
-	console.log('filter request', prepared);
+//	console.log('filter request', prepared);
 	
 	this.addFilterToRequest(prepared);
 	
@@ -123,28 +140,27 @@ var TRequest = Backbone.Model.extend({
 	
 	baseRequest.q = "("+baseRequest.q+") AND ("+filter.q+")";
 	this.set({"request": baseRequest});
-	console.log('common request', this.get("request"));
+//	console.log('common request', this.get("request"));
 	},
   
-  getUniq : function ( ) {
+  getUniq : function ( baseData ) {
 	var d = $.Deferred();
-	var baseData = this.get("baseData");
 	var users = this.get("users");
 	var cRes = {};
-	
+//	console.log('get');
 	for (var i = baseData.results.length; i--; ) {
 	cRes = baseData.results[i];
 	
 	if (cRes.to_user != undefined && cRes.to_user != "") {
-	if (!_.find(users.models, function (user){
-	return (user.to_user == cRes.to_user); 
+	if (!_.find(this.get("users").models, function (user){
+	return (user.get('to_user') == cRes.to_user); 
 	})) {
 	users.add(cRes);
 	}				
 	}
 	
-	if (users.length > 2) {
-	break;
+	if (this.get("users").length > 2) {
+      break;
 	}
 	}
 	d.resolve();
@@ -174,10 +190,11 @@ var TRequest = Backbone.Model.extend({
   
   sendAllToServer : function ( ) {
     if (SERVER_HTTP_HOST() != 'http://youopened.com') {
-//      console.log('data to send: not host', this.toJSON());
+//      console.log('data to send: not host', JSON.stringify(this.toJSON()));
+      
       return false;
     }
-//    console.log('data to send', this.toJSON());
+//    console.log('data to send', JSON.stringify(this.toJSON()));
     
 	$.ajax({
       type: 'post',
@@ -199,7 +216,7 @@ var TRequest = Backbone.Model.extend({
         if (!tRequest.hasBaseResults()) {
           return false;
         }
-        tRequest.getUniq ();
+        tRequest.getUniq (tRequest.get('baseData'));
       })
       .done( function () {
         tRequest.get("users").getSelfJsons();

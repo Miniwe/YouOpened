@@ -54,6 +54,7 @@ var Tab = Backbone.Model.extend({
 		
 		var tab = this;
 		this.get("posts").updateParams(this.get("searchParams"));
+		
 //		console.log('this.get("posts")', this.get("posts").params);
 		
 		(new TRequest()).prepareRequest(this.get("posts").params).doPath();
