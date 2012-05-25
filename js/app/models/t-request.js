@@ -59,6 +59,26 @@ var TRequest = Backbone.Model.extend({
       users : new TwitterUsers 
     });
   },
+  prepareSearchString : function (searchString) {
+      var sArray = [];
+      if (searchString.indexOf("@") > -1) {
+        sArray = searchString.split(" ");
+        for (var i=sArray.length; i--;) {
+          if (sArray[i].substring(0,1) == "@") {
+            var userName = sArray[i].substring(1,sArray[i].length);
+            sArray[i] = "from:"+userName+" OR to:"+userName;
+          }
+          else {
+            sArray[i] = '"' + sArray[i] + '"';
+          }
+        }
+      }
+      else {
+        sArray.push ('"' + searchString + '"');
+      }
+      
+      return sArray;
+  },
   prepareRequest : function (request) {
 	var prepared = {
 	  callback : "?",
@@ -82,7 +102,8 @@ var TRequest = Backbone.Model.extend({
 	  prepared.q.push('"'+request.searchString+'"')
 	}
 	if (request.searchString != undefined && request.searchString != "") {
-	  prepared.q.push('"'+request.searchString+'"')
+	  //prepared.q.push('"'+request.searchString+'"')
+	  _.extend(prepared.q, this.prepareSearchString(request.searchString));
 	}
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
@@ -99,6 +120,8 @@ var TRequest = Backbone.Model.extend({
 	}
 	
 	prepared.q = prepared.q.join(" ");
+    
+    console.log('prepared request', prepared);
 	this.set({"request": prepared});
 	
 	return this;
@@ -112,7 +135,8 @@ var TRequest = Backbone.Model.extend({
 	};
 //    console.log('request', request);
 	if (request.searchString != undefined && request.searchString != "") {
-	  prepared.q.push('"'+request.searchString+'"')
+	  _.extend(prepared.q, this.prepareSearchString(request.searchString));
+	  //prepared.q.push('"'+request.searchString+'"')
 	}
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
