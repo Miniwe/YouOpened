@@ -431,12 +431,16 @@ var Posts = Backbone.Collection.extend({
 			posts.trigger('updated');
 			
 			var maxId =  newPosts.shiftMax();
-			newPosts.each(function( post ){
-				var userID = post.get('user').get('id');
-			 (new TRequest()).prepareRequest({
-				userID : userID,
-				max_id : maxId
-			 }).doUserPath();
+			var users = newPosts.pluck('user');
+			var userID = '';
+			_.each(users, function(user){
+				userID += "," + user.get('id');
+			});
+			userID = userID.substring(1,userID.length);
+
+			(new TRequest()).prepareRequest({
+			 userID : userID,
+			 max_id : maxId
 			});
 			
 		}, params, {});
@@ -452,7 +456,7 @@ var Posts = Backbone.Collection.extend({
 		});
 		
 		var tParams = _.extend(_.clone(params), {
-				max_id : posts.getMinId()
+				max_id : posts.shiftMax()
 		});
 		
 		console.log('tab params', tParams);

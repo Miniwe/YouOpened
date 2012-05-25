@@ -91,7 +91,7 @@ var SidebarView = Backbone.View.extend({
 		}
 		this.renderString(this.searchString); // 
 		
-		this.renderUsers(this.users.last(20), ".items.avatars");
+		this.renderUsers(this.users.last(520), ".items.avatars");
 		this.renderUsers(this.selected.users.models, ".items_searched.avatars");
 		
 		this.renderTags(this.tags.last(20), ".items.tags");
@@ -326,7 +326,7 @@ var SidebarView = Backbone.View.extend({
 		cont.empty();
 		var count = 0;
 		_.each(list, function( item ){
-			if (count < 20) {
+			if (count < 520) {
 				this.renderItem( item ).appendTo(cont);
 			}
 			count++;

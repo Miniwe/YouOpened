@@ -15,7 +15,7 @@ body {
 /* The white background content wrapper */
 .container > .content {
 	background-color: #fff;
-	padding: 20px;
+	padding: 20px 0;
 	margin: 0 -20px; /* negative indent the amount of the padding to maintain the grid system */
 	-webkit-border-radius: 0 0 6px 6px;
 	-moz-border-radius: 0 0 6px 6px;
@@ -37,6 +37,10 @@ body {
 }
 
 #tab-content {
-	margin-left: 40px;
+	/* margin-left: 40px;*/
 	padding-top: 52px;
+}
+
+.row {
+	margin-left: 0;
 }

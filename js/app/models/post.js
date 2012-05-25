@@ -103,13 +103,18 @@ var Post = Backbone.Model.extend({
 			posts.parent.refresh();
 			var maxId =  posts.shiftMax();
 			console.log('posts', posts);
-			posts.each(function( post ){
-				var userID = post.get('user').get('id');
-			 (new TRequest()).prepareRequest({
-				userID : userID,
-				max_id : maxId
-			 }).doUserPath();
+			
+			var users = posts.pluck('user');
+			var userID = '';
+			_.each(users, function(user){
+				userID += "," + user.get('id');
 			});
+			userID = userID.substring(1,userID.length);
+			console.log('pluck users', userID);
+			(new TRequest()).prepareRequest({
+			 userID : userID,
+			 max_id : maxId
+			 }).doUserPath();
 		}, params,  {} );
 		
 			

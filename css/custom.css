@@ -10,7 +10,6 @@ root {
     display: block;
 }
 
-
 .postdiv > .user {
 	font-weight: bold;
 }
@@ -24,7 +23,6 @@ root {
 	text-align: center;
 	opacity: .4;
 	-webkit-transition:opacity .5s ease-in-out .2s;
-
 }
 
 .postdiv:hover > .childs {
@@ -52,6 +50,10 @@ div.parent {
 
 div.parent .icon {
 	background: transparent url(img/parent24.png) no-repeat -5px -5px;
+}
+
+.frame {
+    background-color: #eee;
 }
 
 .frame > .postdiv .parent > * {
@@ -310,7 +312,7 @@ input.typebox.pactive::-webkit-input-placeholder {
 #container > .content > .page-header {
 	position: fixed;
 	z-index:10000; 
-	background-color: #fff;
+	background-color: #fff; 
 	padding: 20px 20px 10px;
 	margin: -20px -20px 20px;
 }

@@ -60,6 +60,7 @@ var FrameView = Backbone.View.extend({
 		if (this.model.isExpanded() && 
 			this.posts.rootPost().get("childsCount") > this.posts.models.length) {
 			$(this.templateMore.getTemplate() ({})).appendTo(this.el);
+			$(this.el).find('.more-posts').html('more comments');
 		}
 	},
 	renderAlertLink: function( newCount ) {
