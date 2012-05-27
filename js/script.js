@@ -6,14 +6,14 @@
             ],
             complete: function () {
                 if ( !window.jQuery ) {
-                    Modernizr.load('js/libs/jquery-1.7.1.js');
+                    Modernizr.load('js/libs/jquery-1.7.2.min.js');
                 }
             }
         },
         {
             load: [
                 'js/plugins.js',
-                'js/libs/underscore.js',
+                'js/libs/underscore-min.js',
                 'js/libs/backbone-min.js'
             ],
             complete: function () {
@@ -37,49 +37,49 @@
             load: [
                 'js/app/config.js',
                 'js/app/router.js',
-				
+                
                 'js/app/collection-extend.js',
-
+                
                 'js/app/models/tag.js',
                 'js/app/collections/tags.js',
                 
                 'js/app/models/user.js',
                 'js/app/collections/users.js',
-				
+                
                 'js/app/models/fragment.js',
                 'js/app/collections/fragments.js',
-				
+                
                 'js/app/models/post.js',
                 'js/app/collections/posts.js?v=1',
-				
+                
                 'js/app/models/frame.js',
                 'js/app/collections/frames.js',
-				
+                
                 'js/app/models/tab.js',
                 'js/app/collections/tabs.js',
                 
                 'js/app/models/template.js',
                 'js/app/collections/templates.js',
-				
+                
                 'js/app/models/siteuser.js',
                 'js/app/views/siteuser.js',
-				
+                
                 'js/app/views/sidebar.js',
                 'js/app/views/searchview.js',
-				
+                
                 'js/app/views/post.js',
-				
+                
                 'js/app/views/frame.js',
-				
+                
                 'js/app/views/tabheader.js',
                 'js/app/views/tab.js',
-
+                
                 'js/app/models/t-request.js', 
-				
+                
                 'js/app/views/application.js'
             ],
             complete: function () {
-//                log('application loaded');
+//                console.log('application loaded');
             }
         },
         {
@@ -89,7 +89,7 @@
             ],
             complete: function () {
                 var app = new Application(AppConfig);
-//                log('scripts loaded and application started', Backbone);
+//                console.log('scripts loaded and application started', Backbone);
             }
         }
     ])
