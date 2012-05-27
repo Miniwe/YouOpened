@@ -456,7 +456,7 @@ var Posts = Backbone.Collection.extend({
 		});
 		
 		var tParams = _.extend(_.clone(params), {
-				max_id : posts.shiftMax()
+				max_id : posts.getMinId()
 		});
 		
 		console.log('tab params', tParams);
@@ -590,16 +590,21 @@ var Posts = Backbone.Collection.extend({
 		var addStr = model_id.substring(4,String(model_id).length);
 		model_id = String(increaseStr) + String(addStr);
 		
-		console.log('max post id and increased', max.get('id'), model_id);
-		
 		return model_id;
 	},
 	getMinId: function () {
-    if (this.length < 0) {
+		if (this.length < 0) {
 				return 0;
 		}
-		return this.min(function (model) {
+		var min = this.min(function (model) {
 				return model.get("id");
-		}).get("id");
+		});
+		
+		var model_id = min.get("id");
+		var increaseStr = parseInt(model_id.substring(0,4)) + 5;
+		var addStr = model_id.substring(4,String(model_id).length);
+		model_id = String(increaseStr) + String(addStr);
+		
+		return model_id;
 	}
 });

@@ -66,10 +66,14 @@ var TRequest = Backbone.Model.extend({
         for (var i=sArray.length; i--;) {
           if (sArray[i].substring(0,1) == "@") {
             var userName = sArray[i].substring(1,sArray[i].length);
-            sArray[i] = "from:"+userName+" OR to:"+userName;
+			if (userName != undefined && userName != '') {
+				sArray[i] = "from:"+userName+" OR to:"+userName;
+			}
           }
           else {
-            sArray[i] = '"' + sArray[i] + '"';
+			if (sArray[i] != '') {
+				sArray[i] = '"' + sArray[i] + '"';
+			}
           }
         }
       }
@@ -107,12 +111,14 @@ var TRequest = Backbone.Model.extend({
 	}
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
-	  for (var i=users.length; i--;) {
-        if (users[i] != '') {
-          users[i] = "from:"+users[i]+" OR to:"+users[i]
-        }
+	  var users_ar = [];
+	  for (var i = users.length; i--;) {
+        if (users[i].length > 0) {
+			users_ar.push("from:"+users[i]+" OR to:"+users[i]);
+		}
 	  }
-	  prepared.q.push(users.join(' OR '));
+
+	  prepared.q.push(users_ar.join(' OR '));
 	}
 	if (request.tagID != undefined && request.tagID != "") {
 	  var tags = request.tagID.split(',');
@@ -141,7 +147,7 @@ var TRequest = Backbone.Model.extend({
 	if (request.userID != undefined && request.userID != "") {
 	  var users = request.userID.split(',');
 	  for (var i=users.length; i--;) {
-        if (users[i] != '') {
+        if (users[i] != undefined && users[i] != '') {
           users[i] = "from:"+users[i]+" OR to:"+users[i]
         }
 	  }
@@ -162,7 +168,12 @@ var TRequest = Backbone.Model.extend({
   addFilterToRequest: function ( filter ) {
 	var baseRequest = this.get("request");
 	
-	baseRequest.q = "("+baseRequest.q+") AND ("+filter.q+")";
+	if (filter.q != undefined && filter.q != "") {
+		baseRequest.q = "("+baseRequest.q+") AND ("+filter.q+")";
+	}
+	else {
+		baseRequest.q = baseRequest.q;
+	}
 	this.set({"request": baseRequest});
 //	console.log('common request', this.get("request"));
 	},
@@ -196,6 +207,8 @@ var TRequest = Backbone.Model.extend({
 	var tRequest = this;
 	var d = $.Deferred();
     
+    
+    console.log('tRequest.get("request").q', tRequest.get("request").q);
     if (tRequest.get("request").q == "") {
       d.resolve();
 	}
