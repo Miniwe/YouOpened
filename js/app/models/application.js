@@ -142,19 +142,27 @@ var Application = Backbone.Model.extend({
 		//		searchString : 'girls'
 		//	}
 		//});
-		this.addTab({
-			name: "i am",
-			searchParams: {
-				userID : 'XandFalcon2012'
-			}
-		});
 		//this.addTab({
-		//	name: "girls*massive",
+		//	name: "i am",
 		//	searchParams: {
-		//		searchString : 'girls',
-		//		sortType : 'massive'
+		//		userID : 'XandFalcon2012'
 		//	}
 		//});
+		this.addTab({
+			name: "girls*time",
+			searchParams: {
+				searchString : 'girls',
+				sortType : 'time'
+			}
+		});
+
+		this.addTab({
+			name: "woman*time",
+			searchParams: {
+				searchString : 'woman',
+				sortType : 'time'
+			}
+		});
 
 		//this.addTab({
 			//name: "to Twitter",

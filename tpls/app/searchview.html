@@ -1,20 +1,39 @@
-<div class="row span10" style="margin-left: 0px;">
-<div id="inner" class="span6" style="margin-left: 0px;">
+<li>
+  <a id="frlink" href="#invite" class="with-tooltip" rel="tooltip" title="Link to fragment"><i class="icon-share-alt"></i></a>
+</li>
+<li>
+<form class="navbar-form form-search">
+  <input type="text" class="input-medium search-query">
+  <button type="submit" class="btn btn-primary new-search">Search</button>
+</form>  
+</li>
+<li>
+<label>for:</label>
+</li>
+<li>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">Strings <b class="caret"></b></a>
+<ul class="dropdown-menu items searchstring"></ul>
+</li>
+<li>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">Users <b class="caret"></b></a>
+<ul class="dropdown-menu items avatars"></ul>
+</li>
+<li>
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">Tags <b class="caret"></b></a>
+<ul class="dropdown-menu items tags"></ul>
+</li>
+<li class="dropdown">
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Order <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li><a href="#order-massively">Replies Desc</a></li>
+    <li><a href="#order-time">Time Desc</a></li>
+  </ul>
+</li>
+<li class="pull-right">
+  <a class="start-new" href="#start-new"><i class="icon-pencil"></i> Start new conversation</a>
+  <!-- <span id="scont" style="margin:0;"></span> -->
+</li>
+<li class="pull-right" style="display: none;">
+<a class="btn new-twits" href="#new-twits"> <span class="ntcount"></span> New tweets </a>
+</li>
 
-<a class="btn primary new-search" href="#search">Search >></a>
-	
-<label style="float: none;">for: </label>
-
-<ul class="items searchstring"></ul>
-
-<ul class="items avatars"></ul>
-
-<ul class="items tags"></ul>
-	
-</div>
-<div class="span4" style="margin-left: 0px; text-align: right;">
-  <a class="btn primary start-new" href="#start-new">New Conversation</a>
-</div>
-<div id="scont" class="span10" style="margin:0;">
-</div>
-</div>

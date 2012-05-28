@@ -161,5 +161,11 @@ var SearchView = Backbone.View.extend({
 			return false;
 		});
 		
+		$('.with-tooltip').tooltip({
+			placement : "bottom",
+			delay: { show: 500, hide: 100 }
+		})
+
+		
 	}
 });

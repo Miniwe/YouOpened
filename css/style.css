@@ -9,3 +9,87 @@
 
 @import url("bootstrap/bootstrap.min.css") all;
 @import url("bootstrap/bootstrap-responsive.css") all;
+@import url("bootstrap/docs.css") all; 
+
+.navbar-fixed-top .brand {
+  color: #fff;
+  margin-right: 20px;
+  margin-left: 0px;
+  float: left;
+}
+
+#maincontent{
+  padding-top:20px;
+}
+
+.form-search {
+  padding: 0 10px;
+}
+
+.new-search {
+  margin-top: .4em;
+}
+
+.subnav .nav > li > label {
+margin: 0;
+padding-top: 11px;
+padding-bottom: 11px;
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+font-weight: bold;
+}
+
+.btn.new-twits {
+  border: 0;
+  color: #090;
+  font-weight: bold; 
+}
+
+.i-container {
+	display: inline-block;
+	vertical-align: text-top;
+	cursor: pointer;
+}
+
+.i-container .ui-icon-close, .i-container:hover .ui-icon-circle-close {
+	display: block;
+    width:  16px;
+    height:  16px;
+}
+
+.i-container:hover .ui-icon-close, .i-container .ui-icon-circle-close {
+	display: none;
+    width:  16px;
+    height:  16px;
+}
+
+.ui-state-default .ui-icon {
+  background-image: url(img/ui-icons_b83400_256x240.png);
+}
+.ui-icon-close {
+  background-position: -80px -128px;
+}
+.ui-icon-circle-close {
+  background-position: -32px -192px;
+}
+
+.sign-twitter {
+	background: transparent url(img/twitter_signin.png) no-repeat;
+	background-position: 0 0;
+	width: 150px;
+	height: 22px;
+	-webkit-transition: none;
+}
+.sign-twitter:hover {
+	background-position: 0 -24px;
+}
+.sign-twitter:active {
+	background-position: 0 -48px;
+}
+
+.avatar.little {
+	width:22px;
+	height:22px;
+	margin: -10px 0;
+}

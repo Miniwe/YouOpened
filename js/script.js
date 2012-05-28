@@ -13,8 +13,18 @@
         {
             load: [
                 'js/plugins.js',
+                'js/libs/bootstrap.min.js',
                 'js/libs/underscore-min.js',
                 'js/libs/backbone-min.js'
+            ],
+            complete: function () {
+//                log('plugins+backbone loaded');
+            }
+        },
+        {
+            load: [
+                'js/libs/bootstrap/bootstrap-tooltip.js',
+                //'js/libs/bootstrap/bootstrap-dropdown.js'
             ],
             complete: function () {
 //                log('plugins+backbone loaded');

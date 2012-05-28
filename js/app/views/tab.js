@@ -5,9 +5,6 @@
 var TabView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'tab',
-	templateAlert: new Template({
-		fileName: 'posts/alert'
-	}),
 	templateMore: new Template({
 		fileName: 'app/more'
 	}),
@@ -54,36 +51,32 @@ var TabView = Backbone.View.extend({
 		return this	;
 	},
 	renderAlertLink: function( newCount ) {
-//		console.log('render alert link');
 		var TabView = this;
-		$(".alertnew").remove();
-//		this.removeAlertLink();
-		var a = $(this.templateAlert.getTemplate() ({
-			newCount: newCount
-		})).appendTo($("#searchView"));
+		$(".new-twits")
+			.parent().hide();
+		$(".new-twits")
+			.find(".ntcount").html("");
+
+		$(".new-twits")
+			.find(".ntcount").html(newCount)
+		$(".new-twits")
+			.parent().show();
 		
-		$("#searchView").find(".new-twits").click(function(){
+		$(".new-twits").unbind().click(function(){
 			TabView.model.get("posts").loadNewPosts(newCount);
 			TabView.removeAlertLink();
 			return false;
 		})
 	},
 	removeAlertLink: function() {
-		var TabView = this;
-		//console.log('remove alert link call');
-		//console.trace();
-		$(".alertnew").remove();
-//		this.renderAlertLink( 0 );
-		var a = $(this.templateAlert.getTemplate() ({
-			newCount: 0
-		})).appendTo($("#searchView"));
-		
-		$("#searchView").find(".new-twits").click(function(){
-			TabView.model.get("posts").loadNewPosts(10);
-			TabView.removeAlertLink();
-			return false;
-		})
+		$(".new-twits")
+			.parent().hide();
+		$(".new-twits")
+			.find(".ntcount").html("");
 
+		$(".new-twits")
+			.parents('').show();
+			
 	},
 	renderMoreLink: function( ) {
 		
