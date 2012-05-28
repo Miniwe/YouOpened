@@ -1,6 +1,6 @@
 var FrameView = Backbone.View.extend({
 	tagName : 'div',
-	className : 'frame span10',
+	className : 'frame',
 	template: new Template({
 		fileName: 'posts/frame'
 	}),

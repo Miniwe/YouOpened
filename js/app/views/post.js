@@ -4,7 +4,7 @@
 
 var PostView = Backbone.View.extend({
 	tagName : 'div',
-	className : 'postdiv row',
+	className : 'postdiv row-fluid',
 	template: new Template({fileName: 'posts/post'}),
 	templatePostForm: new Template({fileName: 'posts/postform'}),
 	/*events: {

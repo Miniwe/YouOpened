@@ -1,26 +1,24 @@
-<div class="span1">
-	<div class="avatar">
-		<img class="" src="<%= user.get('avatarUrl') %>" alt="<%= user.id %>" title="<%= user.get('name') %>" />
+<div class="span1 avatar">
+	<img class="" src="<%= user.get('avatarUrl') %>" alt="<%= user.id %>" title="<%= user.get('name') %>" />
+</div>
+<div class="span9">
+	<div class="parent">
+		<div class="icon"></div>
 	</div>
+	<div class="user">
+		<span title="id: <%= user.id %>"><%= user.get('name') %></span> 
+		<span class="date" title="<%= id %>:<%= pid %>"><%= createTime %></span>
+	<!--	<span><%= id %></span>-->
+	</div>
+	<div class="text" title="text">
+	<!--	<%= createTimestamp %>-->
+		<%= id %>: <%= text %></div>
+	<h6 class="subinfio">
+		<ul class="tags" title="tags"><% _.each(tags, function(tag) { %>
+			<li><span title="<%= tag.get("name") %>" class="label"><%= tag.get("name") %></span></li>
+		<% }) %></ul> 
+	</h6>
 </div>
-<div class="span7">
-<div class="parent">
-	<div class="icon"></div>
-</div>
-<div class="user">
-	<span title="id: <%= user.id %>"><%= user.get('name') %></span> 
-	<span class="date" title="<%= id %>:<%= pid %>"><%= createTime %></span>
-<!--	<span><%= id %></span>-->
-</div>
-<div class="text" title="text">
-<!--	<%= createTimestamp %>-->
-	<%= id %>: <%= text %></div>
-<h6 class="subinfio">
-	<ul class="tags" title="tags"><% _.each(tags, function(tag) { %>
-		<li><span title="<%= tag.get("name") %>" class="label"><%= tag.get("name") %></span></li>
-	<% }) %></ul> 
-</h6>
-</div>
-<div class="childs span2">
+<div class="span2">
 	<span title="childs_count"><%= childsCount %></span>
 </div>
