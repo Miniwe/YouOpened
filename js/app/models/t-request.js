@@ -127,7 +127,6 @@ var TRequest = Backbone.Model.extend({
 	
 	prepared.q = prepared.q.join(" ");
     
-    console.log('prepared request', prepared);
 	this.set({"request": prepared});
 	
 	return this;
@@ -208,7 +207,6 @@ var TRequest = Backbone.Model.extend({
 	var d = $.Deferred();
     
     
-    console.log('tRequest.get("request").q', tRequest.get("request").q);
     if (tRequest.get("request").q == "") {
       d.resolve();
 	}

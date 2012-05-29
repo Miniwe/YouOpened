@@ -2,23 +2,20 @@
 	<img class="" src="<%= user.get('avatarUrl') %>" alt="<%= user.id %>" title="<%= user.get('name') %>" />
 </div>
 <div class="span9">
-	<div class="parent">
-		<div class="icon"></div>
-	</div>
-	<div class="user">
-		<span title="id: <%= user.id %>"><%= user.get('name') %></span> 
-		<span class="date" title="<%= id %>:<%= pid %>"><%= createTime %></span>
-	<!--	<span><%= id %></span>-->
-	</div>
+	<span class="parent-icon"></span>
+	<span class="user" title="id: <%= user.id %>"><%= user.get('name') %></span> 
+	<span class="date" title="<%= id %>:<%= pid %>"> / <%= createTime %></span>
+<!--	<span><%= id %></span>-->
 	<div class="text" title="text">
 	<!--	<%= createTimestamp %>-->
-		<%= id %>: <%= text %></div>
+		<%= id %>: <%= text %>
+	</div>
 	<h6 class="subinfio">
 		<ul class="tags" title="tags"><% _.each(tags, function(tag) { %>
-			<li><span title="<%= tag.get("name") %>" class="label"><%= tag.get("name") %></span></li>
+			<li><span title="<%= tag.get("name") %>" class="label label-info"><%= tag.get("name") %></span></li>
 		<% }) %></ul> 
 	</h6>
 </div>
-<div class="span2">
-	<span title="childs_count"><%= childsCount %></span>
+<div class="span2 childs_count_cont">
+	<span class="childs_count"><%= childsCount %></span>
 </div>

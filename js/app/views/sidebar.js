@@ -6,13 +6,16 @@ var SidebarView = Backbone.View.extend({
 	template: new Template({
 		fileName: 'app/sidebar'
 	}),
+	
 	events : {
 	},
+	
 	initialize : function () {
 		this.initPosts(this.model.get("posts"));
 		
 		this.resetSelected();
 	},
+	
 	initPosts: function (posts) {
 		this.posts = posts;
 		this.sortType = posts.params.sortType;
@@ -20,6 +23,7 @@ var SidebarView = Backbone.View.extend({
 		this.users = posts.users;
 		this.tags = posts.tags;
 	},
+	
 	resetSelected: function  ( ) { 
 		this.selected = {
 			searchString : '',
@@ -27,35 +31,13 @@ var SidebarView = Backbone.View.extend({
 			tags : new Tags()
 		};
 	},
+	
 	resetView: function  ( ) { 
 		$(this.el).find(".looking, .items_searched").addClass("hidden");
 		$(this.el).find("#searchbox").val("");
 		$(this.el).find(".items_searched.avatars, .items_searched.tags").html("");
 	},
-	prepareUid: function  ( ) {
-//		console.log('this', this);
-		var uid = "";
-		uid += this.prepareQuery(this.posts.params);
-//		console.log('uid',uid);
-		uid = Base64.encode(uid);
-		return uid;
-	},
-	prepareQuery: function ( params ) {
-		var query = '';
-		if (params.postID != undefined && params.postID.length > 0) {
-			query += 'postID=' + params.postID + "&";
-		}
-		if (params.tags != undefined && params.tags.length > 0) {
-			query += 'tagID=' + params.tags.pluck("id").join(',') + "&";
-		}
-		if (params.users != undefined && params.users.length > 0) {
-			query += 'userID=' + params.users.pluck("id").join(',') + "&";
-		}
-		if (params.searchString != undefined && params.searchString != '') {
-			query += 'searchString=' + params.searchString.toString();
-		}
-		return query;
-	},
+
 	render : function (renderMode, posts) {
 		if (posts != undefined) {
 //			console.log('frame posts', posts);
@@ -69,24 +51,11 @@ var SidebarView = Backbone.View.extend({
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
 			var html = this.template.getTemplate() ({
-				link : "#invite/"+this.prepareUid(),
-				sortType : this.sortType
 			});
 			
 			$(this.el).html(html);
 			
 			this.resetView();
-			
-			$("#frlink").unbind().click(function (){
-				var link = SERVER_HTTP_HOST() +  $(this).attr("href");
-				if (window.clipboardData)  { // IE 
-						window.clipboardData.setData("Text", link);
-				}
-				else {
-			    window.prompt("To copy link to fragment press Ctrl+C и Enter", link);
-				}
-				return false;
-			});
 			
 		}
 		this.renderString(this.searchString); // 
@@ -103,19 +72,21 @@ var SidebarView = Backbone.View.extend({
 		
 		return this;
 	},
+	
 	eventsAttach: function  ( ) {
-		var sidebar = this;
-		$(this.el).find("#sortType").change(function(){
-			console.log("change sidebar sort type", sidebar, $(this).val());
-			sidebar.posts.params.sortType = $(this).val();
-			console.log('sidebar.posts.params', sidebar.posts.params);
-			sidebar.posts.refresh();
-		})
+		
+		$(this.el).find('.with-tooltip').tooltip({
+			placement : "bottom",
+			delay: { show: 500, hide: 100 }
+		});
+		
 	},
+	
 	emptyRequest: function  (searchParams) {
 		var testStr = searchParams.searchString + searchParams.tagID + searchParams.userID;
 		return (testStr == '');
 	},
+	
 	startSearch: function  ( ) {
 		var searchParams = this.prepareSearchRequest(this.selected);
 		if (this.emptyRequest(searchParams)) {
@@ -132,6 +103,7 @@ var SidebarView = Backbone.View.extend({
 		
 //		this.resetSelected();
 	},
+	
 	startFilter: function  ( ) {
 		var posts = this.posts;
 		if ( this.model.get('posts') != posts ) {
@@ -142,6 +114,7 @@ var SidebarView = Backbone.View.extend({
 		// console.log('call start filter from side bar', posts, searchParams);
 		posts.setFilter(searchParams);
 	},
+	
 	prepareTabName : function ( params ) {
 		var tabName = '';
 		if (params.tags != undefined && params.tags.length > 0) {
@@ -156,6 +129,7 @@ var SidebarView = Backbone.View.extend({
 
 		return tabName;
 	},
+	
 	prepareFilterParams : function ( params ) {
 		var prepared = {};
 		if (params.searchString != "") {
@@ -173,6 +147,7 @@ var SidebarView = Backbone.View.extend({
 		}
 		return !_.isEmpty(prepared) ? prepared : false ;
 	},
+	
 	prepareSearchRequest : function ( params ) {
 		var prepared = {};
 		if (params.searchString != undefined) {
@@ -192,6 +167,7 @@ var SidebarView = Backbone.View.extend({
 		}
 		return prepared;
 	},
+	
 	renderString: function  ( str ) {
 		var rs = this;
 
@@ -207,6 +183,7 @@ var SidebarView = Backbone.View.extend({
 			return false;
 		});
 	},
+	
 	renderUsers: function  ( users,  cont ) {
 
 		var contEl = $(this.el).find(cont);
@@ -223,6 +200,7 @@ var SidebarView = Backbone.View.extend({
 		}
 		this.typeboxEvents($(cont).parents(".widget"), 'users');
 	},
+	
 	renderUser : function ( item, cont) {
 		var rs = this;
 		var renderedItem =  $("<li>")
@@ -232,6 +210,9 @@ var SidebarView = Backbone.View.extend({
 			.attr("alt", item.get("name"))
 			.attr("title", item.get("name"))
 			)
+		.addClass("with-tooltip")
+		.attr("title", item.get("name"))
+		.attr("rel", item.get("tooltip"))
 		.click( function () {
 //			console.log('user clicked');
 			rs.addToRequest( item );
@@ -239,6 +220,7 @@ var SidebarView = Backbone.View.extend({
 		});		
 		return renderedItem;
 	},
+	
 	renderTags: function  ( tags,  cont ) {
 		var cont = $(this.el).find(cont);
 		cont.empty();
@@ -253,12 +235,13 @@ var SidebarView = Backbone.View.extend({
 
 		this.typeboxEvents($(cont).parents(".widget"), 'tags');
 	},
+	
 	renderTag : function ( item, cont) {
 		var rs = this;
 		var renderedItem =  $("<li>")
 		.html(
 			$("<span>")
-			.addClass("label notice")
+			.addClass("label label-info")
 			.attr("title", item.get("name"))
 			.html(item.get("name"))
 			)
@@ -268,6 +251,7 @@ var SidebarView = Backbone.View.extend({
 		});		
 		return renderedItem;
 	},
+	
 	addToRequest: function  ( param ) {
 		var added,
 			res = false;
@@ -302,10 +286,10 @@ var SidebarView = Backbone.View.extend({
 		}
 		return res;
 	},
+	
 	showLooking: function  ( el, list ) {
 		var widget = $(this.el).find(".items"+el).parents(".widget");
 
-//		console.log('show looking', widget, list.length);
 		if (list.length > 0){
 			widget.find(".looking").removeClass("hidden").show();
 			widget.find("ul.items_searched").removeClass("hidden").show();
@@ -315,12 +299,14 @@ var SidebarView = Backbone.View.extend({
 			widget.find("ul.items_searched").addClass("hidden");
 		}
 	},
+	
 	filterList : function ( str, list ) {
 		var res = list.filter(function (item, index){
 			return (item.get("name").indexOf(str) > -1);
 		});
 		return res;
 	},
+	
 	renderFiltered : function ( widget, list ) {
 		var cont = widget.find("ul.items");
 		cont.empty();
@@ -332,6 +318,7 @@ var SidebarView = Backbone.View.extend({
 			count++;
 		}, this);
 	},
+	
 	renderItem : function (  item ) {
 		if (item instanceof Tag) {
 			return this.renderTag( item );
@@ -339,10 +326,9 @@ var SidebarView = Backbone.View.extend({
 		else if (item instanceof User){
 			return this.renderUser( item );
 		}
-	},	
+	},
+	
 	typeboxEvents : function ( widget, type ) {
-		// console.log('call type box event DISABLED @TODO');
-		// return false;
 		var rs = this;
 		var widgetEl = widget.find(".typebox");
 		widgetEl.unbind('focus').unbind('blur').unbind('keyup')
@@ -360,15 +346,12 @@ var SidebarView = Backbone.View.extend({
 			widgetEl.keyup();
 		})
 		.keyup(function (){
-//			console.log('keyup');
 			var str = $(this).val(),
 				base = [];
 				
 			base = rs[type];
 			
-//			console.log('str', str, widget, base);				
 			if (str == '') {
-				console.log('render empty');
 				rs.renderFiltered(widget, base.models);
 				return false;
 			}

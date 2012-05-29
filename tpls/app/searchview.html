@@ -1,9 +1,10 @@
-<li>
-  <a id="frlink" href="#invite" class="with-tooltip" rel="tooltip" title="Link to fragment"><i class="icon-share-alt"></i></a>
+<li class="with-tooltip" rel="tooltip" title="Link to fragment">
+  <a id="frlink" href="<%= link %>"><i class="icon-share-alt"></i></a>
 </li>
 <li>
 <form class="navbar-form form-search">
-  <input type="text" class="input-medium search-query">
+  <input type="text" class="input-medium search-query" id="searchbox" name="searchString" type="search" value=""
+         placeholder="SEARCH" title="Type fo search words" />
   <button type="submit" class="btn btn-primary new-search">Search</button>
 </form>  
 </li>
@@ -11,22 +12,22 @@
 <label>for:</label>
 </li>
 <li>
-<a class="dropdown-toggle" data-toggle="dropdown" href="#">Strings <b class="caret"></b></a>
-<ul class="dropdown-menu items searchstring"></ul>
+<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">Strings <b class="caret"></b></a> -->
+<ul class="items searchstring"></ul>
 </li>
 <li>
-<a class="dropdown-toggle" data-toggle="dropdown" href="#">Users <b class="caret"></b></a>
-<ul class="dropdown-menu items avatars"></ul>
+<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">Users <b class="caret"></b></a> -->
+<ul class="items avatars"></ul>
 </li>
 <li>
-<a class="dropdown-toggle" data-toggle="dropdown" href="#">Tags <b class="caret"></b></a>
-<ul class="dropdown-menu items tags"></ul>
+<!-- <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tags <b class="caret"></b></a> -->
+<ul class="items tags"></ul>
 </li>
 <li class="dropdown">
-  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Order <b class="caret"></b></a>
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Order <em class="sorttype-selected"><%= sortType %></em><b class="caret"></b></a>
   <ul class="dropdown-menu">
-    <li><a href="#order-massively">Replies Desc</a></li>
-    <li><a href="#order-time">Time Desc</a></li>
+    <li><a href="#order-massively" class="sorttype-option" data-sorttype="massive">Replies Desc</a></li>
+    <li><a href="#order-time" class="sorttype-option" data-sorttype="time">Time Desc</a></li>
   </ul>
 </li>
 <li class="pull-right">

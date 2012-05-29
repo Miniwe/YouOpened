@@ -157,10 +157,12 @@ var Application = Backbone.Model.extend({
 		});
 
 		this.addTab({
-			name: "woman*time",
+			name: "woman*mix",
 			searchParams: {
 				searchString : 'woman',
-				sortType : 'time'
+				sortType : 'time',
+				userID : 'jacobjvalerio,polkamasta420,davidenFL,GregHaworth1',
+				tagID : 'sore,vocabulary,springer'
 			}
 		});
 

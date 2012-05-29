@@ -1,48 +1,19 @@
-<div id="innerRS" class="span4">
+<div id="innerRS">
 
-
-	
-<div class="widget row">
-	<label class="primary"><a id="frlink" href="<%= link %>">Link to fragment</a></label>
-</div>
-	
-<div class="widget row">
-	<label class="secondary">Sort</label>
-	<select id="sortType">
-		<option value="time" <%= (sortType=='time')?'selected="selected"':"" %>>
-			by Time Desc
-		</option>
-		<option value="massive" <%= (sortType=='massive')?'selected="selected"':"" %>>
-			by Replies Count
-		</option>
-	</select>
-		
-		
-	</select>
-</div>
-
-<div class="widget row">
-	<form id="searchForm" action="#" style="display: inline;">
-		<input id="searchbox" name="searchString" class="xlarge typebox" type="search" value="" placeholder="SEARCH" title="Type fo search words"/>
-	</form>
-
-</div>
-
-<div class="widget row">
-	<label class="primary">PEOPLES</label>
-	<br /><label class="secondary looking hidden">i'm looking for</label>
+<div class="widget">
+	<h3 class="primary">PEOPLES</h3>
+	<h4 class="secondary looking hidden">i'm looking for</h4>
 	<ul class="items_searched avatars hidden"></ul>
-	<input id="peoplebox" class="xlarge typebox" type="search" value="" placeholder="are talking here" title="Type fo find peoples OR(!) Drag to scroll existing"/>
-	<ul class="items avatars" !style="width: 241px; height: 176px; overflow: auto;"></ul>
+	<input id="peoplebox" class="typebox" type="search" value="" placeholder="are talking here" title="Type fo find peoples"/>
+	<ul class="items avatars"></ul>
 </div>
+<br style="clear: both;" />
 <br />
-<br />
-
-<div class="widget row">
-	<label class="primary">TAGS</label>
-	<br /><label class="secondary looking">i'm looking for</label>
+<div class="widget">
+	<h3 class="primary">TAGS</h3>
+	<h4 class="secondary looking">i'm looking for</h4>
 	<ul class="items_searched tags"></ul>
-	<input id="tagbox" class="xlarge typebox" type="search" value="" placeholder="are here" title="Type fo find tags"/>
+	<input id="tagbox" class="typebox" type="search" value="" placeholder="are here" title="Type fo find tags"/>
 	<ul class="items tags"></ul>
 </div>
 

@@ -30,7 +30,8 @@
   margin-top: .4em;
 }
 
-.subnav .nav > li > label {
+.subnav .nav > li > label, .subnav .nav .items li 
+{
 margin: 0;
 padding-top: 11px;
 padding-bottom: 11px;
@@ -39,7 +40,19 @@ padding-bottom: 11px;
 border-radius: 0;
 font-weight: bold;
 }
-
+.subnav .nav ul.items {
+ margin: 0 10px;
+}
+.subnav .nav ul.items li {
+padding: 11px;
+}
+.subnav .nav ul.items.avatars li {
+padding: 0;
+}
+.subnav .nav ul.items.avatars li img {
+  height: 36px;
+  width: auto;
+}
 .btn.new-twits {
   border: 0;
   color: #090;
@@ -92,4 +105,114 @@ font-weight: bold;
 	width:22px;
 	height:22px;
 	margin: -10px 0;
+}
+
+.items li {
+  float: left;
+  display: inline-block;
+}
+.widget ul {
+  margin-left: 0px;
+}
+.widget ul li{
+  list-style: none;
+  display: inline-block;
+}
+
+input.typebox {
+  width: 100%;
+}
+.widget {
+  margin-bottom: 20px;
+}
+.widget .primary {
+  color: #08C;
+}
+.widget .secondary {
+  color: #fff;
+  background-color: #08C;
+}
+
+.widget ul li {
+  cursor: pointer;
+}
+ul.items_searched.tags li, ul.items.tags li{
+  margin: 2px;
+}
+
+div.avatar {
+  text-align: center;
+  padding-top: 10px;
+}
+div.avatar img{
+  border:3px double #ddd;
+}
+
+span.parent-icon {
+	background: transparent url(img/parent24.png) no-repeat -5px 5px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.postdiv .user {
+  color: #999;
+  font-size: 18px;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 18px;
+  text-shadow: 1px 1px 2px #fff, 2px 2px 0px #ccc;
+
+}
+
+.postdiv .date {
+  color: #888;
+  display: inline-block;
+  line-height: 18px;
+}
+.postdiv div.text {
+  line-height: 140%;
+  padding: 10px 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.postdiv {
+  padding: 5px 0 20px;
+}
+
+.postdiv ul {
+  margin: 5px 0 10px;
+}
+
+.postdiv ul li {
+  list-style: none;
+  display: inline-block;
+}
+
+.childs_count_cont {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.childs_count {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+	opacity: .4;
+	-webkit-transition:opacity .5s ease-in-out .2s;  
+}
+
+.childs_count_cont:hover .childs_count {
+	color: blue;
+	cursor: pointer;
+	opacity: 1;
+}
+
+.frame.expanded > .postdiv {
+	background-color: #eee;
+}
+.frame.expanded > .postdiv:first-child {
+	background-color: #def;
 }

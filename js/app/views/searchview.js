@@ -6,28 +6,49 @@ var SearchView = Backbone.View.extend({
 	template: new Template({
 		fileName: 'app/searchview'
 	}),
+	
 	templatePostForm: new Template({fileName: 'posts/postform'}),
+	
 	initialize : function () {
 		this.posts = this.model.get("posts");
 		this.searchParams = this.posts.getSearchParams();
 //		console.log('this.searchParams', this.searchParams);
 	},
+	
 	showStartNew : function() {
 		this.renderForm();
 	},
+	
+	getSortType : function() {
+		if (this.posts.params.sortType == 'time') {
+			return 'Time Desc ';
+		}
+		else if (this.posts.params.sortType == 'massive') {
+			return 'Replies Desc ';
+		}
+		else {
+			return '';
+		};
+	},
+	
 	render : function (renderMode) {
 
 		if (renderMode == RenderMode.NEW) {
 			$(this.el).empty();
+			
+			var templateParams = {
+				searchString : [],
+				users: [],
+				tags : [],
+				link : "#invite/" + this.prepareUid(),
+				sortType : this.getSortType()			 // this.sortType
+			};
+			
+			var html = this.template.getTemplate() (templateParams);
+			
+			$(this.el).html(html);
+			
 		}
-		
-		var html = this.template.getTemplate() ({
-			searchString : [],
-			users: [],
-			tags : []
-		});
-		
-		$(this.el).html(html);
 		
 		this.renderString(this.searchParams.searchString);
 		this.renderUsers(this.searchParams.users);
@@ -39,8 +60,34 @@ var SearchView = Backbone.View.extend({
 		{
 			$(".start-new").show();
 		}
+		
 		return this;
 	},
+	
+	prepareUid: function  ( ) {
+		var uid = "";
+		uid += this.prepareQuery(this.posts.params);
+		uid = Base64.encode(uid);
+		return uid;
+	},
+	
+	prepareQuery: function ( params ) {
+		var query = '';
+		if (params.postID != undefined && params.postID.length > 0) {
+			query += 'postID=' + params.postID + "&";
+		}
+		if (params.searchString != undefined && params.searchString != '') {
+			query += 'searchString=' + params.searchString.toString() + '&';
+		}
+		if (params.userID != undefined && params.userID != '') {
+			query += 'userID=' + params.userID.toString() + '&';
+		}
+		if (params.tagID != undefined && params.tagID != '') {
+			query += 'tagID=' + params.tagID.toString() + '&';
+		}
+		return query;
+	},
+	
 	renderString: function  ( str, selected ) {
 		var rs = this;
 		var cont = $(this.el).find(".items.searchstring");
@@ -48,15 +95,13 @@ var SearchView = Backbone.View.extend({
 			return false;
 		}
 		$("<li>")
-			.html(
-				$("<span>")
-					.addClass("label")
-					.attr("title", this.searchParams.searchString)
-					.html(this.searchParams.searchString)
-			)
+			.html(this.searchParams.searchString)
+			.addClass("label")
+			.attr("title", this.searchParams.searchString)
 			.appendTo(cont)
 		
 	},
+	
 	renderUsers: function  ( users ) {
 		var cont = $(this.el).find(".items.avatars");
 		cont.empty();
@@ -66,6 +111,7 @@ var SearchView = Backbone.View.extend({
 			newLi.appendTo(cont);
 		}, this);
 	},
+	
 	renderTags: function  ( tags ) {
 		var cont = $(this.el).find(".items.tags");
 		cont.empty();
@@ -75,6 +121,7 @@ var SearchView = Backbone.View.extend({
 			newLi.appendTo(cont)
 		}, this);
 	},
+	
 	renderUser : function ( item ) {
 		var rs = this;
 		var renderedItem =  $("<li>")
@@ -82,24 +129,26 @@ var SearchView = Backbone.View.extend({
 			$("<img>")
 			.attr("src", item.get("avatarUrl"))
 			.attr("alt", item.get("name"))
-			.attr("title", item.get("name"))
-			);		
+			)
+		.addClass("with-tooltip")
+		.attr("title", item.get("name"))
+		.attr("rel", item.get("tooltip"));		
 		return renderedItem;
 	},
+	
 	renderTag : function (  item ) {
 		var rs = this;
 		var renderedItem = $("<li>")
-		.html(
-			$("<span>")
-			.addClass("label notice")
-			.attr("title", item.get("name"))
 			.html(item.get("name"))
-			);
+			.addClass("label label-info")
+			.attr("title", item.get("name"));
 		return renderedItem;
 	},
+	
 	removeForm: function () {
 		$("#scont").html("");
 	},
+	
 	renderForm : function () {
 		var searchView = this;
 		this.removeForm();
@@ -120,6 +169,7 @@ var SearchView = Backbone.View.extend({
 		this.postFormEvents(postForm);
 		return this;
 	},
+	
 	postFormEvents:  function ( postForm ) {
 		var searchView = this;
 		$(postForm).find("#postMessage")
@@ -150,6 +200,19 @@ var SearchView = Backbone.View.extend({
 			rs.startSearch();
 			return false;
 		});
+		
+
+		$("#searchbox")
+			.unbind()
+			.change(function (){
+				rs.addToRequest( $(this).val() );
+//				rs.startFilter();
+			});
+		$("#searchForm").submit(function(){
+			rs.startSearch();
+			return false;
+		});
+		
 		$("#searchForm").unbind().submit(function(){
 //			console.log('sf submit');
 			$(".btn.new-search").click();
@@ -161,11 +224,29 @@ var SearchView = Backbone.View.extend({
 			return false;
 		});
 		
-		$('.with-tooltip').tooltip({
+		$(this.el).find('.with-tooltip').tooltip({
 			placement : "bottom",
 			delay: { show: 500, hide: 100 }
 		})
+		
+		var sorttypeSelected = $(this.el).find('.sorttype-selected');
+		$(this.el).find(".sorttype-option").click(function(){
+			rs.posts.params.sortType = $(this).attr("data-sorttype");
+			sorttypeSelected.html($(this).html() +  " ");
+			rs.posts.refresh();
+		});
+		
+		$("#frlink").unbind().click(function (){
+			var link = SERVER_HTTP_HOST() +  $(this).attr("href");
 
+			if (window.clipboardData)  { // IE 
+					window.clipboardData.setData("Text", link);
+			}
+			else {
+		    window.prompt("To copy link to fragment press Ctrl+C и Enter", link);
+			}
+			return false;
+		});
 		
 	}
 });
