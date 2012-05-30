@@ -49,8 +49,12 @@ padding: 11px;
 .subnav .nav ul.items.avatars li {
 padding: 0;
 }
-.subnav .nav ul.items.avatars li img {
+.subnav .nav ul.items.avatars li img{
   height: 36px;
+  width: auto;
+}
+#sidebar ul.items.avatars li img, #sidebar ul.items_searched.avatars li img{
+  height: 48px;
   width: auto;
 }
 .btn.new-twits {
@@ -157,11 +161,16 @@ span.parent-icon {
 }
 
 .postdiv .user {
-  color: #999;
+  color: #aaa;
   font-size: 18px;
   display: inline-block;
   font-weight: bold;
   line-height: 18px;
+  text-shadow: 1px 1px 2px #fff, 2px 2px 0px #ddd;
+
+}
+.frame.expanded > .postdiv .user {
+  color: #999;
   text-shadow: 1px 1px 2px #fff, 2px 2px 0px #ccc;
 
 }
@@ -179,7 +188,7 @@ span.parent-icon {
 }
 
 .postdiv {
-  padding: 5px 0 20px;
+  padding-bottom: 20px;
 }
 
 .postdiv ul {
@@ -215,4 +224,15 @@ span.parent-icon {
 }
 .frame.expanded > .postdiv:first-child {
 	background-color: #def;
+}
+.frame > .postdiv .parent-icon {
+	visibility: hidden;
+}
+
+.frame.expanded > .postdiv:first-child .parent-icon {
+	visibility: visible;
+}
+
+.nocontent > * {
+	display: none;
 }

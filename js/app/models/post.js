@@ -6,7 +6,7 @@ var Post = Backbone.Model.extend({
 	defaults: {
 		id : "no_post_id",
 		pid : "no_post_pid",
-		user : "no_user",
+		user : new User(),
 		fragment : "no_fragment",
 		text : "no_post_text",
 		createTime : "no_post_createTime",
@@ -102,15 +102,13 @@ var Post = Backbone.Model.extend({
 		posts.loadData ( function () {
 			posts.parent.refresh();
 			var maxId =  posts.shiftMax();
-			console.log('posts', posts);
-			
+		
 			var users = posts.pluck('user');
 			var userID = '';
 			_.each(users, function(user){
 				userID += "," + user.get('id');
 			});
 			userID = userID.substring(1,userID.length);
-			console.log('pluck users', userID);
 			(new TRequest()).prepareRequest({
 			 userID : userID,
 			 max_id : maxId
@@ -136,7 +134,7 @@ var Post = Backbone.Model.extend({
 			var posts = this.collection;
 			var params = {
 				"postID": this.get("id"),
-				"withChilds" : posts.parent.get("state")
+				"withChilds" : 0
 			};
 			params = this.applyParentFilter(params);
 			posts.updateParams(params);

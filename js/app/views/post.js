@@ -20,12 +20,11 @@ var PostView = Backbone.View.extend({
 			.html(this.template.getTemplate() (this.model.toJSON()))
 			.addClass(this.className)
 			.attr("data-id", this.model.get("id"))
-			.attr("data-timestamp", this.model.get("createTimestamp"));
+			.attr("data-timestamp", this.model.get("createTimestamp"))
+			;
 		this.updateView();
-
-		if (this.needRenderForm()) {
-			this.renderForm();
-		}
+		this.renderForm();
+		
 		return this;
 	},
 	needRenderForm : function () {
@@ -35,6 +34,9 @@ var PostView = Backbone.View.extend({
 			&& this.model.isActiveFrame();
 	},
 	renderForm : function () {
+		
+		if (!this.needRenderForm()) return false;
+		
 		var params = {
 			siteUser: this.model.get("siteUser").toJSON(),
 			user: this.model.get("user")
@@ -64,18 +66,29 @@ var PostView = Backbone.View.extend({
 		return $(this.el).length;
 	},
 	scrollToView:  function () {
+		console.log('@todo here mast be scrooll to vIew');
+		console.trace();
 		var rootPostOffset = 0,
 			model = this.model,
-			rootPost = model.collection.rootPost();
+			rootPost = model.collection.rootPost(),
+			destScroll = 0;
 			
 		if (model.get('id') != rootPost.get('id')) {
 			rootPostOffset = $(rootPost.get("view").el).outerHeight(true)
 		}
-		$("body#application").animate({
-			"scrollTop": $(this.el).offset().top 
+		
+		destScroll = $(this.el).offset().top 
 					- rootPostOffset
-					- $(".topbar").outerHeight(true)
-					- $(".page-header").outerHeight(true)
+					- $(".navbar").outerHeight(true)
+					- $(".subnav").outerHeight(true)
+					- 30;
+					;
+		destScroll = Math.ceil(destScroll);
+		destScroll = Math.max(destScroll, 0);
+		console.log('destScroll', destScroll, $(this.el));
+		
+		$("body#application").animate({
+			"scrollTop": destScroll
 		});
 		return true;
 	},
@@ -84,28 +97,31 @@ var PostView = Backbone.View.extend({
 			model = this.model,
 			el = $(this.el);
 			
-		el.find(".parent .icon").click(function() {
-			view.openParent();
-		});
-		if (el.find(".childs, .text").length < 1) {
-			console.log('el Not found');
+		if (el.find(".childs_count, .text").length < 1) {
+//			console.log('el Not found');
 		}
-		el.find(".childs, .text").unbind().click(function() {
+		
+		el.find(".childs_count, .text").unbind().click(function() {
 			view.openChilds();
-			view.scrollToView( );
+			// view.scrollToView( );
 			
 		});
-		el.find(".childs").toggleClass("nocontent", (model.get("childsCount") < 1));
+		// el.find(".childs_count_cont").toggleClass("nocontent", (model.get("childsCount") < 1));
 		
 		if ( model.get("pid") == null ) {
-			el.find(".parent").html("");
-		} 
+			el.find(".parent-icon").css({"visibility": "hidden"});
+		}
+		else {
+			el.find(".parent-icon").unbind().click(function() {
+				view.openParent();
+			});
+		}
 	},	
 	update: function () {
 		var view = this,
 			model = this.model,
 			el = $(this.el);		
-		el.find(".childs span").html(model.get("childsCount"));
+		el.find(".childs_count").html(model.get("childsCount"));
 			
 	},
 	openChilds: function () {

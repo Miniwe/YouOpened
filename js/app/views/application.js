@@ -13,11 +13,19 @@ var ApplicationView = Backbone.View.extend({
 		$(window).scroll(_.throttle(function () {appView.alignActiveFrame()}, 1));
 	},
 	alignActiveFrame : function ( ) {
+		var scrollTop = $(window).scrollTop();
+		var offsetTop = 100;
+		if (scrollTop > 0) {
+			$("#sidebar").find("#innerRS").css({"width":"inherit","position":"fixed", "top": offsetTop + "px"});
+		}
+		else {
+			$("#sidebar").find("#innerRS").css({"width":"","position":"", "top": "0px"});
+		}
+		return true;
 		$("#tab-content").css({
 			"padding-top": $(".page-header").outerHeight(true)
 		});
 		var tabPaddingTop = $(".page-header").outerHeight(true);
-		var scrollTop = $(window).scrollTop();
 		var activeTab = this.model.getActiveTab();
 		var activeFrame = this.model.getActive();
 

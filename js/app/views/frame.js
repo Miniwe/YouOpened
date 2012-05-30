@@ -29,7 +29,6 @@ var FrameView = Backbone.View.extend({
 	},
 	render : function () {
 		this.clearFrame();
-//		console.log('render fraMe', this.model.get("state"));
 		if (this.model.isExpanded()) {
 			this.renderAll();
 			this.renderMoreLink();
@@ -40,7 +39,7 @@ var FrameView = Backbone.View.extend({
 			$(this.el).removeClass("expanded");
 			this.renderRoot();
 		}
-
+		
 		return this;
 		
 	},
@@ -81,8 +80,13 @@ var FrameView = Backbone.View.extend({
 		$(this.el).find(".alertnew").remove();
 	},
 	renderAll: function( ) {
+		
+		console.log('get root ----------------------------------- ');
 		var rootPost = this.posts.rootPost();
-
+		console.log('After get root ----------------------------------- ');
+		console.log('rootPost', rootPost);
+		var fragmentView = this;
+		
 		if (!rootPost) {
 			$(this.templateMessage.getTemplate() ({
 				message : "Posts not found"
@@ -94,16 +98,17 @@ var FrameView = Backbone.View.extend({
 		var models = this.posts.filter(function(model){
 			return model.id != rootPost.id;
 		});
-		
+
+		console.log('models', models);
 		if (models.length > 0) {
 
-			models = _.sortBy(models,function(model){
-				return - model.get("createTimestamp");
+			models = _.sortBy(models, function(model){
+				return -1 * model.get("createTimestamp");
 			});
-			
-			
-			_.each(models, function ( post ){
-				this.renderPost(post);
+			console.log('render models in order', models);
+			_.each(models, function ( model ){
+				
+				this.renderPost(model);
 			}, this);
 		}
 

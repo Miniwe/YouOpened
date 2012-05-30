@@ -80,7 +80,6 @@ var Posts = Backbone.Collection.extend({
 		return  AppConfig.SERVER + 'Search.json';
 	},
 	refresh: function () {
-		console.log('will be updted');
 		this.loadNewPosts(10);
 	},
 	setFilter : function ( filterparams ) {
@@ -131,7 +130,7 @@ var Posts = Backbone.Collection.extend({
 		return false;
 		if (this.filterParams) {
 //			this.filterParams.postID = this.pluck('id').join(',');
-			console.log('call to apply filter');
+//			console.log('call to apply filter');
 			return false;
 			var posts = this;
 			var newPosts = new Posts();
@@ -203,6 +202,7 @@ var Posts = Backbone.Collection.extend({
 		var fragments = this.pluck('fragment').filter(function(fragment){
 			return fragment != "no_fragment";
 		});
+//		console.log("fragments", fragments);
 		var maxPost = this.at(0).id;
 		var requests = [];
 		if (fragments.length == 1) {
@@ -523,7 +523,7 @@ var Posts = Backbone.Collection.extend({
 		return {
 			id : data.Post_ID,
 			pid : data.Ppost_ID,
-			user : this.users.find("id", data.user_id),
+			user : this.users.find("id", data.user_id) || new User(),
 			fragment : this.fragments.find("postId", data.Post_ID),
 			text : data.Text,
 			createTimestamp : data.createTime,
@@ -567,11 +567,14 @@ var Posts = Backbone.Collection.extend({
 	rootPost : function ( ) {
 		var rootPost = this.at(0);
 		var fragments = this.pluck('fragment').filter(function(fragment){
-			return fragment != "no_fragment";
+			return (fragment != "no_fragment") && (fragment != undefined);
 		});
+		console.log('fragments', fragments);
 		if (fragments.length == 1) {
+			console.log('fragment post ids', fragments[0].get('postId'));
 			rootPost = this.get(fragments[0].get('postId'));
 		}
+		console.log('root - ', rootPost);
 		return rootPost;
 	},
 	getIds: function () {
