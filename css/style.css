@@ -40,6 +40,10 @@ padding-bottom: 11px;
 border-radius: 0;
 font-weight: bold;
 }
+ul.searchstring li.label {
+  color: #22f;
+  font-size: 14px;
+}
 .subnav .nav ul.items {
  margin: 0 10px;
 }
@@ -235,4 +239,9 @@ span.parent-icon {
 
 .nocontent > * {
 	display: none;
+}
+
+
+.dropdown-toggle {
+  white-space: nowrap;
 }

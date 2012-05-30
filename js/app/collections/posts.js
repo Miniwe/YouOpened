@@ -569,12 +569,12 @@ var Posts = Backbone.Collection.extend({
 		var fragments = this.pluck('fragment').filter(function(fragment){
 			return (fragment != "no_fragment") && (fragment != undefined);
 		});
-		console.log('fragments', fragments);
+		// console.log('fragments', fragments);
 		if (fragments.length == 1) {
-			console.log('fragment post ids', fragments[0].get('postId'));
+			// console.log('fragment post ids', fragments[0].get('postId'));
 			rootPost = this.get(fragments[0].get('postId'));
 		}
-		console.log('root - ', rootPost);
+		// console.log('root - ', rootPost);
 		return rootPost;
 	},
 	getIds: function () {

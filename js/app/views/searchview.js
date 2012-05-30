@@ -21,10 +21,10 @@ var SearchView = Backbone.View.extend({
 	
 	getSortType : function() {
 		if (this.posts.params.sortType == 'time') {
-			return 'Time Desc ';
+			return 'Sort by time ';
 		}
 		else if (this.posts.params.sortType == 'massive') {
-			return 'Replies Desc ';
+			return 'Sort by comments';
 		}
 		else {
 			return '';

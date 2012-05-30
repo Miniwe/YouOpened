@@ -1,6 +1,4 @@
-<li class="with-tooltip" rel="tooltip" title="Link to fragment">
-  <a id="frlink" href="<%= link %>"><i class="icon-share-alt"></i></a>
-</li>
+
 <li>
 <form class="navbar-form form-search">
   <input type="text" class="input-medium search-query" id="searchbox" name="searchString" type="search" value=""
@@ -24,17 +22,20 @@
 <ul class="items tags"></ul>
 </li>
 <li class="dropdown">
-  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Order <em class="sorttype-selected"><%= sortType %></em><b class="caret"></b></a>
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="sorttype-selected"><%= sortType %></span><b class="caret"></b></a>
   <ul class="dropdown-menu">
-    <li><a href="#order-massively" class="sorttype-option" data-sorttype="massive">Replies Desc</a></li>
-    <li><a href="#order-time" class="sorttype-option" data-sorttype="time">Time Desc</a></li>
+    <li><a href="#order-massively" class="sorttype-option" data-sorttype="massive">Sort by comments</a></li>
+    <li><a href="#order-time" class="sorttype-option" data-sorttype="time">Sort by time</a></li>
   </ul>
+</li>
+<li class="" style="display: none;">
+<a class="btn new-twits" href="#new-twits"> <span class="ntcount"></span> Newest tweets </a>
 </li>
 <li class="pull-right">
   <a class="start-new" href="#start-new"><i class="icon-pencil"></i> Start new conversation</a>
   <!-- <span id="scont" style="margin:0;"></span> -->
 </li>
-<li class="pull-right" style="display: none;">
-<a class="btn new-twits" href="#new-twits"> <span class="ntcount"></span> New tweets </a>
+<li class="with-tooltip pull-right" rel="tooltip" title="Link to conversation">
+  <a id="frlink" href="<%= link %>"><i class="icon-share-alt"></i></a>
 </li>
 

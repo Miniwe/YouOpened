@@ -66,8 +66,6 @@ var PostView = Backbone.View.extend({
 		return $(this.el).length;
 	},
 	scrollToView:  function () {
-		console.log('@todo here mast be scrooll to vIew');
-		console.trace();
 		var rootPostOffset = 0,
 			model = this.model,
 			rootPost = model.collection.rootPost(),
@@ -82,7 +80,7 @@ var PostView = Backbone.View.extend({
 					- $(".navbar").outerHeight(true)
 					- $(".subnav").outerHeight(true)
 					- 30;
-					;
+					
 		destScroll = Math.ceil(destScroll);
 		destScroll = Math.max(destScroll, 0);
 		console.log('destScroll', destScroll, $(this.el));

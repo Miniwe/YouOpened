@@ -81,10 +81,7 @@ var FrameView = Backbone.View.extend({
 	},
 	renderAll: function( ) {
 		
-		console.log('get root ----------------------------------- ');
 		var rootPost = this.posts.rootPost();
-		console.log('After get root ----------------------------------- ');
-		console.log('rootPost', rootPost);
 		var fragmentView = this;
 		
 		if (!rootPost) {
@@ -99,13 +96,11 @@ var FrameView = Backbone.View.extend({
 			return model.id != rootPost.id;
 		});
 
-		console.log('models', models);
 		if (models.length > 0) {
 
 			models = _.sortBy(models, function(model){
 				return -1 * model.get("createTimestamp");
 			});
-			console.log('render models in order', models);
 			_.each(models, function ( model ){
 				
 				this.renderPost(model);
@@ -128,9 +123,13 @@ var FrameView = Backbone.View.extend({
 		return false;
 	},
 	openFrame: function( ) {
+		console.log('openFrame 1');
 		this.render();
+		console.log('openFrame 2');
 		$(this.el).addClass("expanded");
+		console.log('openFrame 3');
 		this.scrollToView( );
+		console.log('openFrame 4');
 	},
 	closeFrame: function( ) {
 		this.render();
@@ -177,7 +176,9 @@ var FrameView = Backbone.View.extend({
 		}, this);
 	},
 	scrollToView : function () {
+		console.log('scrollToView 1');
 		 if (rootPost = this.posts.rootPost().get('view')) {
+		console.log('scrollToView 2');
 			rootPost.scrollToView();
 		 }
 		 else {

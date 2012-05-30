@@ -10,9 +10,9 @@
 	<!--	<%= createTimestamp %>-->
 		<%= id %>: <%= text %>
 	</div>
-	<h6 class="subinfio">
+	<h6 class="subinfio" style="opacity: .6;">
 		<ul class="tags" title="tags"><% _.each(tags, function(tag) { %>
-			<li><span title="<%= tag.get("name") %>" class="label label-info"><%= tag.get("name") %></span></li>
+			<li><span title="<%= tag.get("name") %>" class="label" ><%= tag.get("name") %></span></li>
 		<% }) %></ul> 
 	</h6>
 </div>
