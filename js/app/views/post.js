@@ -104,7 +104,7 @@ var PostView = Backbone.View.extend({
 			// view.scrollToView( );
 			
 		});
-		// el.find(".childs_count_cont").toggleClass("nocontent", (model.get("childsCount") < 1));
+		el.find(".childs_count_cont").toggleClass("nocontent", (model.get("childsCount") < 1));
 		
 		if ( model.get("pid") == null ) {
 			el.find(".parent-icon").css({"visibility": "hidden"});

@@ -1,19 +1,15 @@
-
-	<form class="postform" style="padding: 0 20px;">
-		<fieldset>
-<!--			<label for="postMessage" style="padding-top:0px;">
-				<img class="avatar" src="<%= siteUser.avatarUrl %>" alt="<%= siteUser.id %>" title="<%= siteUser.name %>" />
-			</label>-->
-				
-			<div class="input" style=" margin-left:80px;">
-				<textarea class="xxlarge" id="postMessage" name="postMessage" rows="3" style="width: 450px; height: 2em;"><%= (user.id)?"@"+user.id:"" %> </textarea>
-				<span class="help-block">
-					Reply to active root post
-				</span>
-			</div>
-			<div class="pull-right">
+<form class="postform">
+<br style="clear: both"/ >
+	<div class="row-fluid">
+		<div class="span1">
+			&#0160;
+		</div>
+		<div class="span9">
+				<textarea class="input-xlarge" id="postMessage" name="postMessage" rows="3" style="width: 100%; height: 2em;"><%= (user.id)?"@"+user.id:"" %> </textarea>
+		</div>
+		<div class="span2">
 				<button type="reset" class="btn cancel" style="display: none">Cancel</button>
-				&nbsp;<input type="submit" class="btn primary" value="Reply">
-			</div>
-		</fieldset>
-	</form>
+				&nbsp;<input type="submit" class="btn btn-primary" value="Reply">
+		</div>
+	</div>
+</form>

@@ -257,3 +257,7 @@ input.typebox {
 ul.items_searched.tags, ul.items.tags{
   width: 239px;
 }
+
+.frame.expanded > .postdiv:first-child  {
+  padding-bottom: 0px;
+}
