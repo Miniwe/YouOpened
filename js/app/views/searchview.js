@@ -91,12 +91,15 @@ var SearchView = Backbone.View.extend({
 	renderString: function  ( str, selected ) {
 		var rs = this;
 		var cont = $(this.el).find(".items.searchstring");
-		if ( this.searchParams.searchString == undefined  || this.searchParams.searchString == '') {
+		var str = this.searchParams.searchString;
+		if ( str == undefined  || str == '') {
 			return false;
 		}
 		$("<li>")
-			.html(this.searchParams.searchString)
-			.addClass("label")
+			.html($("<span>")
+				.addClass("label")
+				.html(str)
+			)
 			.attr("title", this.searchParams.searchString)
 			.appendTo(cont)
 		
@@ -139,8 +142,10 @@ var SearchView = Backbone.View.extend({
 	renderTag : function (  item ) {
 		var rs = this;
 		var renderedItem = $("<li>")
-			.html(item.get("name"))
-			.addClass("label label-info")
+			.html($("<span>")
+				.addClass("label label-info")
+				.html(item.get("name"))
+			)
 			.attr("title", item.get("name"));
 		return renderedItem;
 	},

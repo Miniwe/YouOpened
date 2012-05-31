@@ -40,18 +40,17 @@ padding-bottom: 11px;
 border-radius: 0;
 font-weight: bold;
 }
-ul.searchstring li.label {
-  color: #22f;
-  font-size: 14px;
-}
 .subnav .nav ul.items {
- margin: 0 10px;
+ margin: 0 4px;
 }
 .subnav .nav ul.items li {
-padding: 11px;
+padding: 11px 4px;
+}
+.subnav .nav ul.items.tags li, .subnav .nav ul.items.searchstring li{
+  padding: 11px 3px;
 }
 .subnav .nav ul.items.avatars li {
-padding: 0;
+padding: 0 0px;
 }
 .subnav .nav ul.items.avatars li img{
   height: 36px;
@@ -244,4 +243,17 @@ span.parent-icon {
 
 .dropdown-toggle {
   white-space: nowrap;
+}
+
+
+#searchbox {
+  width: 133px;
+}
+
+input.typebox {
+  width: 232px;
+}
+
+ul.items_searched.tags, ul.items.tags{
+  width: 239px;
 }
