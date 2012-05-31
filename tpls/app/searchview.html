@@ -31,9 +31,14 @@
 <li class="" style="display: none;">
 <a class="btn new-twits" href="#new-twits"> <span class="ntcount"></span> Newest tweets </a>
 </li>
-<li class="pull-right">
-  <a class="start-new" href="#start-new"><i class="icon-pencil"></i> Start new conversation</a>
-  <!-- <span id="scont" style="margin:0;"></span> -->
+<li class="dropdown pull-right">
+  <a class="dropdown-toggle start-new" data-toggle="dropdown" href="#start-new"><i class="icon-pencil"></i> Start new conversation <b class="caret"></b></a>
+  <ul class="dropdown-menu">
+    <li>
+      <div id="scont" class="span9"></div>  
+    </li>
+  </ul>
+
 </li>
 <li class="with-tooltip pull-right" rel="tooltip" title="Link to conversation">
   <a id="frlink" href="<%= link %>"><i class="icon-share-alt"></i></a>

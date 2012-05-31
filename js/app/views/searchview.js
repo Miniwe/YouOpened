@@ -17,6 +17,7 @@ var SearchView = Backbone.View.extend({
 	
 	showStartNew : function() {
 		this.renderForm();
+		
 	},
 	
 	getSortType : function() {
@@ -164,7 +165,7 @@ var SearchView = Backbone.View.extend({
 		var postForm = this.templatePostForm.getTemplate() (params);
 		postForm = $(postForm).appendTo($("#scont"));
 
-		$(postForm).find(".help-block").html("Start new conversation text");
+		$(postForm).find(".submit-form").val("Start conversation");
 		$(postForm).find(".btn.cancel")
 			.show()
 			.unbind()
@@ -181,6 +182,9 @@ var SearchView = Backbone.View.extend({
 				.autoResize();
 
 		$(postForm).submit(function(){
+			
+			$('.dropdown-toggle').dropdown();
+			
 			var postParams = {
 				postID: "",
 				text: $(this).find("#postMessage").val()
@@ -192,6 +196,7 @@ var SearchView = Backbone.View.extend({
 			$(this).resetForm();
 			
 			searchView.removeForm();
+
 			
 			return false;
 		})
@@ -226,7 +231,8 @@ var SearchView = Backbone.View.extend({
 		$(".start-new").unbind().click(function(){
 //			console.log('sf submit');
 			searchView.showStartNew();
-			return false;
+			$('.dropdown-toggle.start-new').dropdown();
+//			return false;
 		});
 		
 		$(this.el).find('.with-tooltip').tooltip({

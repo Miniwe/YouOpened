@@ -138,6 +138,7 @@ input.typebox {
 .widget .secondary {
   color: #fff;
   background-color: #08C;
+  width: 242px;
 }
 
 .widget ul li {
@@ -261,3 +262,11 @@ ul.items_searched.tags, ul.items.tags{
 .frame.expanded > .postdiv:first-child  {
   padding-bottom: 0px;
 }
+
+#scont .span1{
+  display: none;
+}
+
+#scont form.postform{
+}
+
