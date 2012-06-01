@@ -74,12 +74,12 @@ var PostView = Backbone.View.extend({
 		if (model.get('id') != rootPost.get('id')) {
 			rootPostOffset = $(rootPost.get("view").el).outerHeight(true)
 		}
-		
+
 		destScroll = $(this.el).offset().top 
-					- rootPostOffset
+//					- rootPostOffset
 					- $(".navbar").outerHeight(true)
 					- $(".subnav").outerHeight(true)
-					- 30;
+					;
 					
 		destScroll = Math.ceil(destScroll);
 		destScroll = Math.max(destScroll, 0);

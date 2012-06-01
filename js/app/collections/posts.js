@@ -198,9 +198,10 @@ var Posts = Backbone.Collection.extend({
         		
 	},
 	getTwitterDataByFragments : function ( ) {
+
 		var posts = this;
 		var fragments = this.pluck('fragment').filter(function(fragment){
-			return fragment != "no_fragment";
+			return (fragment != "no_fragment") && (fragment != undefined);
 		});
 //		console.log("fragments", fragments);
 		var maxPost = this.at(0).id;
@@ -217,6 +218,7 @@ var Posts = Backbone.Collection.extend({
 			});
 		}
 		else if (fragments.length > 1) {
+			
 			_.each(fragments, function (fragment){
 				var rootPost = posts.get(fragment.get('postId'));  
 				requests.push({
@@ -523,7 +525,10 @@ var Posts = Backbone.Collection.extend({
 		return {
 			id : data.Post_ID,
 			pid : data.Ppost_ID,
-			user : this.users.find("id", data.user_id) || new User(),
+			user : this.users.find("id", data.user_id) || new User({
+				id : data.user_id,
+				name : data.User_name
+			}),
 			fragment : this.fragments.find("postId", data.Post_ID),
 			text : data.Text,
 			createTimestamp : data.createTime,

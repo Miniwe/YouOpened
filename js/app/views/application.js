@@ -13,21 +13,71 @@ var ApplicationView = Backbone.View.extend({
 		$(window).scroll(_.throttle(function () {appView.alignActiveFrame()}, 1));
 	},
 	alignActiveFrame : function ( ) {
-		var scrollTop = $(window).scrollTop();
-		var offsetTop = 100;
+		var scrollTop = $(window).scrollTop(),
+			topNavHeight = $(".navbar").outerHeight(),
+			subNavHeight = $(".subnav").outerHeight(),
+			topOffset = topNavHeight + subNavHeight,
+			activeFrame = $(".frame.expanded");
+		
+		var offsetTop = topOffset + 20;
+		
 		if (scrollTop > 0) {
 			$("#sidebar").find("#innerRS").css({"width":"inherit","position":"fixed", "top": offsetTop + "px"});
 		}
 		else {
 			$("#sidebar").find("#innerRS").css({"width":"","position":"", "top": "0px"});
 		}
-		return true;
+		if ($(".subnav").hasClass("subnav-fixed")) {
+			$('#maincontent').css({"padding-top": (subNavHeight + 20) + "px"})
+		}
+		else {
+			$('#maincontent').css({"padding-top":""})
+		}
+		
+		if (activeFrame.length > 0) {
+			(function (activeFrame) {
+				var rootPost = activeFrame.find(".postdiv").first(),
+					rootPostTop = topOffset,
+					activeFrameTop = activeFrame.offset().top,
+					activeFrameBottom = activeFrameTop + activeFrame.outerHeight(true) - scrollTop,
+					rootPostHeight = rootPost.outerHeight(true);
+				// если верх рутового поста меньше или равно нижней границе (navbar + subnav)=topOffset
+				// учитывая скроллинг scrollTop
+				if ( activeFrameTop - scrollTop < topOffset ) {
+				// для активного фрейма рутового поста назначем клаасс float
+				// 						top = нижней границе navbar + subnav
+					rootPost.addClass("float");
+				// padding top активного фрема = высота рутового поста
+					activeFrame.css({"padding-top": rootPostHeight + "px"});
+					
+				// 		если нижняя граница фрагмента < высота рутового поста + его оффсет
+					if ( activeFrameBottom  < rootPostHeight + topOffset) {
+				// 		top рутового поста уменьшается на разницу между ними
+						rootPostTop -= ( rootPostHeight + topOffset - activeFrameBottom);
+					}
+				// применяем top в стили
+					rootPost.css({"top": rootPostTop + "px"});
+				}
+				// иначе
+				else {
+				// для активного фрейма рутового поста убираем клаасс float
+					rootPost.removeClass("float");
+					rootPost.css({"top": "0"});
+				// padding top активного фрема = 0
+					activeFrame.css({"padding-top": ""});
+				}
+				
+			}( activeFrame ));
+		}
+		else {
+			$(".frame").css({"padding-top":""});
+		}
+		
+		/*
 		$("#tab-content").css({
 			"padding-top": $(".page-header").outerHeight(true)
 		});
 		var tabPaddingTop = $(".page-header").outerHeight(true);
-		var activeTab = this.model.getActiveTab();
-		var activeFrame = this.model.getActive();
 
 		if (activeFrame instanceof Frame) {
 			(function (activeFrame) {
@@ -81,6 +131,8 @@ var ApplicationView = Backbone.View.extend({
 			$(".frame").css({"padding-top":"0"});
 		}
 		
+		*/
+		/*
 		var innerRS = $("#innerRS");
 		innerRS.top = $("#tab-content").offset().top;
 		innerRS.draw = "tab";
@@ -124,7 +176,7 @@ var ApplicationView = Backbone.View.extend({
 		}
 		
 //		innerRS.css({"top": innerRS.top});
-		
+		*/
 		
 	},
 	cacheTemplates : function () {

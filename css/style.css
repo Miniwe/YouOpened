@@ -19,7 +19,7 @@
 }
 
 #maincontent{
-  padding-top:20px;
+  padding-top: 20px;
 }
 
 .form-search {
@@ -255,7 +255,7 @@ input.typebox {
   width: 232px;
 }
 
-ul.items_searched.tags, ul.items.tags{
+#sidebar ul.items_searched.tags, #sidebar ul.items.tags{
   width: 239px;
 }
 
@@ -270,3 +270,20 @@ ul.items_searched.tags, ul.items.tags{
 #scont form.postform{
 }
 
+
+.frame.expanded {
+  padding-bottom: 10px;
+}
+
+
+.postdiv.float {
+	position: fixed;
+	top: 0px;
+	z-index: 900;
+}
+
+
+.tab, .frame.expanded, .postdiv{
+  width: inherit;  
+}
+    
