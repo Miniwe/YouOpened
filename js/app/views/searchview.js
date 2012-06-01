@@ -89,7 +89,6 @@ var SearchView = Backbone.View.extend({
 		query += 'sortType=' + params.sortType + '&';
 		query += 'childSortType=' + params.childSortType + '&';
 		
-		console.log('prepare query', this.posts.parent, params, query);
 		return query;
 	},
 	
