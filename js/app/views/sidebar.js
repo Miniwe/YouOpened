@@ -74,12 +74,12 @@ var SidebarView = Backbone.View.extend({
 	},
 	
 	eventsAttach: function  ( ) {
-		
+		/*
 		$(this.el).find('.with-tooltip').tooltip({
 			placement : "bottom",
 			delay: { show: 500, hide: 100 }
 		});
-		
+		*/
 	},
 	
 	emptyRequest: function  (searchParams) {

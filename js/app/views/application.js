@@ -72,7 +72,7 @@ var ApplicationView = Backbone.View.extend({
 					activeFrame.css({"padding-top": ""});
 				}
 
-				if ((activeFrameTop - scrollTop <= topOffset) && (activeFrameBottom > topOffset) ) {
+				if ((activeFrameTop - scrollTop <= topOffset) && (activeFrameBottom >= topOffset) ) {
 					draw = 'fragment';
 				}
 				
