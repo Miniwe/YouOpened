@@ -83,7 +83,6 @@ var PostView = Backbone.View.extend({
 					
 		destScroll = Math.ceil(destScroll);
 		destScroll = Math.max(destScroll, 0);
-		console.log('destScroll', destScroll, $(this.el));
 		
 		$("body#application").animate({
 			"scrollTop": destScroll

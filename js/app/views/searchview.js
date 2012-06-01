@@ -86,6 +86,10 @@ var SearchView = Backbone.View.extend({
 		if (params.tagID != undefined && params.tagID != '') {
 			query += 'tagID=' + params.tagID.toString() + '&';
 		}
+		query += 'sortType=' + params.sortType + '&';
+		query += 'childSortType=' + params.childSortType + '&';
+		
+		console.log('prepare query', this.posts.parent, params, query);
 		return query;
 	},
 	

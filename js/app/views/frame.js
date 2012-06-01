@@ -123,13 +123,9 @@ var FrameView = Backbone.View.extend({
 		return false;
 	},
 	openFrame: function( ) {
-		console.log('openFrame 1');
 		this.render();
-		console.log('openFrame 2');
 		$(this.el).addClass("expanded");
-		console.log('openFrame 3');
 		this.scrollToView( );
-		console.log('openFrame 4');
 	},
 	closeFrame: function( ) {
 		this.render();
@@ -176,9 +172,7 @@ var FrameView = Backbone.View.extend({
 		}, this);
 	},
 	scrollToView : function () {
-		console.log('scrollToView 1');
 		 if (rootPost = this.posts.rootPost().get('view')) {
-		console.log('scrollToView 2');
 			rootPost.scrollToView();
 		 }
 		 else {

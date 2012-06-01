@@ -137,23 +137,17 @@ var Frame = Backbone.Model.extend({
 		return (this.get("state") == FrameState.EXPANDED);
 	},
 	refresh	: function () {
-		console.log('refresh', this);
 		this.changeActiveClass();
-		console.log('refresh 2', this);
 		
 		this.trigger("checkActiveFrame");
-		console.log('refresh 3', this);
 		
 	},
 	changeActiveClass : function () {
-		console.log('changeActiveClass', this.get("state"));
 		if (this.get("state") == FrameState.COLLAPSED) {
 			// clear frame data
-			console.log('close frame', this);
 			this.get("view").closeFrame();
 		}
 		else {
-			console.log('open frame', this);
 			this.get("view").openFrame();
 			// close other
 		}

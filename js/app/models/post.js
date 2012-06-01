@@ -98,25 +98,20 @@ var Post = Backbone.Model.extend({
 		params.searchString = "";
 		params.userID = "";
 		params.tagID = "";
-		console.log('start loac data', params);
 
 		posts.loadData ( function () {
-			console.log('sces load', posts.parent);
 			posts.parent.refresh();
 			var maxId =  posts.shiftMax();
-			console.log('step 2');
 			var users = posts.pluck('user');
 			var userID = '';
 			_.each(users, function(user){
 				userID += "," + user.get('id');
 			});
-			console.log('step 3');
 			userID = userID.substring(1,userID.length);
 			(new TRequest()).prepareRequest({
 				userID : userID,
 				max_id : maxId
 			 }).doUserPath();
-			console.log('step 4');
 		}, params,  {} );
 		
 			
