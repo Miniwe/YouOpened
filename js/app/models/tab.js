@@ -136,7 +136,7 @@ var Tab = Backbone.Model.extend({
 	checkActiveFrame : function () {
 		var activeFrame = this.getActiveFrame();
 		if ( !activeFrame ) {
-			 this.get("view").sidebar.render(RenderMode.NEW);
+			 this.get("view").refreshControl(RenderMode.NEW);
 		} 
 	},
 	updateWithFilter : function (options) {

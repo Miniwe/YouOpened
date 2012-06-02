@@ -1,3 +1,14 @@
+﻿/*
+ * вызов refreshControl
+ * 	вызывает перерисовку
+ * 		users
+ * 		tags
+ * 	вызывает изменение свойств 
+ * 		sort by
+ * 		link to fragment
+ * 		newest twittes
+ * 
+ */
 var FrameView = Backbone.View.extend({
 	tagName : 'div',
 	className : 'frame',
@@ -17,12 +28,7 @@ var FrameView = Backbone.View.extend({
 		"click .more-posts" : "loadMorePosts"
 	},
 	initialize: function () {
-//		this.sidebar = new SidebarView ({
-//			el: $("#sidebar"),
-//			model: this.model
-//		});
-		this.posts = this.model.get("posts");
-		this.sidebar = this.model.get('parent').get("view").sidebar;
+		this.control = this.model.get('parent').get("view").control;
 	},
 	showNewAlert : function () {
 		
@@ -33,10 +39,11 @@ var FrameView = Backbone.View.extend({
 			this.renderAll();
 			this.renderMoreLink();
 			$(this.el).addClass("expanded");
-			this.refreshSidebar();
+			this.refreshControl();
 		}
 		else {
 			$(this.el).removeClass("expanded");
+			this.model.get('parent').get("view").refreshControl(RenderMode.UPDATE);
 			this.renderRoot();
 		}
 		
@@ -49,23 +56,24 @@ var FrameView = Backbone.View.extend({
 		return post;
 	},
 	renderNewPost: function( post ) {
-		var rootPostEl = this.posts.rootPost().get("view").el;
+		var rootPostEl = this.model.get('posts').rootPost().get("view").el;
 		post.render();
 		$(post.get("view").el).insertAfter(rootPostEl);
 		return post;
 	},
 	renderMoreLink: function( ) {
+		var posts = this.model.get('posts');
 		$(this.el).find("a.more-posts").parent().remove();
 		if (this.model.isExpanded() && 
-			this.posts.rootPost().get("childsCount") > this.posts.models.length) {
+			posts.rootPost().get("childsCount") > posts.models.length) {
 			$(this.templateMore.getTemplate() ({})).appendTo(this.el);
 			$(this.el).find('.more-posts').html('more comments');
 		}
 	},
 	renderAlertLink: function( newCount ) {
-//		console.log('render alert link');
+
 		var FrameView = this;
-		var rootPostEl = this.posts.rootPost().get("view").el;
+		var rootPostEl = this.model.get('posts').rootPost().get("view").el;
 		this.removeAlertLink(rootPostEl);
 		$(this.templateAlert.getTemplate() ({
 			newCount: newCount
@@ -81,7 +89,7 @@ var FrameView = Backbone.View.extend({
 	},
 	renderAll: function( ) {
 		
-		var rootPost = this.posts.rootPost();
+		var rootPost = this.model.get('posts').rootPost();
 		var fragmentView = this;
 		
 		if (!rootPost) {
@@ -92,7 +100,7 @@ var FrameView = Backbone.View.extend({
 		
 		this.renderRoot();
 		
-		var models = this.posts.filter(function(model){
+		var models = this.model.get('posts').filter(function(model){
 			return model.id != rootPost.id;
 		});
 
@@ -109,17 +117,17 @@ var FrameView = Backbone.View.extend({
 
 	},
 	renderRoot : function( ) {
-		var post = this.posts.rootPost();
+		var post = this.model.get('posts').rootPost();
 		this.renderPost(post);
 	},
 	clearFrame: function( ) {
 		$(this.el).empty();
 	},
-	refreshSidebar : function () {
-		this.sidebar.render(RenderMode.NEW, this.posts);
+	refreshControl : function () {
+		this.control.update(this.model.get('posts'));
 	},
 	loadMorePosts : function ( ) {
-		this.posts.nextChildPage();
+		this.model.get('posts').nextChildPage();
 		return false;
 	},
 	openFrame: function( ) {
@@ -140,9 +148,9 @@ var FrameView = Backbone.View.extend({
 		}
 		var firstNew = false,
 			newPost = null;
-		_.each(this.posts.models, function( model ){
+		_.each(this.model.get('posts').models, function( model ){
 			if ($(this.el).find(".postdiv[data-id="+model.get("id")+"]").length > 0) {
-				model.get("view").update();
+			model.get("view").update();
 			}
 			else {
 				newPost = this.renderNewPost( model );
@@ -162,19 +170,22 @@ var FrameView = Backbone.View.extend({
 		
 		if (firstNew) {
 			firstNew.get("view").scrollToView();
-			this.refreshSidebar();
+			this.refreshControl();
 		}
+		
+		return true;
 	},
 	updateByFilter : function () {
-//		console.log("this.model.get('posts')", this.posts);
+//		console.log("this.model.get('posts')", this.model.get('posts'));
 		_.each(this.model.get('posts').filteredList, function(post){
 //			console.log('filtered posts', post)
 		}, this);
 	},
 	scrollToView : function () {
-		 if (rootPost = this.posts.rootPost().get('view')) {
+		var rootPost = this.model.get('posts').rootPost().get('view');
+		 if (rootPost) {
 			rootPost.scrollToView();
-		 }
+		 } 
 		 else {
 			
 		 }

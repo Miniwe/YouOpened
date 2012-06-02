@@ -18,7 +18,7 @@ var ApplicationView = Backbone.View.extend({
 			subNavHeight = $(".subnav").outerHeight(),
 			topOffset = topNavHeight + subNavHeight,
 			activeFrame = $(".frame.expanded");
-		// определить чего рисовать
+	// определить чего рисовать
 		var activeTabModel = this.model.getActiveTab();
 		var activeFrameModel = this.model.getActive();
 		var draw = 'tab';
@@ -45,30 +45,30 @@ var ApplicationView = Backbone.View.extend({
 					activeFrameTop = activeFrame.offset().top,
 					activeFrameBottom = activeFrameTop + activeFrame.outerHeight(true) - scrollTop,
 					rootPostHeight = rootPost.outerHeight(true);
-				// если верх рутового поста меньше или равно нижней границе (navbar + subnav)=topOffset
-				// учитывая скроллинг scrollTop
+	// если верх рутового поста меньше или равно нижней границе (navbar + subnav)=topOffset
+	// учитывая скроллинг scrollTop
 				if ( activeFrameTop - scrollTop < topOffset ) {
-				// для активного фрейма рутового поста назначем клаасс float
-				// 						top = нижней границе navbar + subnav
+	// для активного фрейма рутового поста назначем клаасс float
+	// 						top = нижней границе navbar + subnav
 					rootPost.addClass("float");
-				// padding top активного фрема = высота рутового поста
+	// padding top активного фрема = высота рутового поста
 					activeFrame.css({"padding-top": rootPostHeight + "px"});
 					
-				// 		если нижняя граница фрагмента < высота рутового поста + его оффсет
+	// 		если нижняя граница фрагмента < высота рутового поста + его оффсет
 					if ( activeFrameBottom  < rootPostHeight + topOffset) {
-				// 		top рутового поста уменьшается на разницу между ними
+	// 		top рутового поста уменьшается на разницу между ними
 						rootPostTop -= ( rootPostHeight + topOffset - activeFrameBottom);
 					}
-				// применяем top в стили
+	// применяем top в стили
 					rootPost.css({"top": rootPostTop + "px"});
 				}
-				// иначе
+	// иначе
 				else {
 					rootPostTop = 0;
-				// для активного фрейма рутового поста убираем клаасс float
+	// для активного фрейма рутового поста убираем клаасс float
 					rootPost.removeClass("float");
 					rootPost.css({"top": ""});
-				// padding top активного фрема = 0
+	// padding top активного фрема = 0
 					activeFrame.css({"padding-top": ""});
 				}
 
@@ -84,18 +84,18 @@ var ApplicationView = Backbone.View.extend({
 			$(".frame").css({"padding-top":""});
 		}
 		
-		// определить - надо ли менять отрисованное
+	// определить - надо ли менять отрисованное
 		if (draw != this.prevDraw) {
-		// если надо менять отрисованное
-		// если удовлетворяет условиям рисования фрагмента то рисуем фрагмент
+	// если надо менять отрисованное
+	// если удовлетворяет условиям рисования фрагмента то рисуем фрагмент
 			if (draw == 'fragment') {
-				activeFrameModel.get("view").refreshSidebar();
+				activeFrameModel.get("view").refreshControl();
 			}
-		// иначе если tab то рисуем таб
+	// иначе если tab то рисуем таб
 			else if (draw == 'tab') {
-				activeTabModel.get("view").refreshSidebar();
+				activeTabModel.get("view").refreshControl();
 			}
-		// сохраняем предыдщее значение перерисовывания
+	// сохраняем предыдщее значение перерисовывания
 			this.prevDraw = draw;
 		}
 		

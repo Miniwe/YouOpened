@@ -4,7 +4,6 @@
 
 var AppConfig = {
     NAME : 'YouOpened',
-//    serverUrl : 'http://50.30.33.122/framework/',
     SERVER : 'http://youopened.com/framework/',
     AUTH : 'http://youopened.com/authorization/',
     TEMPLATES : [
@@ -25,12 +24,14 @@ var FrameState = {
 
 var SortType = {
 	TIME:	'time',
+	COMMENTS:	'massive',
 	RELEVANCE: 'relevance'
 };
 
 var RenderMode = {
 	NEW:	'new',
-	UPDATE: 'update'
+	UPDATE: 'update',
+	CLEAR: 	'clear'
 };
 
 var AddMode = {

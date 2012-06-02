@@ -62,8 +62,8 @@ var Application = Backbone.Model.extend({
 		Post.prototype.defaults.renderForm = true;
 		Post.prototype.defaults.siteUser = user;
 		
-		SearchView.prototype.renderFormFlag = true;
-		SearchView.prototype.siteUser = user;
+		Control.prototype.renderFormFlag = true;
+		Control.prototype.siteUser = user;
 	},
 	addTab : function (params) {
 		params.app = this;

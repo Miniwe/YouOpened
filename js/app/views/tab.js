@@ -22,19 +22,10 @@ var TabView = Backbone.View.extend({
 		});
 		this.tabHeader.bind("closeTab", this.closeTab);
 
-		this.sidebar = new SidebarView ({
-			el: $("#sidebar"),
+		this.control = new Control ({
 			model: this.model
 		});
 		
-		this.searchView = new SearchView ({
-			el: $("#searchView"),
-			model: this.model
-		});
-
-		this.posts = this.model.get("posts");
-		this.frames = this.model.get("frames");
-
 	},
 	clearTab : function ( ) {
 		$(this.el).empty();
@@ -93,26 +84,31 @@ var TabView = Backbone.View.extend({
 	renderPageHeader : function () {
 		this.tabHeader.refresh();
 	},
-	refreshSidebar : function () {
-		this.sidebar.render();
+	refreshControl: function (renderMode) {
+		switch (renderMode) {
+			case RenderMode.NEW:
+				this.control.render();
+				break;
+			case RenderMode.UPDATE:
+				this.control.update(this.model.get('posts'));
+				break;
+			case RenderMode.CLEAR:
+				this.control.clear();
+				break;
+			default:
+				this.control.render();
+		}
 	},
 	update : function (renderMode) {
 		if (!this.model.isActive()) {
 			return false;
 		}
 		this.renderPageHeader();
-		// if (!this.model.get("posts").filterParams)
-		{
-			this.sidebar.render(renderMode);
-			
-		}
+		
+		this.refreshControl(renderMode);
 		
 		var container = $(this.el);
 		
-		// if (renderMode == RenderMode.NEW)
-		{
-			this.searchView.render(renderMode);
-		}
 		this.clearTab();
 		$(container).appendTo("#tab-content");
 		if (this.model.get("frames").length > 0) {
@@ -154,13 +150,13 @@ var TabView = Backbone.View.extend({
 	},
 	loadMorePosts : function ( ) {
 		console.log('load more Fragments');
-		this.posts.nextFragmentsPage();
+		this.model.get("posts").nextFragmentsPage();
 		return true;
 	},
 	updateByFilter : function () {
 		_.each(this.model.get("posts").filteredList, function(post){
 			// get frame by post
-			var frame = this.frames.getFrameByPost(post.id);
+			var frame = this.model.get("frames").getFrameByPost(post.id);
 			if (!frame) {
 				return false;
 			}
@@ -180,14 +176,12 @@ var TabView = Backbone.View.extend({
 		}, this);
 //		console.log('update by filter from tab', this.model.getActiveFrame());
 		if (!this.model.getActiveFrame()) {
-			this.sidebar.render(RenderMode.NEW);
+			this.refreshControl(RenderMode.UPDATE);
 		}
 	},
 	closeTab : function () {
-		$(".page-header h1").empty();
 		this.tabHeader.remove();
-		$(this.sidebar.el).empty();
-		$(this.searchView.el).empty();
+		this.refreshControl(RenderMode.CLEAR);
 		$(this.el).remove();
 		this.model.collection.setState(this.model.cid, TabState.DEFAULT);
 	}

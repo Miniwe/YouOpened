@@ -206,11 +206,10 @@ var SearchView = Backbone.View.extend({
 	},
 	
 	eventsAttach: function  ( ) {
-		var rs = this.model.get("view").sidebar;
+		var control = this.model.get("view").control;
 		var searchView = this;
 		$(".btn.new-search").unbind().click(function(){
-//			console.log('btn click');
-			rs.startSearch();
+			control.startSearch();
 			return false;
 		});
 		
@@ -218,11 +217,11 @@ var SearchView = Backbone.View.extend({
 		$("#searchbox")
 			.unbind()
 			.change(function (){
-				rs.addToRequest( $(this).val() );
+				control.addToRequest( $(this).val() );
 //				rs.startFilter();
 			});
 		$("#searchForm").submit(function(){
-			rs.startSearch();
+			control.startSearch();
 			return false;
 		});
 		

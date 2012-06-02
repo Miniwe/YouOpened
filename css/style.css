@@ -248,15 +248,17 @@ span.parent-icon {
 
 
 #searchbox {
-  width: 133px;
+  max-width: 133px;
 }
 
 input.typebox {
-  width: 232px;
+  width: 100%;
+  max-width: 232px;
 }
 
 #sidebar ul.items_searched.tags, #sidebar ul.items.tags{
-  width: 239px;
+  width: 100%;
+  max-width: 239px;
 }
 
 .frame.expanded > .postdiv:first-child  {

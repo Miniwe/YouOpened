@@ -74,6 +74,8 @@
                 'js/app/models/siteuser.js',
                 'js/app/views/siteuser.js',
                 
+                'js/app/views/control.js',
+				
                 'js/app/views/sidebar.js',
                 'js/app/views/searchview.js',
                 
