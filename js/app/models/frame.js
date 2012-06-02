@@ -53,7 +53,7 @@ var Frame = Backbone.Model.extend({
 				this.get("view").renderAlertLink( newCount );
 			}
 			else {
-				this.get("view").removeAlertLink( );
+				this.get("view").renderAlertLink( 0 );
 			}
 		}
 		else {

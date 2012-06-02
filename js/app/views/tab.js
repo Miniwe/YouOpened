@@ -54,6 +54,7 @@ var TabView = Backbone.View.extend({
 			.parent().show();
 		
 		$(".new-twits").unbind().click(function(){
+			console.log('call load new twits');
 			TabView.model.get("posts").loadNewPosts(newCount);
 			TabView.removeAlertLink();
 			return false;

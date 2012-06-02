@@ -60,8 +60,9 @@ var Control = Backbone.View.extend({
 		
 		// update sort by
 		this.sortTypeEvent();
-		
+
 		// DO NEW TWITES !!!
+		this.posts.parent.get('view').renderAlertLink();
 		
 		this.eventsAttach();
 		
@@ -201,11 +202,11 @@ var Control = Backbone.View.extend({
 	sortTypeEvent: function  () {
 		var control = this;
 		var sorttypeSelected = control.searchView.find('.sorttype-selected');
+		sorttypeSelected.html( this.getSortType() );
 		control.searchView.find(".sorttype-option").click(function(){
-			control.posts.params.sortType = $(this).attr("data-sorttype");
+			control.setSortType($(this).attr("data-sorttype"))
 			sorttypeSelected.html($(this).html() +  " ");
 			control.posts.refresh();
-			return false;
 		});
 		
 	},
@@ -566,11 +567,23 @@ var Control = Backbone.View.extend({
 		})
 	},
 	
+	setSortType : function(sortType) {
+		if (this.posts.parent instanceof Frame) {
+			this.posts.params.childSortType = sortType;
+		}
+		else {
+			this.posts.params.sortType = sortType;
+		}
+	},
 	getSortType : function() {
-		if (this.posts.params.sortType == 'time') {
+		var curSortType = this.posts.params.sortType;
+		if (this.posts.parent instanceof Frame) {
+			curSortType = this.posts.params.childSortType;
+		}
+		if (curSortType == 'time') {
 			return 'Sort by time ';
 		}
-		else if (this.posts.params.sortType == 'massive') {
+		else if (curSortType == 'massive') {
 			return 'Sort by comments';
 		}
 		return '';

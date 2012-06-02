@@ -80,6 +80,7 @@ var Posts = Backbone.Collection.extend({
 		return  AppConfig.SERVER + 'Search.json';
 	},
 	refresh: function () {
+
 		this.loadNewPosts(10);
 	},
 	setFilter : function ( filterparams ) {
@@ -126,11 +127,9 @@ var Posts = Backbone.Collection.extend({
 		this.fetch(fetchOptions);
 	},
 	applyFilter : function ( ) {
-		console.log('apply dont need poSible - commented');
 		return false;
 		if (this.filterParams) {
 //			this.filterParams.postID = this.pluck('id').join(',');
-//			console.log('call to apply filter');
 			return false;
 			var posts = this;
 			var newPosts = new Posts();
@@ -398,7 +397,6 @@ var Posts = Backbone.Collection.extend({
 			});
 		}
 		var params = this.prepareParams(subparams);
-		
 		posts.loadData(function () {
 			//posts.updateCollection(newPosts);
 			posts.trigger("updated");

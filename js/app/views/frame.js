@@ -56,9 +56,21 @@ var FrameView = Backbone.View.extend({
 		return post;
 	},
 	renderNewPost: function( post ) {
-		var rootPostEl = this.model.get('posts').rootPost().get("view").el;
-		post.render();
-		$(post.get("view").el).insertAfter(rootPostEl);
+		var rootPost = this.model.get('posts').rootPost(),
+			rootPostEl = false;
+		if (rootPost.get("view") != undefined) {
+			rootPostEl = rootPost.get("view").el;
+		}
+		if (!rootPostEl) {
+			$(this.el).find(".postdiv[data-id="+rootPost.get("id")+"]").remove();
+			rootPost.render();
+			$(rootPost.get("view").el).prependTo(this.el);
+			rootPostEl = rootPost.get("view").el
+		}
+		if (post.get('id') != rootPost.get('id')) {
+			post.render();
+			$(post.get("view").el).insertAfter(rootPostEl);
+		}
 		return post;
 	},
 	renderMoreLink: function( ) {
@@ -71,21 +83,16 @@ var FrameView = Backbone.View.extend({
 		}
 	},
 	renderAlertLink: function( newCount ) {
-
+		console.log('add event to new t b f');
 		var FrameView = this;
-		var rootPostEl = this.model.get('posts').rootPost().get("view").el;
-		this.removeAlertLink(rootPostEl);
-		$(this.templateAlert.getTemplate() ({
-			newCount: newCount
-		})).appendTo(rootPostEl);
-		$(this.el).find(".new-twits").click(function(){
-			FrameView.posts.loadNewPosts(newCount);
+		$(".new-twits").unbind().click(function(){
+			FrameView.model.get('posts').loadNewPosts(newCount);
 			FrameView.removeAlertLink();
 			return false;
 		})
 	},
 	removeAlertLink: function() {
-		$(this.el).find(".alertnew").remove();
+//		$(this.el).find(".alertnew").remove();
 	},
 	renderAll: function( ) {
 		
@@ -150,7 +157,12 @@ var FrameView = Backbone.View.extend({
 			newPost = null;
 		_.each(this.model.get('posts').models, function( model ){
 			if ($(this.el).find(".postdiv[data-id="+model.get("id")+"]").length > 0) {
-			model.get("view").update();
+				if (model.get("view") == undefined) {
+					this.renderNewPost( model );
+				}
+				else {
+					model.get("view").update();
+				}
 			}
 			else {
 				newPost = this.renderNewPost( model );
