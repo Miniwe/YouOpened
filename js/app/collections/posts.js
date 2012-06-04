@@ -60,7 +60,7 @@ var Posts = Backbone.Collection.extend({
 		this.params = {
 			withChilds: 0,
 			childSortType: "time",
-			sortType : "time",
+			sortType : "massive",
 			count : this.pageSize,
 			offset : 0,
 			childCount : this.childPageSize,

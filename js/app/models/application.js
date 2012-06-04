@@ -152,7 +152,7 @@ var Application = Backbone.Model.extend({
 			name: "girls*time",
 			searchParams: {
 				searchString : 'girls',
-				sortType : 'time'
+				sortType : 'massive'
 			}
 		});
 		this.addTab({
