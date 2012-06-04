@@ -83,7 +83,7 @@ var FrameView = Backbone.View.extend({
 		}
 	},
 	renderAlertLink: function( newCount ) {
-		console.log('add event to new t b f');
+//		console.log('add event to new t b f');
 		var FrameView = this;
 		$(".new-twits").unbind().click(function(){
 			FrameView.model.get('posts').loadNewPosts(newCount);

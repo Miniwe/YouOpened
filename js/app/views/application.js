@@ -17,7 +17,12 @@ var ApplicationView = Backbone.View.extend({
 			topNavHeight = $(".navbar").outerHeight(),
 			subNavHeight = $(".subnav").outerHeight(),
 			topOffset = topNavHeight + subNavHeight,
-			activeFrame = $(".frame.expanded");
+			activeFrame = $(".frame.expanded"),
+			paddingBottom = 0;
+		
+		paddingBottom	+= topNavHeight;
+		paddingBottom	+= subNavHeight;
+			
 	// определить чего рисовать
 		var activeTabModel = this.model.getActiveTab();
 		var activeFrameModel = this.model.getActive();
@@ -45,6 +50,9 @@ var ApplicationView = Backbone.View.extend({
 					activeFrameTop = activeFrame.offset().top,
 					activeFrameBottom = activeFrameTop + activeFrame.outerHeight(true) - scrollTop,
 					rootPostHeight = rootPost.outerHeight(true);
+					
+				paddingBottom	+= rootPostHeight;
+					
 	// если верх рутового поста меньше или равно нижней границе (navbar + subnav)=topOffset
 	// учитывая скроллинг scrollTop
 				if ( activeFrameTop - scrollTop < topOffset ) {
@@ -78,7 +86,6 @@ var ApplicationView = Backbone.View.extend({
 				
 			}( activeFrame ));
 			
-			
 		}
 		else {
 			$(".frame").css({"padding-top":""});
@@ -99,6 +106,8 @@ var ApplicationView = Backbone.View.extend({
 			this.prevDraw = draw;
 		}
 		
+		$("#tab-content").css({"padding-bottom": ($(window).height() - paddingBottom)+"px"});
+
 	},
 	cacheTemplates : function () {
 		var templatesList = this.model.get("templatesList");

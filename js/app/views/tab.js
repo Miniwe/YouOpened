@@ -75,7 +75,7 @@ var TabView = Backbone.View.extend({
 		var view = this;
 		
 		$(this.el).find("a.more-posts").parent().remove();
-		if (this.model.isActive() && this.model.get('frames').length > 9) {
+		if (this.model.isActive()/*&& this.model.get('frames').length > 9*/) {
 			$(this.templateMore.getTemplate() ({})).appendTo(this.el);
 		}
 		$(this.el).find("a.more-posts").click(function(){
