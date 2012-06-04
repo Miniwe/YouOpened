@@ -185,7 +185,7 @@ var Control = Backbone.View.extend({
 		
 		$(".start-new").unbind().click(function(){
 //			console.log('sf submit');
-			searchView.showStartNew();
+			control.showStartNew();
 			$('.dropdown-toggle.start-new').dropdown();
 //			return false;
 		});
@@ -589,6 +589,7 @@ var Control = Backbone.View.extend({
 		return '';
 	},
 	showStartNew : function() {
+		console.log('show stat new');
 		this.renderForm();
 	}
 	
