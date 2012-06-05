@@ -203,7 +203,7 @@ var Control = Backbone.View.extend({
 		var control = this;
 		var sorttypeSelected = control.searchView.find('.sorttype-selected');
 		sorttypeSelected.html( this.getSortType() );
-		control.searchView.find(".sorttype-option").click(function(){
+		control.searchView.find(".sorttype-option").unbind().click(function(){
 			control.setSortType($(this).attr("data-sorttype"))
 			sorttypeSelected.html($(this).html() +  " ");
 			control.posts.refresh();
@@ -334,20 +334,19 @@ var Control = Backbone.View.extend({
 	renderUser : function ( item ) {
 		var control = this;
 		var renderedItem =  $("<li>")
-		.html(
-			$("<img>")
-			.attr("src", item.get("avatarUrl"))
-			.attr("alt", item.get("name"))
-			.attr("title", item.get("name"))
+			.html(
+				$("<img>")
+					.attr("src", item.get("avatarUrl"))
+					.attr("alt", item.get("name"))
+					.attr("title", item.get("name"))
 			)
-		.addClass("with-tooltip")
-		.attr("title", item.get("name"))
-		.attr("rel", item.get("tooltip"))
-		.click( function () {
-//			console.log('user clicked');
-			control.addToRequest( item );
-			control.startFilter();
-		});		
+			.addClass("with-tooltip")
+			.attr("title", item.get("name"))
+			.attr("rel", item.get("tooltip"))
+			.click( function () {
+				control.addToRequest( item );
+				control.startFilter();
+			});		
 		return renderedItem;
 	},
 	
@@ -568,6 +567,7 @@ var Control = Backbone.View.extend({
 	},
 	
 	setSortType : function(sortType) {
+		
 		if (this.posts.parent instanceof Frame) {
 			this.posts.params.childSortType = sortType;
 		}

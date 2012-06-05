@@ -73,14 +73,13 @@ var Posts = Backbone.Collection.extend({
 		this.fragments = new Fragments();
 		
 		this.comparator = function(post) {
-		  return post.get("createTime");
+			return post.get("createTime");
 		};
 	},
 	url : function ( ) {
 		return  AppConfig.SERVER + 'Search.json';
 	},
 	refresh: function () {
-
 		this.loadNewPosts(10);
 	},
 	setFilter : function ( filterparams ) {
@@ -194,7 +193,7 @@ var Posts = Backbone.Collection.extend({
 			}; 
 			$.ajax( ajaxOpts );
 		}
-        		
+						
 	},
 	getTwitterDataByFragments : function ( ) {
 
@@ -289,7 +288,7 @@ var Posts = Backbone.Collection.extend({
 			}	
 		 });
 		 if (this.rootPost() == undefined) {
-		 	return 0;
+			return 0;
 		 }
 		return (lastFragment instanceof Fragment)?lastFragment.get("updateTime"):this.rootPost().get('createTimestamp');	
 	},
@@ -385,7 +384,13 @@ var Posts = Backbone.Collection.extend({
 	loadNewPosts : function ( count ) {
 		var posts = this;
 		//var newPosts = new Posts();
-		var subparams = {};
+				this.page = 1;
+				this.childPage = 1;
+
+				this.params.offset = this.getOffset( this.page, this.pageSize );
+				this.params.childOffset = this.getOffset( this.childPage, this.childPageSize );
+				
+				var subparams = {};
 		
 		if (this.params.postID != undefined) {
 			_.extend(subparams, {
@@ -398,13 +403,13 @@ var Posts = Backbone.Collection.extend({
 		}
 		var params = this.prepareParams(subparams);
 		posts.loadData(function () {
-			//posts.updateCollection(newPosts);
+					//posts.updateCollection(newPosts);
 			posts.trigger("updated");
 			// posts.applyFilter();
 		}, params);
 	},
 	nextChildPage : function ( ) {
- 		var posts = this;
+		var posts = this;
 		
 		var newPosts = new Posts();
 		
