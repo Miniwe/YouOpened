@@ -55,15 +55,27 @@ var Application = Backbone.Model.extend({
 		
 		this.startApplication();
 		
-		this.get("siteUser").bind("setAuthorized", this.applyAuthDecoration);
+		var app = this;
+		this.get("siteUser").bind("setAuthorized", function (user) {
+			app.applyAuthDecoration(app, user);
+		});
 		
 	},
-	applyAuthDecoration : function (user) {
+	applyAuthDecoration : function (app, user) {
 		Post.prototype.defaults.renderForm = true;
 		Post.prototype.defaults.siteUser = user;
 		
 		Control.prototype.renderFormFlag = true;
 		Control.prototype.siteUser = user;
+		
+		app.addTab({
+			name: "My talks",
+			searchParams: {
+				userID : user.get("id"),
+				sortType : 'time'
+			}
+		});
+		
 	},
 	addTab : function (params) {
 		params.app = this;
@@ -148,13 +160,26 @@ var Application = Backbone.Model.extend({
 		//		userID : 'XandFalcon2012'
 		//	}
 		//});
+		/*
+		var a=new Date();
+		a.setTime((new Date()).getTime() - 60*60*24*1000); 
 		this.addTab({
-			name: "girls*time",
+			name: "Bigest talks",
 			searchParams: {
-				searchString : 'girls',
-				sortType : 'massive'
+				searchString : '',
+				sortType : 'time',
+				fromTime : Math.round(a.getTime() / 1000)
 			}
 		});
+		*/
+		//this.addTab({
+		//	name: "girls*time",
+		//	searchParams: {
+		//		searchString : 'girls',
+		//		sortType : 'massive'
+		//	}
+		//});
+		
 		this.addTab({
 			name: "woman*mix",
 			searchParams: {
@@ -164,7 +189,7 @@ var Application = Backbone.Model.extend({
 				tagID : 'sore,vocabulary,springer'
 			}
 		});
-
+		
 		//this.addTab({
 			//name: "to Twitter",
 			//searchParams: {

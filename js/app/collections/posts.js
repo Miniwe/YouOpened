@@ -60,7 +60,7 @@ var Posts = Backbone.Collection.extend({
 		this.params = {
 			withChilds: 0,
 			childSortType: "time",
-			sortType : "massive",
+			sortType : "time",
 			count : this.pageSize,
 			offset : 0,
 			childCount : this.childPageSize,
@@ -421,16 +421,15 @@ var Posts = Backbone.Collection.extend({
 		params.userID = '';
 		params.tagID = '';
 		params.searchString = '';
-		/*
+		
 		var tParams = _.extend(_.clone(params), {
 				userID : posts.rootPost().get('user').get('id'),
 				max_id : posts.getMinId(),
 				postID : ''
 		});
 		
-		console.log('fragment params', tParams);
 		(new TRequest()).prepareRequest(tParams).prepareFilter(this.filterParams).doPath();
-		*/
+		
 		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);
 			posts.trigger('updated');
