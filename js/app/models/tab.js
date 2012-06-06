@@ -67,7 +67,18 @@ var Tab = Backbone.Model.extend({
 	update : function (addMode) {
 		if (addMode == AddMode.REPLACE) {
 			// clear tab frames data
-			this.set({"frames": new Frames()});
+			var activeFrame = this.getActiveFrame();
+			if (activeFrame) {
+				this.get('frames').remove(this.get('frames').filter(function( frame ){
+					if (frame.cid != activeFrame.cid) {
+						frame.get('view').remove();
+					}
+					return frame.cid != activeFrame.cid;
+				}));
+			}
+			else {
+				this.set({"frames": new Frames()});
+			}
 		}
 		// console.log('update tab with frames', this.get('frames'), this.get("posts").models);
 		_.each( this.get("posts").models, function (model) {

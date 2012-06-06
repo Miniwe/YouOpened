@@ -123,7 +123,7 @@ var Posts = Backbone.Collection.extend({
 		delete(fetchOptions.data.users);
 		delete(fetchOptions.data.tags);
 		
-    console.log('loadData', params);
+//    console.log('loadData', params);
 		this.fetch(fetchOptions);
 	},
 	applyFilter : function ( ) {
@@ -192,7 +192,7 @@ var Posts = Backbone.Collection.extend({
 				},
 				timeout   : 30000
 			};
-			console.log('autoUpdateNewCountPosts', ajaxOpts);
+//			console.log('autoUpdateNewCountPosts', ajaxOpts);
 			$.ajax( ajaxOpts );
 		}
 						
@@ -265,7 +265,7 @@ var Posts = Backbone.Collection.extend({
 			},
 			timeout   : 30000
 		}; 
-    console.log('updateFragmentsCount', ajaxOpts);
+//    console.log('updateFragmentsCount', ajaxOpts);
 		$.ajax( ajaxOpts );
 		
 		// update fragmnets count

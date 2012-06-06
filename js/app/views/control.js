@@ -275,6 +275,7 @@ var Control = Backbone.View.extend({
 		searchParams = this.prepareFilterParams(searchParams);
 		
 		posts.setFilter(searchParams);
+		this.model.get('posts').setFilter(searchParams);
 	},
 	
 	prepareFilterParams : function ( params ) {
