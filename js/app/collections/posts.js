@@ -403,6 +403,7 @@ var Posts = Backbone.Collection.extend({
 		}
 		var params = this.prepareParams(subparams);
 		posts.loadData(function () {
+				console.log('load data');
 					//posts.updateCollection(newPosts);
 			posts.trigger("updated");
 			// posts.applyFilter();
@@ -422,13 +423,16 @@ var Posts = Backbone.Collection.extend({
 		params.tagID = '';
 		params.searchString = '';
 		
+		/*
 		var tParams = _.extend(_.clone(params), {
 				userID : posts.rootPost().get('user').get('id'),
 				max_id : posts.getMinId(),
 				postID : ''
 		});
 		
+		console.log('');
 		(new TRequest()).prepareRequest(tParams).prepareFilter(this.filterParams).doPath();
+		*/
 		
 		newPosts.loadData(function(){
 			posts.updateCollection(newPosts);
@@ -445,7 +449,7 @@ var Posts = Backbone.Collection.extend({
 			(new TRequest()).prepareRequest({
 			 userID : userID,
 			 max_id : maxId
-			});
+			}).doUserPath();
 			
 		}, params, {});
 	},
