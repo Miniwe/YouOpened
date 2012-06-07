@@ -184,9 +184,9 @@ var Application = Backbone.Model.extend({
 			name: "woman*mix",
 			searchParams: {
 				searchString : 'woman',
-				sortType : 'massive',
-				userID : 'jacobjvalerio,polkamasta420,davidenFL,GregHaworth1',
-				tagID : 'sore,vocabulary,springer'
+				userID : '  NiCizHere,Henz_Cher,AdrianneCurry,cocosworld',
+				//tagID : 'sore,vocabulary,springer',
+				sortType : 'massive'
 			}
 		});
 		
