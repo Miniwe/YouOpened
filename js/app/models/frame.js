@@ -83,6 +83,10 @@ var Frame = Backbone.Model.extend({
 	},
 	updateRootData : function ( post ) {
 		this.get("posts").rootPost().updateData(post);
+		this.get("posts").updateParams( post.collection.params );
+		this.get("posts").updateParams( { "postID": post.get("id") });
+		
+		this.get("posts").updateFilterParams( post.collection.filterParams );
 	},
 	addRootData : function ( post ) {
 

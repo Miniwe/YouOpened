@@ -18,31 +18,38 @@ var Application = Backbone.Model.extend({
 	defaults: {
 		tabs : new Tabs()
 	},
+	addInvite: function (uid) {
+		if (uid == "") {
+			return false;
+		}
+		this.addTab(this.parseUid(uid));
+	},
+	addTab : function (params) {
+		params.app = this;
+		var newTab = new Tab(params);
+		this.get('tabs').add(newTab);
+		newTab.getData();
+	},
+	applyAuthDecoration : function (app, user) {
+		Post.prototype.defaults.renderForm = true;
+		Post.prototype.defaults.siteUser = user;
+		
+		Control.prototype.renderFormFlag = true;
+		Control.prototype.siteUser = user;
+		
+		app.addTab({
+			name: "My talks",
+			searchParams: {
+				userID : user.get("id"),
+				sortType : 'time'
+			}
+		});
+		
+	},
 	setSiteUser : function () {
 		this.set({
 			siteUser: new SiteUser()
 		});
-	},
-	setRouter : function () {
-		this.set({
-			app_router : new AppRouter
-		});
-		this.get('app_router').app = this;
-		Backbone.history.start();
-	},
-	setTemplates : function () {
-		this.set({
-			templatesList : new TemplatesList()
-		});
-	},
-	render : function () {
-		this.set({
-			'view': new ApplicationView({
-				el : $("#application"),
-				model: this
-			}) 
-		});
-		this.get("view").render();
 	},
 	initialize : function () {
 		this.setRouter();
@@ -61,33 +68,16 @@ var Application = Backbone.Model.extend({
 		});
 		
 	},
-	applyAuthDecoration : function (app, user) {
-		Post.prototype.defaults.renderForm = true;
-		Post.prototype.defaults.siteUser = user;
-		
-		Control.prototype.renderFormFlag = true;
-		Control.prototype.siteUser = user;
-		
-		app.addTab({
-			name: "My talks",
-			searchParams: {
-				userID : user.get("id"),
-				sortType : 'time'
-			}
-		});
-		
+	getActiveTab : function () {
+		return this.get("tabs").getActive();
 	},
-	addTab : function (params) {
-		params.app = this;
-		var newTab = new Tab(params);
-		this.get('tabs').add(newTab);
-		newTab.getData();
-	},
-	addInvite: function (uid) {
-		if (uid == "") {
-			return false;
+	getActive : function () {
+		var activeTab = false;
+		var activeFrame = false;
+		if (activeTab = this.getActiveTab()) {
+			activeFrame = activeTab.getActiveFrame();
 		}
-		this.addTab(this.parseUid(uid));
+		return activeFrame ? activeFrame : activeTab;
 	},
 	parseUid: function (uid) {
 		var parsed = Base64.decode(uid);
@@ -114,9 +104,6 @@ var Application = Backbone.Model.extend({
 		}
 		return tabName;
 	},
-	getActiveTab : function () {
-		return this.get("tabs").getActive();
-	},
 	parseQuery: function (query) {
 		var queryString = {};
 		query.replace(
@@ -125,13 +112,26 @@ var Application = Backbone.Model.extend({
 		);
 		return queryString;
 	},
-	getActive : function () {
-		var activeTab = false;
-		var activeFrame = false;
-		if (activeTab = this.getActiveTab()) {
-			activeFrame = activeTab.getActiveFrame();
-		}
-		return activeFrame ? activeFrame : activeTab;
+	render : function () {
+		this.set({
+			'view': new ApplicationView({
+				el : $("#application"),
+				model: this
+			}) 
+		});
+		this.get("view").render();
+	},
+	setRouter : function () {
+		this.set({
+			app_router : new AppRouter
+		});
+		this.get('app_router').app = this;
+		Backbone.history.start();
+	},
+	setTemplates : function () {
+		this.set({
+			templatesList : new TemplatesList()
+		});
 	},
 	startApplication : function () {
 		// this.addTab({

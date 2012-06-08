@@ -83,12 +83,11 @@ var Posts = Backbone.Collection.extend({
 		this.loadNewPosts(10);
 	},
 	setFilter : function ( filterparams ) {
-		// console.log('call set filter');
+  //  console.log('call set filter', filterparams);
+//    console.trace();
 		
-		var posts = this;
-		
-		this.filterParams = filterparams; 
-		
+		var posts = this;		
+		this.filterParams = filterparams; 		
 		var params = this.prepareParams({});
 		
 		(new TRequest()).prepareRequest(this.params).prepareFilter(this.filterParams).doPath();
@@ -358,7 +357,10 @@ var Posts = Backbone.Collection.extend({
 					obj[key] = _.uniq(obj[key]).join(',');
 				}
 		});*/
-		
+//				console.log('exten', exten);
+		if (exten['withChilds'] != undefined) {
+				obj['withChilds'] = exten['withChilds'];
+		}
 		if (exten['userID'] != undefined) {
 				obj['filterUserID'] = exten['userID'];
 		}

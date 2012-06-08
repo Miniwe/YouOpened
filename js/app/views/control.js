@@ -268,14 +268,28 @@ var Control = Backbone.View.extend({
 	},
 	
 	startFilter: function  ( ) {
+		// СДЕЛАТЬ ЧТОБ ПРИ ФИЛЬТРАЦИИ ТАБА ФИЛЬТР ПРИМЕНЯЛСЯ ТАКЖЕ ДЛЯ АКТИВНОГО ФРАГМЕНТА СРАЗУ
+		// console.log('- - - - -  - - - - - - - - - - - - - - - -  ');
 		var posts = this.posts;
 		
 		var searchParams = this.prepareSearchRequest(this.selected);
 		
 		searchParams = this.prepareFilterParams(searchParams);
 		
-		posts.setFilter(searchParams);
+		if (posts.rootPost().get('id') != this.model.get('posts').rootPost().get('id')) {
+			// console.log('set filter control');
+			posts.setFilter(_.extend(searchParams, {
+				withChilds : 1
+			}));
+		}
+		/*
 		this.model.get('posts').setFilter(searchParams);
+		var activeFrame = this.model.get('posts').parent.getActiveFrame();
+		if (activeFrame) {
+			activeFrame.get('view').control.startFilter();
+		}
+		*/
+		
 	},
 	
 	prepareFilterParams : function ( params ) {

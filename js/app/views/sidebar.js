@@ -112,7 +112,7 @@ var SidebarView = Backbone.View.extend({
 		var searchParams = this.prepareSearchRequest(this.selected);
 		searchParams = this.prepareFilterParams(searchParams);
 		// console.log('call start filter from side bar', posts, searchParams);
-		posts.setFilter(searchParams);
+		// posts.setFilter(searchParams);
 	},
 	
 	prepareTabName : function ( params ) {
