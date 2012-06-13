@@ -276,8 +276,12 @@ var Control = Backbone.View.extend({
 		var searchParams = this.prepareSearchRequest(this.selected);
 		
 		searchParams = this.prepareFilterParams(searchParams);
-		
-		if (posts.rootPost().get('id') != this.model.get('posts').rootPost().get('id')) {
+		//console.log('this.model', this.model);
+		var modelRootId = 0;
+		if (this.model.get('posts').rootPost()) {
+			modelRootId = this.model.get('posts').rootPost().get('id');
+		}
+		if (posts.rootPost().get('id') != modelRootId) {
 			
 			//console.log('set filter control - for frame');
 			posts.setFilter(_.extend(searchParams, {
@@ -288,7 +292,11 @@ var Control = Backbone.View.extend({
 		this.model.get('posts').setFilter(searchParams);
 		var activeFrame = this.model.get('posts').parent.getActiveFrame();
 		if (activeFrame) {
-//			activeFrame.get('view').control.startFilter();
+			console.log('activeFrame',activeFrame);
+			activeFrame.get('posts').setFilter(_.extend(searchParams, {
+				withChilds : 1
+			}));
+
 		}
 		
 	},
