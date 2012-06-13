@@ -80,6 +80,8 @@ var Post = Backbone.Model.extend({
 		});
 	},
 	loadRelatives : function ( postId ) {
+		
+		//console.log('loadRelatives ', postId);
 
 		this.collection.page = 1;
 		this.collection.childPage = 1;
@@ -93,13 +95,14 @@ var Post = Backbone.Model.extend({
 			"withChilds" : state
 		};
 		
-		// params = this.applyParentFilter(params);
 		var params = posts.prepareParams(subparams);
 		params.searchString = "";
 		params.userID = "";
 		params.tagID = "";
+		//params = this.applyParentFilter({});
 
 		posts.loadData ( function () {
+//			console.log('load data function');
 			posts.parent.refresh();
 			var maxId =  posts.shiftMax();
 			var users = posts.pluck('user');
@@ -120,16 +123,19 @@ var Post = Backbone.Model.extend({
 		return params;
 	},
 	openChilds : function () {
+//		console.log('model / open childs');
+		
 		if ( this.collection.rootPost() == this ) {
 			this.collection.parent.toggleState();
+			//return true;
 		}
 		
+		var posts = this.collection;
 		if (this.collection.parent.get('state') == FrameState.EXPANDED) {
 			this.loadRelatives(this.get("id"));
 		}
 		else {
 			// console.log('dont load - open root');
-			var posts = this.collection;
 			var params = {
 				"postID": this.get("id"),
 				"withChilds" : 0

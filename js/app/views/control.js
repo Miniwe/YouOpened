@@ -268,6 +268,7 @@ var Control = Backbone.View.extend({
 	},
 	
 	startFilter: function  ( ) {
+//		console.log('start filter');
 		// СДЕЛАТЬ ЧТОБ ПРИ ФИЛЬТРАЦИИ ТАБА ФИЛЬТР ПРИМЕНЯЛСЯ ТАКЖЕ ДЛЯ АКТИВНОГО ФРАГМЕНТА СРАЗУ
 		// console.log('- - - - -  - - - - - - - - - - - - - - - -  ');
 		var posts = this.posts;
@@ -277,18 +278,18 @@ var Control = Backbone.View.extend({
 		searchParams = this.prepareFilterParams(searchParams);
 		
 		if (posts.rootPost().get('id') != this.model.get('posts').rootPost().get('id')) {
-			// console.log('set filter control');
+			
+			//console.log('set filter control - for frame');
 			posts.setFilter(_.extend(searchParams, {
 				withChilds : 1
 			}));
 		}
-		/*
+		
 		this.model.get('posts').setFilter(searchParams);
 		var activeFrame = this.model.get('posts').parent.getActiveFrame();
 		if (activeFrame) {
-			activeFrame.get('view').control.startFilter();
+//			activeFrame.get('view').control.startFilter();
 		}
-		*/
 		
 	},
 	

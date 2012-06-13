@@ -111,6 +111,8 @@ var Posts = Backbone.Collection.extend({
 		this.loadData(success, this.params, fetchParams);
 	},
 	loadData : function (success, params, fetchParams ) {
+	//			console.log('call load', params);
+//				console.trace();
 		var fetchOptions = {
 			data: params,
 			dataType: 'jsonp',

@@ -7,10 +7,9 @@ var Frames = Backbone.Collection.extend({
 	closeFrames : function ( except ) { 
 		// @todo сомнителное место вызова и функция - проверить/перенести
 		this.models.map( function ( frame ) {
-			if ( frame != except ) {
+			if ( frame.cid != except ) {
 				frame.set({"state": FrameState.COLLAPSED});
 				frame.get("view").closeFrame();
-				
 			}
 		} );
 

@@ -11,7 +11,7 @@ var Frame = Backbone.Model.extend({
 	},
 	initialize : function () {
 		var frame = this;
-		this.bind('change:state', this.autoUpdate);
+		//this.bind('change:state', this.autoUpdate);
 		this.set({
 			"posts": new Posts()
 //			'newParams' : this.get('parent').get('newParams')
@@ -107,8 +107,9 @@ var Frame = Backbone.Model.extend({
 		
 	},
 	toggleState : function () {
+//		console.log('call toggleState', this.get("state"));
 		var exceptThis = this;
-		this.collection.closeFrames( exceptThis );
+		this.collection.closeFrames( exceptThis.cid );
 		if ( this.get("state") == FrameState.COLLAPSED ) {
 			this.setStateExpanded();
 		}
@@ -117,14 +118,16 @@ var Frame = Backbone.Model.extend({
 		}
 	},
 	setStateExpanded : function () {
+			//console.log('set state E');
 		this.set({
 			"state" : FrameState.EXPANDED
-			});
+		});
 	},
 	setStateCollapsed : function () {
+			//console.log('set state C');
 		this.set({
 			"state" : FrameState.COLLAPSED
-			});
+		});
 	},
 	getWeight : function () {
 		return this.get("posts").rootPost().get("fragment").get("weight");
