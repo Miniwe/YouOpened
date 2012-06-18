@@ -245,7 +245,9 @@ var Control = Backbone.View.extend({
 			searchParams: searchParams
 		} );
 		
-//		this.resetSelected();
+		this.selected.searchString = ""; // if filter by searchString comment it
+		
+		this.resetSelected();
 
 		return true;	
 	},
