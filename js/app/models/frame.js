@@ -32,6 +32,9 @@ var Frame = Backbone.Model.extend({
 		});
 		
 	},
+	setFilter : function (params) {
+		this.get('posts').setFilter(params);
+	},
 	getView : function () {
 		var view = false;
 		if (view = this.get("view")) {

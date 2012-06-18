@@ -149,7 +149,7 @@ var TabView = Backbone.View.extend({
 		}
 	},
 	loadMorePosts : function ( ) {
-		console.log('load more Fragments');
+		// console.log('load more Fragments');
 		this.model.get("posts").nextFragmentsPage();
 		return true;
 	},

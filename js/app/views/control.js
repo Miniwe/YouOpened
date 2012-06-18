@@ -269,36 +269,66 @@ var Control = Backbone.View.extend({
 		return tabName;
 	},
 	
+	isTab: function() {
+		return (this.posts.parent.get('name') != undefined);
+	},
+	
+	removeFilterFrom: function(parent) {
+		parent.setFilter(false);
+		return true;
+	},
+	
+	setFilterToTab: function(params) {
+		var tab = this.model.get('posts').parent; 
+		var activeFrame = tab.getActiveFrame();
+		if (!params) {
+			this.removeFilterFrom(tab);
+			if (activeFrame) {
+				activeFrame.get('posts').setFilter(false);
+			}
+			return false;
+		}
+		tab.setFilter(params);
+		
+		if (activeFrame) {
+			activeFrame.get('posts').setFilter(_.extend(params, {
+				withChilds : 1
+			}));
+		}
+		return true;
+	},
+	
+	setFilterToFragment: function(params) {
+		var tab = this.model.get('posts').parent; 
+		var fragment = this.posts.parent; 
+		if (!params) {
+			this.removeFilterFrom(tab);
+			this.removeFilterFrom(fragment);
+			return false;
+		}
+		tab.setFilter(params);
+		_.extend(params, {
+				withChilds : 1
+		});
+		fragment.setFilter(params);
+		return true;
+	},
+	
 	startFilter: function  ( ) {
-//		console.log('start filter');
-		// СДЕЛАТЬ ЧТОБ ПРИ ФИЛЬТРАЦИИ ТАБА ФИЛЬТР ПРИМЕНЯЛСЯ ТАКЖЕ ДЛЯ АКТИВНОГО ФРАГМЕНТА СРАЗУ
-		// console.log('- - - - -  - - - - - - - - - - - - - - - -  ');
+		
 		var posts = this.posts;
 		
 		var searchParams = this.prepareSearchRequest(this.selected);
 		
 		searchParams = this.prepareFilterParams(searchParams);
-		//console.log('this.model', this.model);
-		var modelRootId = 0;
-		if (this.model.get('posts').rootPost()) {
-			modelRootId = this.model.get('posts').rootPost().get('id');
-		}
-		if (posts.rootPost().get('id') != modelRootId) {
-			
-			//console.log('set filter control - for frame');
-			posts.setFilter(_.extend(searchParams, {
-				withChilds : 1
-			}));
-		}
 		
-		this.model.get('posts').setFilter(searchParams);
-		var activeFrame = this.model.get('posts').parent.getActiveFrame();
-		if (activeFrame) {
-			console.log('activeFrame',activeFrame);
-			activeFrame.get('posts').setFilter(_.extend(searchParams, {
-				withChilds : 1
-			}));
-
+		console.log('start filter', searchParams);
+		
+		if (this.isTab()) {
+			this.setFilterToTab(searchParams);
+		}
+		else {
+			this.setFilterToFragment(searchParams);	
 		}
 		
 	},

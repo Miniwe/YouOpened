@@ -16,6 +16,9 @@ var Tab = Backbone.Model.extend({
 		this.bind('change:state', this.changeActiveClass);
 		this.resetTabData();
 	},
+	setFilter : function (params) {
+		this.get('posts').setFilter(params);
+	},
 	startNewConversation : function (params) {
 		var posts = this.get('posts');
 		var replyPosts = new Posts();
