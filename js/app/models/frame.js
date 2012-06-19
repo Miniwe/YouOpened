@@ -23,12 +23,15 @@ var Frame = Backbone.Model.extend({
 			frame.updateNewCountEvent(arguments[0]);
 		});
 		this.get("posts").bind("updated", function () {
-//			console.log('update frame process', frame.get("posts"));
+			//console.log('update frame process', frame.get("posts"));
 //			frame.update(AddMode.UPDATE);
+
 			frame.get("view").update(RenderMode.UPDATE);
 		});
 		this.get("posts").bind("filtered", function () { 
-			frame.get("view").updateByFilter();
+			//console.log('filter frame process', frame.get("posts"));
+			frame.get("view").clearFrame();
+			frame.get("view").update(RenderMode.UPDATE);
 		});
 		
 	},
@@ -155,6 +158,8 @@ var Frame = Backbone.Model.extend({
 	changeActiveClass : function () {
 		if (this.get("state") == FrameState.COLLAPSED) {
 			// clear frame data
+			this.get('posts').filterParams = false;
+			
 			this.get("view").closeFrame();
 		}
 		else {

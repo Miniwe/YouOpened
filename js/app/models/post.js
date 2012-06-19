@@ -95,12 +95,12 @@ var Post = Backbone.Model.extend({
 			"withChilds" : state
 		};
 		
+		this.applyParentFilter();
 		var params = posts.prepareParams(subparams);
 		params.searchString = "";
 		params.userID = "";
 		params.tagID = "";
-		//params = this.applyParentFilter({});
-
+		//console.log('laod relatives', this.collection, params);
 		posts.loadData ( function () {
 //			console.log('load data function');
 			posts.parent.refresh();
@@ -119,8 +119,17 @@ var Post = Backbone.Model.extend({
 		
 			
 	},
-	applyParentFilter : function ( params ) {
-		return params;
+	applyParentFilter : function ( ) {
+
+		var collection = this.collection,
+			parent = collection.parent,
+		    control = parent.get('view').control,
+			selected = control.selected;
+			
+		var filterParams = control.prepareSearchRequest(selected);
+		filterParams = control.prepareFilterParams(filterParams);
+		//console.log('filterParams ',filterParams );
+		collection.filterParams = filterParams;
 	},
 	openChilds : function () {
 //		console.log('model / open childs');

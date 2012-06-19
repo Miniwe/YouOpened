@@ -181,11 +181,9 @@ var Application = Backbone.Model.extend({
 		//});
 		
 		this.addTab({
-			name: "woman*mix",
+			name: "woman",
 			searchParams: {
 				searchString : 'woman',
-				userID : '  NiCizHere,Henz_Cher,AdrianneCurry,cocosworld',
-				//tagID : 'sore,vocabulary,springer',
 				sortType : 'massive'
 			}
 		});

@@ -219,7 +219,8 @@ var Control = Backbone.View.extend({
 				window.clipboardData.setData("Text", link);
 			}
 			else {
-			    window.prompt("To copy link to fragment press Ctrl+C и Enter", link);
+			    window.prompt("To copy link to fragment press Ctrl+C и Enter",
+					link);
 			}
 			return false;
 		});
@@ -227,7 +228,8 @@ var Control = Backbone.View.extend({
 	},
 	
 	emptyRequest: function  (searchParams) {
-		var testStr = searchParams.searchString + searchParams.tagID + searchParams.userID;
+		var testStr = searchParams.searchString + searchParams.tagID
+			+ searchParams.userID;
 		return (testStr == '');
 	},
 	
@@ -284,7 +286,9 @@ var Control = Backbone.View.extend({
 		if (!params) {
 			this.removeFilterFrom(tab);
 			if (activeFrame) {
-				activeFrame.get('posts').setFilter(false);
+				activeFrame.get('posts').setFilter({
+					withChilds : 1
+				});
 			}
 			return false;
 		}
@@ -300,10 +304,18 @@ var Control = Backbone.View.extend({
 	
 	setFilterToFragment: function(params) {
 		var tab = this.model.get('posts').parent; 
+		var activeFrame = tab.getActiveFrame();
 		var fragment = this.posts.parent; 
 		if (!params) {
 			this.removeFilterFrom(tab);
-			this.removeFilterFrom(fragment);
+			if (activeFrame) {
+				activeFrame.get('posts').setFilter({
+					withChilds : 1
+				});
+			}
+			else {
+				this.removeFilterFrom(fragment);
+			}
 			return false;
 		}
 		tab.setFilter(params);
@@ -316,13 +328,16 @@ var Control = Backbone.View.extend({
 	
 	startFilter: function  ( ) {
 		
+		// @todo
+		// при выборе пользователя внутри фрагмента для фильтра делать перестройку постов внутри
+		// сейчас запрос правильный - данные правильные - но результат вывода неверный
 		var posts = this.posts;
 		
 		var searchParams = this.prepareSearchRequest(this.selected);
 		
 		searchParams = this.prepareFilterParams(searchParams);
 		
-		console.log('start filter', searchParams);
+		//console.log('filter params', searchParams);
 		
 		if (this.isTab()) {
 			this.setFilterToTab(searchParams);

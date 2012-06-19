@@ -87,14 +87,14 @@ var Posts = Backbone.Collection.extend({
 //    console.trace();
 		
 		var posts = this;		
-		this.filterParams = filterparams; 		
+		this.filterParams = filterparams;
 		var params = this.prepareParams({});
 		
 		(new TRequest()).prepareRequest(this.params).prepareFilter(this.filterParams).doPath();
 		
 		this.loadData(function(){
 			// console.log('call update after filter', posts);
-			posts.trigger('updated');
+			posts.trigger('filtered');
 		}, params, {
 			
 		});

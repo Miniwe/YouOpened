@@ -50,7 +50,9 @@ var Tab = Backbone.Model.extend({
 			tab.get("view").update(RenderMode.NEW);
 		});
 		this.get("posts").bind("filtered", function () { 
-			tab.get("view").updateByFilter();
+			tab.update(AddMode.REPLACE);
+			tab.get("view").update(RenderMode.NEW);
+//			tab.get("view").updateByFilter();
 		});
 	},
 	getData : function () {
